@@ -32,6 +32,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/js/main.js`
   - `assets/images/app-icon-placeholder.svg`
   - `assets/images/everything-clipboard-icon.png`
+  - `assets/images/favicon.png`
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording and a coming-soon store link.
@@ -41,7 +42,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment run `28311345174` completed successfully on 2026-06-28.
+- GitHub Pages deployment completed successfully on 2026-06-28. Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false`.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `https://JBDApps.com/` does not resolve yet because domain registration/DNS is not complete.
@@ -52,7 +53,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Static link/asset checker passed for all six HTML pages.
 - Public HTML scan found no private local paths, personal email addresses, or GitHub token strings.
 - `CNAME` readback confirmed `JBDApps.com`.
-- Extracted app icon is present as `assets/images/everything-clipboard-icon.png`, resized to `512 x 512`, about `294 KB`.
+- Extracted app icon is present as `assets/images/everything-clipboard-icon.png`, resized to `512 x 512`, about `294 KB`; `assets/images/favicon.png` is a generated `64 x 64` favicon from the same artwork.
 - Local server verification used `python3 -m http.server 8080`.
 - In-app browser verification loaded pages from `http://127.0.0.1:8080/`.
 - Browser checks confirmed all six pages load, expected H1/title values are present, the app icon loads, no horizontal overflow appears, and console error logs are empty.
