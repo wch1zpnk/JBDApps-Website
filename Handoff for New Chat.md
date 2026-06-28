@@ -12,7 +12,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
 - Latest pushed site/source commit before this handoff refresh: `c138260 Add site favicon`
-- Current handoff refresh: local handoff updated after the 2026-06-28 App Store Connect readiness pass and another HTTPS retry.
+- Current handoff refresh: pushed after the 2026-06-28 App Store Connect readiness pass, HTTPS retry, and GitHub Pages deployment readback.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -77,6 +77,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - 2026-06-28 Pages API retry still showed `status=built`, `cname=jbdapps.com`, `https_enforced=false`.
 - 2026-06-28 HTTPS enforcement retry command failed with `The certificate does not exist yet`.
 - 2026-06-28 later HTTPS status recheck still showed GitHub Pages API `status=built`, `cname=jbdapps.com`, `https_enforced=false`, and HTTPS enforcement still failed with `The certificate does not exist yet`.
+- 2026-06-28 documentation push deployed successfully through GitHub Pages run `28316455006`; latest pushed website commit after this pass is `a2ada75 Refresh handoff after App Store URL check`.
 - 2026-06-28 HTTP live checks:
   - `http://jbdapps.com/` returned `200 OK`.
   - `http://www.jbdapps.com/` returned `301 Moved Permanently` to `http://jbdapps.com/`.
