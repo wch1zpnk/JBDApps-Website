@@ -12,7 +12,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
 - Latest pushed site/source commit before this handoff refresh: `c138260 Add site favicon`
-- Current handoff refresh: this file is part of the latest pushed `main` commit after the HTTPS retry.
+- Current handoff refresh: local handoff updated after the 2026-06-28 App Store Connect readiness pass and another HTTPS retry.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -51,8 +51,11 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - HTTP is live:
   - `http://jbdapps.com/` returns `200 OK` from GitHub Pages.
   - `http://www.jbdapps.com/` returns `301 Moved Permanently` to `http://jbdapps.com/`.
-- HTTPS is not live yet. GitHub Pages has not issued the custom-domain certificate; attempting to enforce HTTPS on 2026-06-28 returned `The certificate does not exist yet`.
+- HTTPS is not live yet. GitHub Pages has not issued the custom-domain certificate; attempting to enforce HTTPS on 2026-06-28 still returned `The certificate does not exist yet`.
 - Direct HTTPS checks currently fail certificate validation because the served certificate does not match `jbdapps.com` or `www.jbdapps.com`.
+- Because HTTPS is still unavailable for `jbdapps.com`, the Everything Clipboard App Store Connect Support URL and Privacy Policy URL remain on the existing HTTPS GitHub Pages support repo for the current `1.1.7 (7)` submission-prep state:
+  - `https://wch1zpnk.github.io/everything-clipboard-support/support/`
+  - `https://wch1zpnk.github.io/everything-clipboard-support/privacy/`
 - Cloudflare Email Routing is configured:
   - Destination address `wch1zpink@gmail.com` was added and Cloudflare marked it `Verified`.
   - Routing rule `support@jbdapps.com -> wch1zpink@gmail.com` was created and Cloudflare marked it `Active`.
@@ -73,6 +76,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - GitHub Pages build/deploy run completed successfully.
 - 2026-06-28 Pages API retry still showed `status=built`, `cname=jbdapps.com`, `https_enforced=false`.
 - 2026-06-28 HTTPS enforcement retry command failed with `The certificate does not exist yet`.
+- 2026-06-28 later HTTPS status recheck still showed GitHub Pages API `status=built`, `cname=jbdapps.com`, `https_enforced=false`, and HTTPS enforcement still failed with `The certificate does not exist yet`.
 - 2026-06-28 HTTP live checks:
   - `http://jbdapps.com/` returned `200 OK`.
   - `http://www.jbdapps.com/` returned `301 Moved Permanently` to `http://jbdapps.com/`.
@@ -80,6 +84,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - 2026-06-28 HTTPS live checks:
   - `https://jbdapps.com/` failed with `curl: (60) SSL: no alternative certificate subject name matches target hostname 'jbdapps.com'`.
   - `https://www.jbdapps.com/` failed with `curl: (60) SSL: no alternative certificate subject name matches target hostname 'www.jbdapps.com'`.
+  - `https://jbdapps.com/support/` and `https://jbdapps.com/privacy/` failed with the same certificate mismatch.
 - 2026-06-28 in-app browser live check loaded `http://jbdapps.com/`, confirmed title `JBDApps | Independent App Support`, H1 `Simple app support from JBDApps.`, visible support text, and zero console errors.
 - Cloudflare checkout confirmed `jbdapps.com` availability at `$10.46`, renewing at `$10.46/year`, before purchase.
 - Domain registration completed in Cloudflare Registrar.
@@ -125,7 +130,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
    - Support URL: `https://JBDApps.com/support/`
    - Privacy Policy URL: `https://JBDApps.com/privacy/`
    - Marketing URL: `https://JBDApps.com/` or `https://JBDApps.com/apps/`
-4. Optionally add the remaining GitHub Pages IPv6 records if desired:
+4. After HTTPS succeeds, update App Store Connect support/privacy URLs away from the temporary `wch1zpnk.github.io/everything-clipboard-support` URLs only after `https://JBDApps.com/support/` and `https://JBDApps.com/privacy/` are verified live.
+5. Optionally add the remaining GitHub Pages IPv6 records if desired:
    - `AAAA @ 2606:50c0:8001::153`
    - `AAAA @ 2606:50c0:8002::153`
    - `AAAA @ 2606:50c0:8003::153`

@@ -121,6 +121,8 @@ Verify both:
 - `https://JBDApps.com`
 - `https://www.JBDApps.com`
 
+Until GitHub Pages issues the `JBDApps.com` HTTPS certificate and HTTPS enforcement succeeds, use the existing verified HTTPS support/privacy URLs for App Store Connect instead of the custom domain.
+
 ## Verification Checklist
 
 - Home page loads.
