@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `a04bebd Refresh handoff after HTTPS retry`
-- Current handoff refresh: updated after the 2026-06-29 Cloudflare proxy/SSL fix that made `https://jbdapps.com/` live.
+- Latest pushed site/source commit before this handoff refresh: `7b1b767 Add other tools navigation`
+- Current handoff refresh: updated after the 2026-06-29 Other Tools navigation and AppleScript page deployment.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -24,6 +24,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Static pages created:
   - `/`
   - `/apps/`
+  - `/other-tools/`
   - `/support/`
   - `/contact/`
   - `/privacy/`
@@ -37,13 +38,14 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording and a coming-soon store link.
+- The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
 ## Current Deployment State
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-06-29 after the Cloudflare DNS completion; latest observed run was `28383159157` (`pages build and deployment`, success, about 1m33s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment completed successfully on 2026-06-29 after the Other Tools navigation push; latest observed run was `28398236228` (`pages build and deployment`, success, about 18s deploy time). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
@@ -136,6 +138,14 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `curl -I http://jbdapps.com/` returned `301 Moved Permanently` to `https://jbdapps.com/`.
   - `curl -I http://www.jbdapps.com/` returned `301 Moved Permanently` to `https://www.jbdapps.com/`.
   - `gh api repos/wch1zpnk/JBDApps-Website/pages` still returned `https_enforced=false`; this is now a GitHub-origin certificate limitation, not a public HTTPS blocker.
+- 2026-06-29 Other Tools navigation deployment completed:
+  - `git diff --check` passed before commit.
+  - Commit `7b1b767 Add other tools navigation` added the top-nav `Other Tools` dropdown, an `AppleScript` menu item, the new `/other-tools/` page, shared dropdown CSS, and the mobile-menu helper update.
+  - GitHub Pages run `28398236228` completed successfully.
+  - `curl -L --fail --silent https://jbdapps.com/apps/` confirmed `Other Tools`, `/other-tools/`, and `AppleScript` were present in public HTML.
+  - `curl -I https://jbdapps.com/other-tools/` returned `HTTP/2 200`.
+  - `curl -L --fail --silent https://jbdapps.com/other-tools/` confirmed `AppleScript tools for JBDApps users.` and `Suggest a Script` were present in public HTML.
+  - In-app browser public verification loaded `https://jbdapps.com/apps/`, opened the mobile menu, opened the `Other Tools` dropdown, clicked `AppleScript`, and landed on `https://jbdapps.com/other-tools/`.
 
 ## Verified Inputs
 
