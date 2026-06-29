@@ -92,6 +92,8 @@ img {
 }
 
 .nav-dropdown {
+  display: inline-flex;
+  align-items: center;
   position: relative;
 }
 
@@ -99,10 +101,12 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 40px;
   padding: 8px 12px;
   border-radius: var(--radius);
   color: var(--text);
   font-weight: 600;
+  line-height: 1.55;
   cursor: pointer;
   list-style: none;
   user-select: none;
@@ -615,6 +619,7 @@ img {
   }
 
   .nav-dropdown {
+    display: block;
     width: 100%;
   }
 
