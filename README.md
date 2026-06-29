@@ -6,6 +6,7 @@ Static developer/support website for `JBDApps.com`, intended for GitHub Pages ho
 
 - Home page: `/`
 - Apps page: `/apps/`
+- Other tools page: `/other-tools/`
 - Support page: `/support/`
 - Contact page: `/contact/`
 - Privacy policy: `/privacy/`

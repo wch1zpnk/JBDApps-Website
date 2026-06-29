@@ -91,6 +91,76 @@ img {
   gap: 8px;
 }
 
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.nav-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown > summary::after {
+  content: "v";
+  font-size: 0.72em;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.nav-dropdown > summary:hover,
+.nav-dropdown > summary:focus-visible,
+.nav-dropdown[open] > summary,
+.nav-dropdown:focus-within > summary {
+  background: var(--surface-strong);
+  text-decoration: none;
+}
+
+.nav-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  display: none;
+  min-width: 220px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  z-index: 10;
+}
+
+.nav-dropdown:hover .nav-dropdown-panel,
+.nav-dropdown:focus-within .nav-dropdown-panel,
+.nav-dropdown[open] .nav-dropdown-panel {
+  display: grid;
+}
+
+.nav-dropdown-panel a {
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nav-dropdown-panel a:hover,
+.nav-dropdown-panel a[aria-current="page"] {
+  background: var(--surface-strong);
+  text-decoration: none;
+}
+
 .site-nav a {
   color: var(--text);
   padding: 8px 12px;
@@ -542,6 +612,23 @@ img {
 
   .site-nav.is-open {
     display: flex;
+  }
+
+  .nav-dropdown {
+    width: 100%;
+  }
+
+  .nav-dropdown > summary {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-dropdown-panel {
+    position: static;
+    min-width: 0;
+    margin-top: 8px;
+    padding: 8px;
+    box-shadow: none;
   }
 
   .hero,
