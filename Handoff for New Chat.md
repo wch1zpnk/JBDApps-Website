@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-06-28
+Updated: 2026-06-29
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `c138260 Add site favicon`
-- Current handoff refresh: pushed after the 2026-06-28 App Store Connect readiness pass, HTTPS retry, and GitHub Pages deployment readback.
+- Latest pushed site/source commit before this handoff refresh: `a2ada75 Refresh handoff after App Store URL check`
+- Current handoff refresh: updated after the 2026-06-29 Cloudflare IPv6 DNS completion, GitHub Pages rebuild, and HTTPS retry.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -43,15 +43,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-06-28. Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
-- GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-28 after the latest retry.
+- GitHub Pages deployment completed successfully on 2026-06-29 after the Cloudflare DNS completion; latest observed run was `28383159157` (`pages build and deployment`, success, about 1m33s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
 - Cloudflare DNS is authoritative and public DNS resolves for the apex and `www`.
 - HTTP is live:
   - `http://jbdapps.com/` returns `200 OK` from GitHub Pages.
   - `http://www.jbdapps.com/` returns `301 Moved Permanently` to `http://jbdapps.com/`.
-- HTTPS is not live yet. GitHub Pages has not issued the custom-domain certificate; attempting to enforce HTTPS on 2026-06-28 still returned `The certificate does not exist yet`.
+- HTTPS is not live yet. GitHub Pages has not issued the custom-domain certificate; attempting to enforce HTTPS on 2026-06-29 still returned `The certificate does not exist yet`.
 - Direct HTTPS checks currently fail certificate validation because the served certificate does not match `jbdapps.com` or `www.jbdapps.com`.
 - Because HTTPS is still unavailable for `jbdapps.com`, the Everything Clipboard App Store Connect Support URL and Privacy Policy URL remain on the existing HTTPS GitHub Pages support repo for the current `1.1.7 (7)` submission-prep state:
   - `https://wch1zpnk.github.io/everything-clipboard-support/support/`
@@ -98,6 +98,20 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - DKIM returned the Cloudflare Email Routing `cf2024-1._domainkey` TXT value.
   - DMARC returned `v=DMARC1; p=none`.
 - Cloudflare DNS page showed `All set` and `No recommendations` after adding DMARC.
+- 2026-06-29 Cloudflare DNS update completed:
+  - Added the remaining GitHub Pages apex AAAA records:
+    - `2606:50c0:8001::153`
+    - `2606:50c0:8002::153`
+    - `2606:50c0:8003::153`
+  - Cloudflare table showed 15 records and all four apex AAAA records as `DNS only`.
+  - Public DNS returned all four GitHub Pages apex A records and all four apex AAAA records.
+  - `www.jbdapps.com` still returned CNAME `wch1zpnk.github.io.`
+  - Triggered GitHub Pages rebuild; run `28383159157` completed successfully.
+  - `gh api repos/wch1zpnk/JBDApps-Website/pages` still returned `status=built`, `cname=jbdapps.com`, `https_enforced=false`.
+  - `gh api repos/wch1zpnk/JBDApps-Website/pages/health` returned `{}`.
+  - HTTPS enforcement retry still failed with `The certificate does not exist yet`.
+  - `http://jbdapps.com/` returned `200 OK`.
+  - `https://jbdapps.com/` still failed certificate validation because GitHub served the `*.github.io` certificate.
 
 ## Verified Inputs
 
@@ -132,7 +146,3 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
    - Privacy Policy URL: `https://JBDApps.com/privacy/`
    - Marketing URL: `https://JBDApps.com/` or `https://JBDApps.com/apps/`
 4. After HTTPS succeeds, update App Store Connect support/privacy URLs away from the temporary `wch1zpnk.github.io/everything-clipboard-support` URLs only after `https://JBDApps.com/support/` and `https://JBDApps.com/privacy/` are verified live.
-5. Optionally add the remaining GitHub Pages IPv6 records if desired:
-   - `AAAA @ 2606:50c0:8001::153`
-   - `AAAA @ 2606:50c0:8002::153`
-   - `AAAA @ 2606:50c0:8003::153`
