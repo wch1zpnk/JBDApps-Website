@@ -97,7 +97,9 @@ img {
   position: relative;
 }
 
-.nav-dropdown > summary {
+.nav-dropdown-trigger {
+  border: 0;
+  background: transparent;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -108,25 +110,20 @@ img {
   font-weight: 600;
   line-height: 1.55;
   cursor: pointer;
-  list-style: none;
   user-select: none;
 }
 
-.nav-dropdown > summary::-webkit-details-marker {
-  display: none;
-}
-
-.nav-dropdown > summary::after {
+.nav-dropdown-trigger::after {
   content: "v";
   font-size: 0.72em;
   line-height: 1;
   opacity: 0.75;
 }
 
-.nav-dropdown > summary:hover,
-.nav-dropdown > summary:focus-visible,
-.nav-dropdown[open] > summary,
-.nav-dropdown:focus-within > summary {
+.nav-dropdown-trigger:hover,
+.nav-dropdown-trigger:focus-visible,
+.nav-dropdown.is-open .nav-dropdown-trigger,
+.nav-dropdown:focus-within .nav-dropdown-trigger {
   background: var(--surface-strong);
   text-decoration: none;
 }
@@ -147,7 +144,7 @@ img {
 
 .nav-dropdown:hover .nav-dropdown-panel,
 .nav-dropdown:focus-within .nav-dropdown-panel,
-.nav-dropdown[open] .nav-dropdown-panel {
+.nav-dropdown.is-open .nav-dropdown-panel {
   display: grid;
 }
 
@@ -623,7 +620,7 @@ img {
     width: 100%;
   }
 
-  .nav-dropdown > summary {
+  .nav-dropdown-trigger {
     width: 100%;
     justify-content: space-between;
   }
