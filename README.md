@@ -46,7 +46,7 @@ Do not add analytics, cookies, tracking scripts, ads, or third-party embeds unle
 5. Set the source to `Deploy from a branch`.
 6. Select branch `main` and folder `/root`.
 7. Add the custom domain `JBDApps.com`.
-8. Wait for DNS validation and enable `Enforce HTTPS`.
+8. Wait for DNS validation. If GitHub Pages cannot yet issue its custom-domain certificate, keep Cloudflare web records proxied and use Cloudflare SSL/TLS instead.
 
 ## Domain and DNS Setup
 
@@ -74,7 +74,9 @@ Expected shape:
 - `www.JBDApps.com` is a CNAME to the GitHub Pages default host, for example `wch1zpnk.github.io`.
 - Avoid wildcard DNS records.
 - Add the custom domain in GitHub Pages before relying on the DNS records.
-- Enable HTTPS after DNS validation passes.
+- Current live setup uses Cloudflare-proxied web records for the apex A/AAAA records and the `www` CNAME, Cloudflare SSL/TLS mode `Full`, and Cloudflare `Always Use HTTPS`.
+- Leave email MX/TXT records as `DNS only`.
+- GitHub Pages `Enforce HTTPS` is optional while Cloudflare HTTPS is verified; GitHub may continue to report `https_enforced=false` until it issues its own custom-domain certificate.
 - DNS changes can take up to 24 hours to propagate.
 
 Cloudflare Registrar notes:
@@ -110,7 +112,7 @@ Update the policy whenever an app changes:
 
 ## App Store URL Checklist
 
-Use these once the custom domain works:
+Verified live custom-domain URLs:
 
 - Support URL: `https://JBDApps.com/support/`
 - Privacy Policy URL: `https://JBDApps.com/privacy/`
@@ -120,8 +122,6 @@ Verify both:
 
 - `https://JBDApps.com`
 - `https://www.JBDApps.com`
-
-Until GitHub Pages issues the `JBDApps.com` HTTPS certificate and HTTPS enforcement succeeds, use the existing verified HTTPS support/privacy URLs for App Store Connect instead of the custom domain.
 
 ## Verification Checklist
 
