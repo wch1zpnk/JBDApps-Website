@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `7b1b767 Add other tools navigation`
-- Current handoff refresh: updated after the 2026-06-29 Other Tools navigation and AppleScript page deployment.
+- Latest pushed site/source commit before this handoff refresh: `ffba1a3 Replace tools dropdown trigger`
+- Current handoff refresh: updated after the 2026-06-29 Other Tools dropdown alignment fix.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -146,6 +146,14 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `curl -I https://jbdapps.com/other-tools/` returned `HTTP/2 200`.
   - `curl -L --fail --silent https://jbdapps.com/other-tools/` confirmed `AppleScript tools for JBDApps users.` and `Suggest a Script` were present in public HTML.
   - In-app browser public verification loaded `https://jbdapps.com/apps/`, opened the mobile menu, opened the `Other Tools` dropdown, clicked `AppleScript`, and landed on `https://jbdapps.com/other-tools/`.
+- 2026-06-29 Other Tools dropdown alignment fix completed:
+  - Commit `591bcf6 Fix tools nav alignment` first tightened the dropdown CSS, and commit `206274e Bust stylesheet cache for nav fix` added versioned stylesheet URLs so browsers would not reuse stale CSS.
+  - Commit `ffba1a3 Replace tools dropdown trigger` replaced the nav dropdown's `<details>/<summary>` trigger with a normal button because the browser's built-in summary rendering still shifted the label upward when active.
+  - Local browser verification measured the desktop `Other Tools` trigger centerline against the `Support` nav link before and after opening; both deltas were `0`.
+  - Local mobile verification measured the trigger top before and after opening the submenu; the shift was `0`.
+  - GitHub Pages run `28398931647` deployed the final button-based dropdown fix successfully.
+  - Public HTML readback confirmed `nav-dropdown-trigger`, `styles.css?v=20260629-navfix2`, and `main.js?v=20260629-navfix2` were live.
+  - In-app browser public verification at `1280 x 900` measured `deltaCenter=0` before and after opening `Other Tools`, with `aria-expanded` changing from `false` to `true`.
 
 ## Verified Inputs
 
