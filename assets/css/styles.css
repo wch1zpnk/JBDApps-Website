@@ -650,8 +650,8 @@ img {
 
 .carousel-image-button img {
   width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+  aspect-ratio: 16 / 5;
+  object-fit: contain;
 }
 
 .carousel-control {
