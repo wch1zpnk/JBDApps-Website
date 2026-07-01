@@ -36,37 +36,37 @@ const lightboxClose = document.querySelector("[data-lightbox-close]");
 
 const slides = [
   {
-    src: "/assets/images/everything-clipboard/01-find-anything-you-copied.png",
-    alt: "Everything Clipboard main window showing searchable clipboard history across copied items.",
+    src: "/assets/images/everything-clipboard/raw-main-window.png",
+    alt: "Everything Clipboard main window showing clipboard history, pasteboard categories, and a selected copied note.",
     caption: "Find anything you copied across text, links, code, colors, files, images, and macOS pasteboards."
   },
   {
-    src: "/assets/images/everything-clipboard/02-quick-paste-without-digging.png",
-    alt: "Quick Paste window showing a focused search interface for clipboard results.",
+    src: "/assets/images/everything-clipboard/raw-quick-paste.png",
+    alt: "Quick Paste window showing searchable clipboard results with the first item selected.",
     caption: "Use Quick Paste to search and restore copied items from a focused keyboard-first window."
   },
   {
-    src: "/assets/images/everything-clipboard/03-private-by-default.png",
-    alt: "Privacy settings showing ignored apps, ignored patterns, and secure text controls.",
+    src: "/assets/images/everything-clipboard/raw-privacy-settings.png",
+    alt: "Privacy settings showing saved history, ignored apps, and ignored text patterns.",
     caption: "Keep clipboard history local on your Mac with ignored apps, ignored patterns, and secure text protection."
   },
   {
-    src: "/assets/images/everything-clipboard/04-control-what-gets-captured.png",
-    alt: "Capture settings for pasteboard monitoring, retention, OCR, and secure detection.",
+    src: "/assets/images/everything-clipboard/raw-capture-settings.png",
+    alt: "Capture settings showing pasteboard monitoring, OCR, secure detection, and history retention controls.",
     caption: "Choose which pasteboards are monitored and control history retention, OCR, secure detection, and capture pauses."
   },
   {
-    src: "/assets/images/everything-clipboard/05-direct-paste-is-optional.png",
-    alt: "Quick Paste settings explaining optional Direct Paste behavior.",
+    src: "/assets/images/everything-clipboard/raw-quick-paste-settings.png",
+    alt: "Quick Paste settings showing Direct Paste status and Accessibility settings controls.",
     caption: "Direct Paste is optional and uses macOS Accessibility permission only when you enable it."
   },
   {
-    src: "/assets/images/everything-clipboard/06-build-a-paste-stack.png",
+    src: "/assets/images/everything-clipboard/raw-paste-stack-workflow.png",
     alt: "Paste Stack workflow showing queued copied items for ordered pasting.",
     caption: "Queue copied items into a Paste Stack for repeated, ordered pasting."
   },
   {
-    src: "/assets/images/everything-clipboard/07-built-in-help.png",
+    src: "/assets/images/everything-clipboard/raw-help-window.png",
     alt: "Built-in Help window with topics for browsing, Quick Paste, Paste Stack, privacy, and shortcuts.",
     caption: "Keep product guidance close with searchable built-in help for browsing, Quick Paste, Paste Stack, media, privacy, and shortcuts."
   }
