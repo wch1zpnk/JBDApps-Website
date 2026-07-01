@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `2399d37 Compact screenshot carousel`
-- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard compact screenshot carousel deployment.
+- Latest pushed site/source commit before this handoff refresh: `191b1d7 Use raw Everything Clipboard captures`
+- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard raw-capture carousel deployment.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -39,7 +39,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording, a coming-soon store link, and a View Details link to `/apps/everything-clipboard/`.
-- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the prepared Mac App Store screenshot set from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Screenshots 2880x1800/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area is now a compact half-height carousel that auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay.
+- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area is a `16 / 9` carousel that auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
@@ -47,7 +47,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard compact carousel push; latest observed run was `28491140586` (`pages build and deployment`, success, about 22s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard raw-capture carousel push; latest observed run was `28538566704` (`pages build and deployment`, success, about 2m49s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
@@ -200,6 +200,19 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Public HTML/CSS readback confirmed `styles.css?v=20260701-carousel-compact`, `aspect-ratio: 16 / 5`, and `object-fit: contain` were live.
   - `curl -I https://jbdapps.com/apps/everything-clipboard/` returned `HTTP/2 200`.
   - Fresh in-app browser public verification confirmed the live carousel uses `aspect-ratio: 16 / 5` and `object-fit: contain`, the old screenshot grid is absent, the first screenshot loads at `2880 x 1800`, clicking the carousel image opens the enlarged screenshot overlay, and no console errors were logged.
+- 2026-07-01 Everything Clipboard raw-capture carousel deployment completed:
+  - Commit `191b1d7 Use raw Everything Clipboard captures` added the seven user-provided raw captures to `assets/images/everything-clipboard/` as `raw-*.png`, replaced the carousel slide list with those files, updated the initial carousel/lightbox image to `raw-main-window.png`, and bumped shared asset URLs to `styles.css?v=20260701-rawcaptures` and `main.js?v=20260701-rawcaptures`.
+  - The carousel preview frame was changed from `16 / 5` to `16 / 9` so the mixed-aspect raw captures remain readable while still using `object-fit: contain`.
+  - `git diff --check` passed.
+  - Static HTML reference check passed: all local `href` and `src` references resolved across eight HTML files.
+  - Local in-app browser verification at desktop width confirmed the carousel used `raw-main-window.png`, loaded at `2360 x 1680`, used `aspect-ratio: 16 / 9` and `object-fit: contain`, had seven dots, had no horizontal overflow, and no longer contained the old `01-find-anything-you-copied.png` image.
+  - Local in-app browser control checks confirmed next navigation switched to another raw capture and the enlarged screenshot overlay opened and closed using the raw image.
+  - Local mobile browser verification at `390 x 844` confirmed no horizontal overflow, `object-fit: contain`, `aspect-ratio: 16 / 9`, and zero console errors.
+  - GitHub Pages run `28538566704` deployed successfully after about 2m49s. GitHub reported a non-blocking Node.js 20 deprecation annotation for the Pages action, but the run completed with `success`.
+  - Public HTML readback confirmed `styles.css?v=20260701-rawcaptures`, `main.js?v=20260701-rawcaptures`, and `raw-main-window.png` are live; the previous `20260701-carousel-compact` token and `01-find-anything-you-copied.png` image were absent from the public product-page HTML.
+  - Direct public checks for all seven raw capture PNGs returned `200 image/png`: `raw-main-window.png`, `raw-quick-paste.png`, `raw-privacy-settings.png`, `raw-capture-settings.png`, `raw-quick-paste-settings.png`, `raw-paste-stack-workflow.png`, and `raw-help-window.png`.
+  - Public JS/CSS readback confirmed the live slide list references the raw capture filenames and the live stylesheet uses `aspect-ratio: 16 / 9` with `object-fit: contain`.
+  - Live public in-app browser automation timed out twice after deployment, so the final deployed-state verification for this pass is based on GitHub Pages success plus direct HTTPS HTML/asset/CSS/JS readback rather than a completed live Browser pass.
 
 ## Verified Inputs
 
