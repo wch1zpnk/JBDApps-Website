@@ -189,12 +189,12 @@ img {
 }
 
 .hero {
-  min-height: calc(100vh - 170px);
+  min-height: min(720px, calc(100vh - 72px));
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.86fr);
   align-items: center;
-  gap: 56px;
-  padding: 58px 0 44px;
+  gap: 48px;
+  padding: 76px 0 48px;
 }
 
 .hero h1,
@@ -572,8 +572,10 @@ img {
 
 .product-icon {
   width: min(190px, 52vw);
+  height: min(190px, 52vw);
   aspect-ratio: 1;
   border-radius: 42px;
+  object-fit: cover;
   box-shadow: var(--shadow);
 }
 
@@ -979,6 +981,18 @@ img {
 
   .site-footer div {
     margin-top: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .feature-card:hover {
+    transform: none;
   }
 }
 

@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `b894f49 Refresh handoff after raw captures deployment`
-- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard raw-capture compact-height correction.
+- Latest pushed site/source commit before this handoff refresh: `4acc8cb Restore compact raw capture carousel`
+- Current handoff refresh: updated after moving Everything Clipboard FAQs from the general Support page to the Everything Clipboard product page, before committing/pushing the website polish changes live.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -36,10 +36,13 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/images/app-icon-placeholder.svg`
   - `assets/images/everything-clipboard-icon.png`
   - `assets/images/favicon.png`
+  - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording, a coming-soon store link, and a View Details link to `/apps/everything-clipboard/`.
-- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay.
+- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay. During the local-only polish review, the carousel was explicitly restored to this compact scaled-image presentation after the user rejected any change to its visual behavior.
+- App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link status, and optional Accessibility permission for Direct Paste.
+- The homepage should remain a general JBDApps support/app-information entry point. It may mention Everything Clipboard as the first app, but it should not become a full Everything Clipboard showcase; keep the bulk of Everything Clipboard marketing/detail content on `/apps/everything-clipboard/`.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
@@ -216,6 +219,17 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - 2026-07-01 Everything Clipboard raw-capture compact-height correction completed:
   - Corrected the raw-capture carousel preview back to the previous compact `16 / 5` height while keeping `object-fit: contain`, so the new raw images scale down inside the shorter frame instead of increasing the carousel height.
   - Shared stylesheet URLs were bumped to `styles.css?v=20260701-rawcaptures-compact`; the JavaScript URL remains `main.js?v=20260701-rawcaptures` because slide behavior did not change.
+- 2026-07-01 website polish review:
+  - Polish changes were first made locally for review, then included in the publish commit after final approval.
+  - Added local professional-site basics: `404.html`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, `assets/images/apple-touch-icon.png`, Open Graph/Twitter metadata, normalized lowercase canonical URLs, and refreshed cache tokens using `20260701-polish-local`.
+  - The first polish pass made the homepage too focused on Everything Clipboard. The user rejected that direction, so the homepage was restored to the general `Simple app support from JBDApps.` presentation and the product-specific spotlight/proof sections were removed from the homepage.
+  - The user also rejected any carousel change. The product-page carousel was verified locally as compact `aspect-ratio: 16 / 5` with `object-fit: contain`, seven dots, and no extra proof/workflow sections inserted around it.
+  - The Everything Clipboard product icon was fixed after a local polish pass squished it; CSS now explicitly keeps `.product-icon` square with equal width/height and `object-fit: cover`.
+  - Local verification after corrections: `git diff --check` passed; local reference/JSON/XML/private-string scan passed; in-app browser check at desktop confirmed homepage H1 `Simple app support from JBDApps.`, carousel `16 / 5` + `contain`, square product icon `190 x 190`, no horizontal overflow, and zero console warnings/errors.
+- 2026-07-01 app-specific FAQ structure update:
+  - Moved the Everything Clipboard-specific FAQ items out of `/support/` and into `/apps/everything-clipboard/`.
+  - The general Support page now keeps general support instructions, what to include, known-issues status, and a note that app-specific FAQs live on product pages.
+  - Local verification after the FAQ move: `git diff --check` passed; local HTML reference/asset scan passed across 9 HTML files; JSON/XML parsing for `site.webmanifest` and `sitemap.xml` passed; public private-string scan passed; local HTTP checks returned `200` for `/support/` and `/apps/everything-clipboard/`; in-app browser checks confirmed `/support/` has zero FAQ items and `/apps/everything-clipboard/` has three FAQ items on desktop and mobile with no horizontal overflow or console warnings/errors.
 
 ## Verified Inputs
 
@@ -236,6 +250,10 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Do not claim a domain is registered or DNS/HTTPS is live until verified.
 - Do not claim the app collects no data unless the actual app behavior has been reviewed for App Store submission.
 - Keep App Store links marked as coming soon until the public listing URL is verified.
+- Keep the Everything Clipboard screenshot carousel compact at `16 / 5` with `object-fit: contain`; do not make it taller or crop the screenshots.
+- Keep `/` as a general JBDApps support/app-info homepage; do not turn the homepage into an Everything Clipboard showcase.
+- Keep the Everything Clipboard product icon square on `/apps/everything-clipboard/`; avoid HTML image dimensions or CSS that distort it.
+- Keep app-specific FAQs on their app product pages. The general `/support/` page should remain generic and should not accumulate app-specific FAQ sections.
 
 ## Next Steps
 

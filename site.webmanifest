@@ -1,0 +1,21 @@
+{
+  "name": "JBDApps",
+  "short_name": "JBDApps",
+  "description": "Practical Mac utilities from an independent developer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#121619",
+  "theme_color": "#216b78",
+  "icons": [
+    {
+      "src": "/assets/images/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

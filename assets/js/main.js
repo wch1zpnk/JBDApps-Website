@@ -33,6 +33,7 @@ const lightbox = document.querySelector("[data-lightbox]");
 const lightboxImage = document.querySelector("[data-lightbox-image]");
 const lightboxCaption = document.querySelector("[data-lightbox-caption]");
 const lightboxClose = document.querySelector("[data-lightbox-close]");
+const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const slides = [
   {
@@ -101,6 +102,9 @@ if (carousel) {
 
   const start = () => {
     stop();
+    if (motionQuery.matches) {
+      return;
+    }
     timer = window.setInterval(() => {
       if (!carousel.matches(":hover") && !carousel.contains(document.activeElement)) {
         setSlide(index + 1);
@@ -126,6 +130,9 @@ if (carousel) {
   });
 
   open.addEventListener("click", () => {
+    if (!lightbox || !lightboxImage || !lightboxCaption || !lightboxClose) {
+      return;
+    }
     const slide = slides[index];
     lightboxImage.src = slide.src;
     lightboxImage.alt = slide.alt;
@@ -152,6 +159,14 @@ if (carousel) {
 
   setSlide(0);
   start();
+
+  motionQuery.addEventListener("change", () => {
+    if (motionQuery.matches) {
+      stop();
+    } else {
+      start();
+    }
+  });
 }
 
 if (lightbox && lightboxClose) {
