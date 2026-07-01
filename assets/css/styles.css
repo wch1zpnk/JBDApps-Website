@@ -107,6 +107,7 @@ img {
   padding: 8px 12px;
   border-radius: var(--radius);
   color: var(--text);
+  font: inherit;
   font-weight: 600;
   line-height: 1.55;
   cursor: pointer;
