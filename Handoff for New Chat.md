@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `191b1d7 Use raw Everything Clipboard captures`
-- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard raw-capture carousel deployment.
+- Latest pushed site/source commit before this handoff refresh: `b894f49 Refresh handoff after raw captures deployment`
+- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard raw-capture compact-height correction.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -39,7 +39,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording, a coming-soon store link, and a View Details link to `/apps/everything-clipboard/`.
-- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area is a `16 / 9` carousel that auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay.
+- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
@@ -213,6 +213,9 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Direct public checks for all seven raw capture PNGs returned `200 image/png`: `raw-main-window.png`, `raw-quick-paste.png`, `raw-privacy-settings.png`, `raw-capture-settings.png`, `raw-quick-paste-settings.png`, `raw-paste-stack-workflow.png`, and `raw-help-window.png`.
   - Public JS/CSS readback confirmed the live slide list references the raw capture filenames and the live stylesheet uses `aspect-ratio: 16 / 9` with `object-fit: contain`.
   - Live public in-app browser automation timed out twice after deployment, so the final deployed-state verification for this pass is based on GitHub Pages success plus direct HTTPS HTML/asset/CSS/JS readback rather than a completed live Browser pass.
+- 2026-07-01 Everything Clipboard raw-capture compact-height correction completed:
+  - Corrected the raw-capture carousel preview back to the previous compact `16 / 5` height while keeping `object-fit: contain`, so the new raw images scale down inside the shorter frame instead of increasing the carousel height.
+  - Shared stylesheet URLs were bumped to `styles.css?v=20260701-rawcaptures-compact`; the JavaScript URL remains `main.js?v=20260701-rawcaptures` because slide behavior did not change.
 
 ## Verified Inputs
 
