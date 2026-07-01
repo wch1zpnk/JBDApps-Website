@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `4acc8cb Restore compact raw capture carousel`
-- Current handoff refresh: updated after moving Everything Clipboard FAQs from the general Support page to the Everything Clipboard product page, before committing/pushing the website polish changes live.
+- Latest pushed site/source commit before this handoff refresh: `902cdca Polish website metadata and app FAQs`
+- Current handoff refresh: updated after moving Everything Clipboard FAQs from the general Support page to the Everything Clipboard product page and verifying the deployed public site.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -51,6 +51,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
 - GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard raw-capture carousel push; latest observed run was `28538566704` (`pages build and deployment`, success, about 2m49s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment for commit `902cdca` completed successfully on 2026-07-01 as run `28543467350` (`pages build and deployment`; build 8s, deploy 29s). The run had a non-blocking Node.js 20 deprecation annotation from GitHub Actions, but completed with `success`.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
@@ -230,6 +231,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Moved the Everything Clipboard-specific FAQ items out of `/support/` and into `/apps/everything-clipboard/`.
   - The general Support page now keeps general support instructions, what to include, known-issues status, and a note that app-specific FAQs live on product pages.
   - Local verification after the FAQ move: `git diff --check` passed; local HTML reference/asset scan passed across 9 HTML files; JSON/XML parsing for `site.webmanifest` and `sitemap.xml` passed; public private-string scan passed; local HTTP checks returned `200` for `/support/` and `/apps/everything-clipboard/`; in-app browser checks confirmed `/support/` has zero FAQ items and `/apps/everything-clipboard/` has three FAQ items on desktop and mobile with no horizontal overflow or console warnings/errors.
+  - Published commit `902cdca` to `origin/main`; GitHub Pages run `28543467350` completed successfully.
+  - Public cache-busted verification confirmed `https://jbdapps.com/support/?deploy=902cdca` returns `HTTP/2 200`, has zero FAQ items, and includes the product-page FAQ note. Public `https://jbdapps.com/apps/everything-clipboard/?deploy=902cdca` returns `HTTP/2 200`, has the `Everything Clipboard FAQ`, has three FAQ items, keeps the carousel at `aspect-ratio: 16 / 5` with `object-fit: contain`, keeps the product icon square at `190 x 190`, has no failed images, no horizontal overflow, and no console warnings/errors.
 
 ## Verified Inputs
 
