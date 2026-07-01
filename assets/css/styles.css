@@ -621,14 +621,7 @@ img {
   letter-spacing: 0;
 }
 
-.screenshot-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.screenshot-grid figure {
-  margin: 0;
+.screenshot-carousel {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
@@ -636,17 +629,156 @@ img {
   overflow: hidden;
 }
 
-.screenshot-grid img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
+.carousel-viewport {
+  position: relative;
   background: var(--surface-strong);
 }
 
-.screenshot-grid figcaption {
-  padding: 14px 16px 16px;
+.carousel-image-button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.carousel-image-button:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: -6px;
+}
+
+.carousel-image-button img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid color-mix(in srgb, var(--surface) 70%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text);
+  font: inherit;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.carousel-control:hover,
+.carousel-control:focus-visible {
+  background: var(--surface);
+}
+
+.carousel-control.previous {
+  left: 16px;
+}
+
+.carousel-control.next {
+  right: 16px;
+}
+
+.carousel-copy {
+  padding: 16px 18px 8px;
+}
+
+.carousel-count {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.carousel-caption {
+  min-height: 3.1em;
+  margin: 0;
   color: var(--muted);
   font-weight: 700;
+}
+
+.carousel-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 18px 18px;
+}
+
+.carousel-dots button {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+}
+
+.carousel-dots button[aria-current="true"] {
+  width: 32px;
+  background: var(--brand);
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.lightbox-panel {
+  position: relative;
+  width: min(1200px, 100%);
+  max-height: calc(100vh - 48px);
+  display: grid;
+  gap: 12px;
+}
+
+.lightbox-panel img {
+  width: 100%;
+  max-height: calc(100vh - 130px);
+  object-fit: contain;
+  border-radius: var(--radius);
+  background: #000;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+}
+
+.lightbox-panel p {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.lightbox-close {
+  justify-self: end;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.46);
+  color: #fff;
+  font: inherit;
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .product-copy,
@@ -784,8 +916,7 @@ img {
   .two-column,
   .contact-panel,
   .copy-columns,
-  .feature-list-grid,
-  .screenshot-grid {
+  .feature-list-grid {
     grid-template-columns: 1fr;
   }
 
@@ -822,6 +953,28 @@ img {
   .status-pill,
   .callout .button {
     margin-top: 14px;
+  }
+
+  .carousel-control {
+    width: 40px;
+    height: 40px;
+    font-size: 1.7rem;
+  }
+
+  .carousel-control.previous {
+    left: 10px;
+  }
+
+  .carousel-control.next {
+    right: 10px;
+  }
+
+  .carousel-caption {
+    min-height: 4.65em;
+  }
+
+  .lightbox {
+    padding: 14px;
   }
 
   .site-footer div {
