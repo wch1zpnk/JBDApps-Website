@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `1db6ae3 Add screenshot carousel lightbox`
-- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard screenshot carousel/lightbox deployment.
+- Latest pushed site/source commit before this handoff refresh: `2399d37 Compact screenshot carousel`
+- Current handoff refresh: updated after the 2026-07-01 Everything Clipboard compact screenshot carousel deployment.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -39,7 +39,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording, a coming-soon store link, and a View Details link to `/apps/everything-clipboard/`.
-- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the prepared Mac App Store screenshot set from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Screenshots 2880x1800/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area is now a carousel that auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, and opens the current screenshot larger in an overlay.
+- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the prepared Mac App Store screenshot set from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Screenshots 2880x1800/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area is now a compact half-height carousel that auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
@@ -47,7 +47,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard screenshot carousel push; latest observed run was `28489384060` (`pages build and deployment`, success, build about 6s and deploy about 14s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard compact carousel push; latest observed run was `28491140586` (`pages build and deployment`, success, about 22s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
@@ -188,6 +188,18 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Public HTML readback confirmed `screenshot-carousel`, `data-carousel`, `data-lightbox`, and `20260701-carousel` were live; the old `screenshot-grid` markup and `20260701-appdetail` token were absent.
   - `curl -I https://jbdapps.com/apps/everything-clipboard/` returned `HTTP/2 200`.
   - Fresh in-app browser public verification confirmed the live carousel is present, the old grid is absent, the first image loads at `2880 x 1800`, there are seven dot controls, no horizontal overflow, next control changes the slide, clicking the carousel image opens a loaded enlarged screenshot overlay, closing hides it again, and no console errors were logged.
+- 2026-07-01 Everything Clipboard compact carousel update completed:
+  - Commit `2399d37 Compact screenshot carousel` changed the carousel preview frame from `16 / 10` to `16 / 5`, keeping the same horizontal span while making the preview half as tall.
+  - The carousel image rule now uses `object-fit: contain`, so the `2880 x 1800` screenshots scale inside the compact preview instead of being cropped.
+  - Shared stylesheet URLs were bumped to `styles.css?v=20260701-carousel-compact`; the JavaScript cache token remains `main.js?v=20260701-carousel` because the carousel behavior did not change.
+  - `git diff --check` passed.
+  - Static HTML reference check passed: all local `href` and `src` references resolved across eight HTML files.
+  - Local in-app browser verification confirmed the compact preview used `aspect-ratio: 16 / 5`, `object-fit: contain`, loaded the first screenshot at `2880 x 1800`, had no horizontal overflow, and logged zero console errors.
+  - Local mobile verification at `390 x 844` confirmed the compact preview used `object-fit: contain`, had no horizontal overflow, and the enlarged overlay still opened the full `2880 x 1800` screenshot.
+  - GitHub Pages run `28491140586` deployed successfully.
+  - Public HTML/CSS readback confirmed `styles.css?v=20260701-carousel-compact`, `aspect-ratio: 16 / 5`, and `object-fit: contain` were live.
+  - `curl -I https://jbdapps.com/apps/everything-clipboard/` returned `HTTP/2 200`.
+  - Fresh in-app browser public verification confirmed the live carousel uses `aspect-ratio: 16 / 5` and `object-fit: contain`, the old screenshot grid is absent, the first screenshot loads at `2880 x 1800`, clicking the carousel image opens the enlarged screenshot overlay, and no console errors were logged.
 
 ## Verified Inputs
 
