@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-06-30
+Updated: 2026-07-01
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `623acdd Match tools nav typography`
-- Current handoff refresh: updated after the 2026-06-30 Other Tools typography/cache-bust fix.
+- Latest pushed site/source commit before this handoff refresh: `4e022ea Add Everything Clipboard detail page`
+- Current handoff refresh: updated after the 2026-07-01 Apps page heading and Everything Clipboard detail page deployment.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -24,6 +24,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Static pages created:
   - `/`
   - `/apps/`
+  - `/apps/everything-clipboard/`
   - `/other-tools/`
   - `/support/`
   - `/contact/`
@@ -37,7 +38,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/images/favicon.png`
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
-- The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording and a coming-soon store link.
+- The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording, a coming-soon store link, and a View Details link to `/apps/everything-clipboard/`.
+- `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the prepared Mac App Store screenshot set from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Screenshots 2880x1800/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
@@ -45,7 +47,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-06-30 after the Other Tools typography fix; latest observed run was `28488117532` (`pages build and deployment`, success, build about 4s and deploy about 8s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard detail page push; latest observed run was `28488612666` (`pages build and deployment`, success, build about 7s and deploy about 9s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
@@ -65,7 +67,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Everything Clipboard App Store Connect can now use:
   - Support URL: `https://jbdapps.com/support/`
   - Privacy Policy URL: `https://jbdapps.com/privacy/`
-  - Marketing URL: `https://jbdapps.com/` or `https://jbdapps.com/apps/`
+  - Preferred Marketing URL: `https://jbdapps.com/apps/everything-clipboard/`
+  - General app-listing URL: `https://jbdapps.com/apps/`
 - Cloudflare Email Routing is configured:
   - Destination address `wch1zpink@gmail.com` was added and Cloudflare marked it `Verified`.
   - Routing rule `support@jbdapps.com -> wch1zpink@gmail.com` was created and Cloudflare marked it `Active`.
@@ -163,6 +166,18 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - GitHub Pages run `28488117532` deployed successfully.
   - Public HTML readback for `https://jbdapps.com/` confirmed `styles.css?v=20260630-navformat`, `main.js?v=20260630-navformat`, and `Other Tools` were live; `curl -I https://jbdapps.com/` returned `HTTP/2 200`.
   - Fresh in-app browser public verification using `https://jbdapps.com/?navcheck=20260630-navformat` confirmed the live stylesheet URL, matching `Other Tools`/`Support` typography, centerline delta `0`, and no console errors. The already-open clean root tab had briefly reused cached old HTML, so use a fresh navigation or reload if a browser still shows `20260629-navfix2`.
+- 2026-07-01 Apps page and Everything Clipboard detail page deployment completed:
+  - Commit `4e022ea Add Everything Clipboard detail page` made the Apps page heading more compact, so `Current and upcoming JBDApps utilities.` fits on one line at `1280 x 900`, changed the Everything Clipboard card to link to `/apps/everything-clipboard/`, removed stale public `Version 1.1.7, build 7` wording from the card, added the dedicated product page, and copied seven `2880 x 1800` screenshot PNGs into `assets/images/everything-clipboard/`.
+  - Asset URLs were bumped to `styles.css?v=20260701-appdetail` and `main.js?v=20260701-appdetail`.
+  - `git diff --check` passed.
+  - Static HTML reference check passed: all local `href` and `src` references resolved.
+  - Local in-app browser desktop verification at `1280 x 900` confirmed the Apps page H1 was one line, the View Details link navigated to `/apps/everything-clipboard/`, the detail page had seven screenshots, sixteen feature-list items, no failed images, no horizontal overflow, and no console errors.
+  - Local in-app browser mobile verification at `390 x 844` confirmed no horizontal overflow on the Apps page or detail page, with all seven screenshots present.
+  - GitHub Pages run `28488612666` deployed successfully.
+  - Public HTML readback confirmed the Apps page links to `/apps/everything-clipboard/`, uses `20260701-appdetail`, and no longer contains the stale `Version 1.1.7` / `build 7` wording.
+  - `curl -I https://jbdapps.com/apps/everything-clipboard/` returned `HTTP/2 200`.
+  - Direct public screenshot checks for all seven `/assets/images/everything-clipboard/*.png` files returned `200 image/png`.
+  - Fresh in-app browser public verification confirmed the Apps page H1 is one line at `1280 x 900`, the View Details click reaches `https://jbdapps.com/apps/everything-clipboard/`, the detail page has seven screenshots, all screenshots complete at `2880 x 1800`, no horizontal overflow, and no console errors.
 
 ## Verified Inputs
 
@@ -189,7 +204,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 1. Update App Store Connect away from the temporary `wch1zpnk.github.io/everything-clipboard-support` URLs:
    - Support URL: `https://jbdapps.com/support/`
    - Privacy Policy URL: `https://jbdapps.com/privacy/`
-   - Marketing URL: `https://jbdapps.com/` or `https://jbdapps.com/apps/`
+   - Preferred Marketing URL: `https://jbdapps.com/apps/everything-clipboard/`
 2. Keep the Cloudflare web records proxied unless GitHub Pages later issues its own custom-domain certificate and the team intentionally chooses to return to DNS-only.
 3. Optional cleanup later: retry GitHub Pages HTTPS enforcement, but do not treat it as blocking while Cloudflare HTTPS remains verified:
    - `gh api repos/wch1zpnk/JBDApps-Website/pages`
