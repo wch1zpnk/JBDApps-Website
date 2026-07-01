@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-06-29
+Updated: 2026-06-30
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `ffba1a3 Replace tools dropdown trigger`
-- Current handoff refresh: updated after the 2026-06-29 Other Tools dropdown alignment fix.
+- Latest pushed site/source commit before this handoff refresh: `623acdd Match tools nav typography`
+- Current handoff refresh: updated after the 2026-06-30 Other Tools typography/cache-bust fix.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -45,7 +45,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-06-29 after the Other Tools navigation push; latest observed run was `28398236228` (`pages build and deployment`, success, about 18s deploy time). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment completed successfully on 2026-06-30 after the Other Tools typography fix; latest observed run was `28488117532` (`pages build and deployment`, success, build about 4s and deploy about 8s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
 - `JBDApps.com` is registered in Cloudflare Registrar. Registrar status was `Active`; expiration date was shown as June 28, 2027; auto-renewal was scheduled for May 29, 2027.
@@ -154,6 +154,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - GitHub Pages run `28398931647` deployed the final button-based dropdown fix successfully.
   - Public HTML readback confirmed `nav-dropdown-trigger`, `styles.css?v=20260629-navfix2`, and `main.js?v=20260629-navfix2` were live.
   - In-app browser public verification at `1280 x 900` measured `deltaCenter=0` before and after opening `Other Tools`, with `aria-expanded` changing from `false` to `true`.
+- 2026-06-30 Other Tools typography/cache-bust fix completed:
+  - Live in-app browser inspection found `Other Tools` was still formatted differently from `Support`, `Privacy`, and `Contact` because the `button.nav-dropdown-trigger` inherited default browser button typography (`13.3333px Arial`) while the nav links used `600 16px / 24.8px` system font.
+  - Commit `623acdd Match tools nav typography` added `font: inherit` to `.nav-dropdown-trigger` and bumped page asset URLs to `styles.css?v=20260630-navformat` and `main.js?v=20260630-navformat`.
+  - `git diff --check` passed.
+  - Local in-app browser verification at `1280 x 900` showed `Other Tools` and `Support` both computed to `600 16px / 24.8px -apple-system, "system-ui", "Segoe UI", sans-serif`, with centerline delta `0` and no console errors.
+  - Local mobile verification at `390 x 844` showed the menu and Other Tools submenu opened, both `Other Tools` and `Support` used matching `600 16px / 24.8px` system-font styling, there was no horizontal overflow, and no console errors were logged.
+  - GitHub Pages run `28488117532` deployed successfully.
+  - Public HTML readback for `https://jbdapps.com/` confirmed `styles.css?v=20260630-navformat`, `main.js?v=20260630-navformat`, and `Other Tools` were live; `curl -I https://jbdapps.com/` returned `HTTP/2 200`.
+  - Fresh in-app browser public verification using `https://jbdapps.com/?navcheck=20260630-navformat` confirmed the live stylesheet URL, matching `Other Tools`/`Support` typography, centerline delta `0`, and no console errors. The already-open clean root tab had briefly reused cached old HTML, so use a fresh navigation or reload if a browser still shows `20260629-navfix2`.
 
 ## Verified Inputs
 
