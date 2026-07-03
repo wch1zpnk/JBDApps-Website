@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `902cdca Polish website metadata and app FAQs`
-- Current handoff refresh: updated after replacing Everything Clipboard "Mac App Store coming soon" buttons with the verified public Mac App Store link and locally verifying the updated pages in the in-app browser.
+- Latest pushed site/source commit before this handoff refresh: `42ae0c0 Add Everything Clipboard App Store links`
+- Current handoff refresh: updated after replacing Everything Clipboard "Mac App Store coming soon" buttons with the verified public Mac App Store link, deploying through GitHub Pages, and verifying the live public pages in the in-app browser.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -239,6 +239,9 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Updated Apps page status/availability text and the Everything Clipboard product-page status/FAQ text to say the app is available on the Mac App Store.
   - `curl -I -L` against the Apple URL returned `HTTP/2 200` on 2026-07-03.
   - Local in-app browser verification against `http://127.0.0.1:8080/apps/` and `/apps/everything-clipboard/` found zero stale "coming soon" text matches, zero disabled buttons, no horizontal overflow, and no console warnings/errors. A real click on the product-page App Store button navigated to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12` with title `Everything Clipboard App - App Store`.
+  - Published commit `42ae0c0` to `origin/main`; GitHub Pages run `28678405338` completed successfully. The run had the same non-blocking Node.js 20 deprecation annotation seen on prior Pages runs.
+  - Public readback confirmed `https://jbdapps.com/apps/?deploy=42ae0c0` and `https://jbdapps.com/apps/everything-clipboard/?deploy=42ae0c0` return `HTTP/2 200` and contain `Download from the Mac App Store` links pointing to the Apple URL.
+  - Fresh in-app browser public verification confirmed `/apps/` has one App Store button, `/apps/everything-clipboard/` has the hero button plus FAQ link, both pages have zero stale "coming soon" text matches, zero disabled buttons, no horizontal overflow, and the product page shows `Available on the Mac App Store`.
 
 ## Verified Inputs
 
@@ -270,8 +273,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
    - Support URL: `https://jbdapps.com/support/`
    - Privacy Policy URL: `https://jbdapps.com/privacy/`
    - Preferred Marketing URL: `https://jbdapps.com/apps/everything-clipboard/`
-2. After the App Store link update is pushed, confirm the latest GitHub Pages run succeeded and verify the public `/apps/` and `/apps/everything-clipboard/` pages show the new buttons.
-3. Keep the Cloudflare web records proxied unless GitHub Pages later issues its own custom-domain certificate and the team intentionally chooses to return to DNS-only.
-4. Optional cleanup later: retry GitHub Pages HTTPS enforcement, but do not treat it as blocking while Cloudflare HTTPS remains verified:
+2. Keep the Cloudflare web records proxied unless GitHub Pages later issues its own custom-domain certificate and the team intentionally chooses to return to DNS-only.
+3. Optional cleanup later: retry GitHub Pages HTTPS enforcement, but do not treat it as blocking while Cloudflare HTTPS remains verified:
    - `gh api repos/wch1zpnk/JBDApps-Website/pages`
    - `gh api --method PUT repos/wch1zpnk/JBDApps-Website/pages -F cname=jbdapps.com -F https_enforced=true -f source[branch]=main -f source[path]=/`
