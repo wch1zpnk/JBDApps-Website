@@ -13,7 +13,9 @@ Static developer/support website for `JBDApps.com`, intended for GitHub Pages ho
 - Terms of use: `/terms/`
 - Custom domain file: `CNAME`
 
-The first app listing is `Everything Clipboard`, using verified local app metadata. The App Store link is intentionally marked as coming soon until the public listing is verified.
+The first app listing is `Everything Clipboard`, using verified local app metadata and the public Mac App Store listing:
+
+https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12
 
 ## Run Locally
 
@@ -117,7 +119,8 @@ Verified live custom-domain URLs:
 
 - Support URL: `https://JBDApps.com/support/`
 - Privacy Policy URL: `https://JBDApps.com/privacy/`
-- Marketing URL: `https://JBDApps.com/apps/` or `https://JBDApps.com/`
+- Everything Clipboard Marketing URL: `https://JBDApps.com/apps/everything-clipboard/`
+- Everything Clipboard Mac App Store URL: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`
 
 Verify both:
 

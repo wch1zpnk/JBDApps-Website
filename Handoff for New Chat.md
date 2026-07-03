@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-07-01
+Updated: 2026-07-03
 
 ## New Chat Rule
 
@@ -12,7 +12,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
 - Latest pushed site/source commit before this handoff refresh: `902cdca Polish website metadata and app FAQs`
-- Current handoff refresh: updated after moving Everything Clipboard FAQs from the general Support page to the Everything Clipboard product page and verifying the deployed public site.
+- Current handoff refresh: updated after replacing Everything Clipboard "Mac App Store coming soon" buttons with the verified public Mac App Store link and locally verifying the updated pages in the in-app browser.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -39,9 +39,9 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
-- The Apps page names `Everything Clipboard` as the first real app with conservative App Store wording, a coming-soon store link, and a View Details link to `/apps/everything-clipboard/`.
+- The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay. During the local-only polish review, the carousel was explicitly restored to this compact scaled-image presentation after the user rejected any change to its visual behavior.
-- App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link status, and optional Accessibility permission for Direct Paste.
+- App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link availability, and optional Accessibility permission for Direct Paste.
 - The homepage should remain a general JBDApps support/app-information entry point. It may mention Everything Clipboard as the first app, but it should not become a full Everything Clipboard showcase; keep the bulk of Everything Clipboard marketing/detail content on `/apps/everything-clipboard/`.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
@@ -233,6 +233,12 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Local verification after the FAQ move: `git diff --check` passed; local HTML reference/asset scan passed across 9 HTML files; JSON/XML parsing for `site.webmanifest` and `sitemap.xml` passed; public private-string scan passed; local HTTP checks returned `200` for `/support/` and `/apps/everything-clipboard/`; in-app browser checks confirmed `/support/` has zero FAQ items and `/apps/everything-clipboard/` has three FAQ items on desktop and mobile with no horizontal overflow or console warnings/errors.
   - Published commit `902cdca` to `origin/main`; GitHub Pages run `28543467350` completed successfully.
   - Public cache-busted verification confirmed `https://jbdapps.com/support/?deploy=902cdca` returns `HTTP/2 200`, has zero FAQ items, and includes the product-page FAQ note. Public `https://jbdapps.com/apps/everything-clipboard/?deploy=902cdca` returns `HTTP/2 200`, has the `Everything Clipboard FAQ`, has three FAQ items, keeps the carousel at `aspect-ratio: 16 / 5` with `object-fit: contain`, keeps the product icon square at `190 x 190`, has no failed images, no horizontal overflow, and no console warnings/errors.
+- 2026-07-03 Everything Clipboard Mac App Store link update:
+  - Replaced the disabled "Mac App Store coming soon" buttons on `/apps/` and `/apps/everything-clipboard/` with active buttons labeled `Download from the Mac App Store`.
+  - Button URL: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
+  - Updated Apps page status/availability text and the Everything Clipboard product-page status/FAQ text to say the app is available on the Mac App Store.
+  - `curl -I -L` against the Apple URL returned `HTTP/2 200` on 2026-07-03.
+  - Local in-app browser verification against `http://127.0.0.1:8080/apps/` and `/apps/everything-clipboard/` found zero stale "coming soon" text matches, zero disabled buttons, no horizontal overflow, and no console warnings/errors. A real click on the product-page App Store button navigated to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12` with title `Everything Clipboard App - App Store`.
 
 ## Verified Inputs
 
@@ -252,7 +258,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Do not expose private/local filesystem paths or a private forwarding email address on public pages.
 - Do not claim a domain is registered or DNS/HTTPS is live until verified.
 - Do not claim the app collects no data unless the actual app behavior has been reviewed for App Store submission.
-- Keep App Store links marked as coming soon until the public listing URL is verified.
+- Keep the Everything Clipboard App Store buttons pointed at the verified public listing URL unless Apple changes the app listing: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - Keep the Everything Clipboard screenshot carousel compact at `16 / 5` with `object-fit: contain`; do not make it taller or crop the screenshots.
 - Keep `/` as a general JBDApps support/app-info homepage; do not turn the homepage into an Everything Clipboard showcase.
 - Keep the Everything Clipboard product icon square on `/apps/everything-clipboard/`; avoid HTML image dimensions or CSS that distort it.
@@ -264,7 +270,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
    - Support URL: `https://jbdapps.com/support/`
    - Privacy Policy URL: `https://jbdapps.com/privacy/`
    - Preferred Marketing URL: `https://jbdapps.com/apps/everything-clipboard/`
-2. Keep the Cloudflare web records proxied unless GitHub Pages later issues its own custom-domain certificate and the team intentionally chooses to return to DNS-only.
-3. Optional cleanup later: retry GitHub Pages HTTPS enforcement, but do not treat it as blocking while Cloudflare HTTPS remains verified:
+2. After the App Store link update is pushed, confirm the latest GitHub Pages run succeeded and verify the public `/apps/` and `/apps/everything-clipboard/` pages show the new buttons.
+3. Keep the Cloudflare web records proxied unless GitHub Pages later issues its own custom-domain certificate and the team intentionally chooses to return to DNS-only.
+4. Optional cleanup later: retry GitHub Pages HTTPS enforcement, but do not treat it as blocking while Cloudflare HTTPS remains verified:
    - `gh api repos/wch1zpnk/JBDApps-Website/pages`
    - `gh api --method PUT repos/wch1zpnk/JBDApps-Website/pages -F cname=jbdapps.com -F https_enforced=true -f source[branch]=main -f source[path]=/`
