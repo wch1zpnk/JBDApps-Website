@@ -35,45 +35,9 @@ const lightboxCaption = document.querySelector("[data-lightbox-caption]");
 const lightboxClose = document.querySelector("[data-lightbox-close]");
 const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-const slides = [
-  {
-    src: "/assets/images/everything-clipboard/raw-main-window.png",
-    alt: "Everything Clipboard main window showing clipboard history, pasteboard categories, and a selected copied note.",
-    caption: "Find anything you copied across text, links, code, colors, files, images, and macOS pasteboards."
-  },
-  {
-    src: "/assets/images/everything-clipboard/raw-quick-paste.png",
-    alt: "Quick Paste window showing searchable clipboard results with the first item selected.",
-    caption: "Use Quick Paste to search and restore copied items from a focused keyboard-first window."
-  },
-  {
-    src: "/assets/images/everything-clipboard/raw-privacy-settings.png",
-    alt: "Privacy settings showing saved history, ignored apps, and ignored text patterns.",
-    caption: "Keep clipboard history local on your Mac with ignored apps, ignored patterns, and secure text protection."
-  },
-  {
-    src: "/assets/images/everything-clipboard/raw-capture-settings.png",
-    alt: "Capture settings showing pasteboard monitoring, OCR, secure detection, and history retention controls.",
-    caption: "Choose which pasteboards are monitored and control history retention, OCR, secure detection, and capture pauses."
-  },
-  {
-    src: "/assets/images/everything-clipboard/raw-quick-paste-settings.png",
-    alt: "Quick Paste settings showing Direct Paste status and Accessibility settings controls.",
-    caption: "Direct Paste is optional and uses macOS Accessibility permission only when you enable it."
-  },
-  {
-    src: "/assets/images/everything-clipboard/raw-paste-stack-workflow.png",
-    alt: "Paste Stack workflow showing queued copied items for ordered pasting.",
-    caption: "Queue copied items into a Paste Stack for repeated, ordered pasting."
-  },
-  {
-    src: "/assets/images/everything-clipboard/raw-help-window.png",
-    alt: "Built-in Help window with topics for browsing, Quick Paste, Paste Stack, privacy, and shortcuts.",
-    caption: "Keep product guidance close with searchable built-in help for browsing, Quick Paste, Paste Stack, media, privacy, and shortcuts."
-  }
-];
-
 if (carousel) {
+  const slideData = carousel.querySelector("[data-carousel-slides]");
+  const slides = slideData ? JSON.parse(slideData.textContent) : [];
   const image = carousel.querySelector("[data-carousel-image]");
   const caption = carousel.querySelector("[data-carousel-caption]");
   const count = carousel.querySelector("[data-carousel-count]");
@@ -83,6 +47,10 @@ if (carousel) {
   const dots = [...carousel.querySelectorAll("[data-carousel-dot]")];
   let index = 0;
   let timer;
+
+  if (!slides.length) {
+    throw new Error("Carousel slide data is missing.");
+  }
 
   const setSlide = (nextIndex) => {
     index = (nextIndex + slides.length) % slides.length;

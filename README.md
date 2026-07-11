@@ -13,7 +13,10 @@ Static developer/support website for `JBDApps.com`, intended for GitHub Pages ho
 - Terms of use: `/terms/`
 - Custom domain file: `CNAME`
 
-The first app listing is `Everything Clipboard`, using verified local app metadata and the public Mac App Store listing:
+The app listings include:
+
+- `Everything Clipboard`, using verified local app metadata and the public Mac App Store listing.
+- `Voice Command Atlas`, currently marked as preparing for release, with a dedicated detail page and ten-screen carousel at `/apps/voice-command-atlas/`.
 
 https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12
 
