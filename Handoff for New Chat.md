@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-07-03
+Updated: 2026-07-10
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `42ae0c0 Add Everything Clipboard App Store links`
-- Current handoff refresh: updated after replacing Everything Clipboard "Mac App Store coming soon" buttons with the verified public Mac App Store link, deploying through GitHub Pages, and verifying the live public pages in the in-app browser.
+- Latest pushed site/source commit before this handoff refresh: `b15912f Add Voice Command Atlas app page`
+- Current handoff refresh: updated after adding Voice Command Atlas to the Apps page, creating its dedicated product page and ten-screen carousel, deploying through GitHub Pages, and verifying the live public pages in the in-app browser.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -25,6 +25,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `/`
   - `/apps/`
   - `/apps/everything-clipboard/`
+  - `/apps/voice-command-atlas/`
   - `/other-tools/`
   - `/support/`
   - `/contact/`
@@ -35,11 +36,16 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/js/main.js`
   - `assets/images/app-icon-placeholder.svg`
   - `assets/images/everything-clipboard-icon.png`
+  - `assets/images/voice-command-atlas-icon.png`
+  - `assets/images/voice-command-atlas/1.png` through `10.png`
   - `assets/images/favicon.png`
   - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
+- The Apps page also lists `Voice Command Atlas` with truthful `In development` / `Preparing for release` status and a View Details link to `/apps/voice-command-atlas/`. Do not add a Mac App Store button until a verified public listing exists.
+- `/apps/voice-command-atlas/` is the dedicated Voice Command Atlas product page. Its ten screenshots preserve the numeric order from `/Users/briscoe/Documents/Dictation Commands/Application Screenshots/`; the page uses the same compact, contained carousel and lightbox interaction as Everything Clipboard.
+- Carousel slide metadata is now page-local JSON inside each product page. Shared behavior remains in `assets/js/main.js`, allowing each product page to supply its own ordered images, alt text, and captions without changing the JavaScript again.
 - `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay. During the local-only polish review, the carousel was explicitly restored to this compact scaled-image presentation after the user rejected any change to its visual behavior.
 - App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link availability, and optional Accessibility permission for Direct Paste.
 - The homepage should remain a general JBDApps support/app-information entry point. It may mention Everything Clipboard as the first app, but it should not become a full Everything Clipboard showcase; keep the bulk of Everything Clipboard marketing/detail content on `/apps/everything-clipboard/`.
@@ -79,6 +85,16 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-10 Voice Command Atlas deployment completed:
+  - Commit `b15912f Add Voice Command Atlas app page` added the Apps-page card, `/apps/voice-command-atlas/`, the app icon, all ten ordered screenshots, sitemap entry, page metadata, feature and privacy copy, and reusable page-local carousel slide data.
+  - `git diff --check`, `node --check assets/js/main.js`, and `xmllint --noout sitemap.xml` passed before commit.
+  - Local in-app browser verification confirmed the Voice Command Atlas View Details link reached the dedicated page, all ten screenshots loaded, auto-advance and next controls changed slides, the lightbox opened the current slide, desktop and mobile widths had no horizontal overflow, and the console had no errors.
+  - Regression verification confirmed the Everything Clipboard carousel still loaded all seven slides, advanced correctly, had no failed images or horizontal overflow, and produced no console errors.
+  - GitHub Pages run `29134659252` completed successfully for commit `b15912f`.
+  - Public readback confirmed `/apps/` contains the Voice Command Atlas listing and `/apps/voice-command-atlas/` contains ten slide records and `Preparing for release` status.
+  - All ten public screenshot URLs returned `200 image/png`.
+  - Live in-app browser verification clicked the Voice Command Atlas View Details button, reached `https://jbdapps.com/apps/voice-command-atlas/`, found title `Voice Command Atlas | JBDApps`, H1 `Voice Command Atlas`, ten slides, no failed images, no horizontal overflow, and no console errors.
 
 - Static link/asset checker passed for all six HTML pages.
 - Public HTML scan found no private local paths, personal email addresses, or GitHub token strings.
