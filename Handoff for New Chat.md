@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-07-10
+Updated: 2026-07-13
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed site/source commit before this handoff refresh: `b15912f Add Voice Command Atlas app page`
-- Current handoff refresh: updated after adding Voice Command Atlas to the Apps page, creating its dedicated product page and ten-screen carousel, deploying through GitHub Pages, and verifying the live public pages in the in-app browser.
+- Latest pushed functional site commit before this handoff refresh: `c3a9783 Redesign homepage`
+- Current handoff refresh: updated after the main homepage redesign, GitHub Pages deployment, and live public desktop/mobile verification in the in-app browser.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -48,7 +48,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Carousel slide metadata is now page-local JSON inside each product page. Shared behavior remains in `assets/js/main.js`, allowing each product page to supply its own ordered images, alt text, and captions without changing the JavaScript again.
 - `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay. During the local-only polish review, the carousel was explicitly restored to this compact scaled-image presentation after the user rejected any change to its visual behavior.
 - App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link availability, and optional Accessibility permission for Direct Paste.
-- The homepage should remain a general JBDApps support/app-information entry point. It may mention Everything Clipboard as the first app, but it should not become a full Everything Clipboard showcase; keep the bulk of Everything Clipboard marketing/detail content on `/apps/everything-clipboard/`.
+- The homepage is now a general JBDApps front door rather than a plain support entry. It uses a full-bleed screenshot hero with the `JBDApps` H1, immediate links for `Everything Clipboard` and `Voice Command Atlas`, a two-app visual showcase, and concise support/privacy/AppleScript route cards. Keep the bulk of app-specific marketing/detail content on the dedicated app pages.
 - The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
@@ -56,7 +56,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
-- GitHub Pages deployment completed successfully on 2026-07-01 after the Everything Clipboard raw-capture carousel push; latest observed run was `28538566704` (`pages build and deployment`, success, about 2m49s). Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
+- GitHub Pages deployment completed successfully on 2026-07-13 for commit `c3a9783 Redesign homepage`; run `29246907066` (`pages build and deployment`) finished with `success`. The run had the same non-blocking Node.js 20 deprecation annotation seen on prior Pages runs.
+- Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages deployment for commit `902cdca` completed successfully on 2026-07-01 as run `28543467350` (`pages build and deployment`; build 8s, deploy 29s). The run had a non-blocking Node.js 20 deprecation annotation from GitHub Actions, but completed with `success`.
 - GitHub Pages API reported status `built`, `html_url=http://jbdapps.com/`, `https_enforced=false` on 2026-06-29 after the latest retry; GitHub still has not issued its own custom-domain certificate.
 - `https://wch1zpnk.github.io/JBDApps-Website/` currently redirects to `http://jbdapps.com/` because the custom domain is configured.
@@ -85,6 +86,21 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-13 homepage redesign deployment completed:
+  - Commit `c3a9783 Redesign homepage` replaced the old `Simple app support from JBDApps.` homepage with a full-bleed visual hero, `JBDApps` H1, real Everything Clipboard and Voice Command Atlas screenshot assets, app-status links, two homepage app showcase cards, and support/privacy/AppleScript route cards.
+  - The homepage stylesheet URL was cache-busted to `styles.css?v=20260713-home-redesign`.
+  - `git diff --check`, `node --check assets/js/main.js`, and `xmllint --noout sitemap.xml` passed.
+  - Local HTML reference scan passed across 10 HTML files; all local `href` and `src` references resolved.
+  - Local private-string scan across HTML/CSS/JS/XML/JSON found no `/Users/briscoe`, private forwarding email, GitHub token, or secret markers.
+  - Local server verification used `python3 -m http.server 8080`; `curl -I --fail --silent http://127.0.0.1:8080/` returned `200 OK`.
+  - Local in-app browser verification at `1280 x 900` confirmed H1 `JBDApps`, stylesheet token `20260713-home-redesign`, two hero app links, two homepage app cards, all images loaded, no horizontal overflow, no console warnings/errors, and the next Apps section visible below the hero.
+  - Local in-app browser verification at `390 x 844` confirmed no horizontal overflow, all images loaded, the hero app links and next Apps section fit in the first screen, and the mobile menu toggled open with `aria-expanded=true`.
+  - GitHub Pages run `29246907066` completed successfully for commit `c3a9783`; the only annotation was the non-blocking GitHub Actions Node.js 20 deprecation note.
+  - Public cache-busted readback confirmed `https://jbdapps.com/?deploy=c3a9783` returns `HTTP/2 200`, contains `home-hero`, `JBDApps`, `Everything Clipboard`, `Voice Command Atlas`, `Focused Mac tools with real working surfaces.`, and `styles.css?v=20260713-home-redesign`.
+  - Public CSS readback confirmed `https://jbdapps.com/assets/css/styles.css?v=20260713-home-redesign` returns `HTTP/2 200`.
+  - Live public in-app browser verification at desktop width confirmed H1 `JBDApps`, the new stylesheet token, both hero app links, both app cards, all images loaded, no horizontal overflow, and zero console warnings/errors.
+  - Live public in-app browser verification at `390 x 844` confirmed the same stylesheet token, two hero links, two app cards, all images loaded, no horizontal overflow, zero console warnings/errors, and the mobile menu opened successfully.
 
 - 2026-07-10 Voice Command Atlas deployment completed:
   - Commit `b15912f Add Voice Command Atlas app page` added the Apps-page card, `/apps/voice-command-atlas/`, the app icon, all ten ordered screenshots, sitemap entry, page metadata, feature and privacy copy, and reusable page-local carousel slide data.
@@ -279,7 +295,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Do not claim the app collects no data unless the actual app behavior has been reviewed for App Store submission.
 - Keep the Everything Clipboard App Store buttons pointed at the verified public listing URL unless Apple changes the app listing: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - Keep the Everything Clipboard screenshot carousel compact at `16 / 5` with `object-fit: contain`; do not make it taller or crop the screenshots.
-- Keep `/` as a general JBDApps support/app-info homepage; do not turn the homepage into an Everything Clipboard showcase.
+- Keep `/` as a general JBDApps homepage with both apps represented. It can use real app screenshots and product links, but do not turn it into an Everything Clipboard-only showcase.
 - Keep the Everything Clipboard product icon square on `/apps/everything-clipboard/`; avoid HTML image dimensions or CSS that distort it.
 - Keep app-specific FAQs on their app product pages. The general `/support/` page should remain generic and should not accumulate app-specific FAQ sections.
 
