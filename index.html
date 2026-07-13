@@ -4,22 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>JBDApps | Independent App Support</title>
-    <meta name="description" content="JBDApps is an independent developer site for app support, privacy policies, and app information.">
+    <meta name="description" content="JBDApps builds practical Mac utilities, including Everything Clipboard and Voice Command Atlas, with clear support and privacy information.">
     <link rel="canonical" href="https://jbdapps.com/">
     <meta property="og:site_name" content="JBDApps">
     <meta property="og:type" content="website">
     <meta property="og:title" content="JBDApps | Independent App Support">
-    <meta property="og:description" content="App information, support details, privacy policies, and contact options for JBDApps software.">
+    <meta property="og:description" content="Practical Mac utilities, support details, privacy policies, and contact options for JBDApps software.">
     <meta property="og:url" content="https://jbdapps.com/">
     <meta property="og:image" content="https://jbdapps.com/assets/images/everything-clipboard/raw-main-window.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="JBDApps | Independent App Support">
-    <meta name="twitter:description" content="App information, support details, privacy policies, and contact options for JBDApps software.">
+    <meta name="twitter:description" content="Practical Mac utilities, support details, privacy policies, and contact options for JBDApps software.">
     <meta name="twitter:image" content="https://jbdapps.com/assets/images/everything-clipboard/raw-main-window.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-    <link rel="stylesheet" href="/assets/css/styles.css?v=20260701-polish-local">
+    <link rel="stylesheet" href="/assets/css/styles.css?v=20260713-home-redesign">
   </head>
   <body>
     <header class="site-header">
@@ -48,61 +48,93 @@
     </header>
 
     <main>
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">Independent Mac and iOS utilities</p>
-          <h1>Simple app support from JBDApps.</h1>
-          <p class="lead">Find app information, support details, privacy policies, and contact options for apps built and maintained by an independent developer.</p>
+      <section class="home-hero">
+        <div class="home-hero-media" aria-hidden="true">
+          <img class="home-hero-shot home-hero-shot-primary" src="/assets/images/everything-clipboard/raw-main-window.png" alt="">
+          <img class="home-hero-shot home-hero-shot-secondary" src="/assets/images/voice-command-atlas/1.png" alt="">
+        </div>
+        <div class="home-hero-inner">
+          <p class="eyebrow">Independent Mac utilities</p>
+          <h1>JBDApps</h1>
+          <p class="lead">Native Mac apps for clipboard history, Voice Control command libraries, and practical automation support, built with clear privacy and help pages close by.</p>
           <div class="hero-actions">
-            <a class="button primary" href="/apps/">View Apps</a>
+            <a class="button primary" href="/apps/">Explore Apps</a>
             <a class="button secondary" href="/support/">Get Support</a>
           </div>
-        </div>
-        <div class="hero-visual" aria-label="JBDApps app support preview">
-          <div class="device-panel">
-            <div class="panel-topline">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="panel-content">
-              <img src="/assets/images/everything-clipboard-icon.png" alt="Everything Clipboard app icon" class="preview-icon">
-              <div>
-                <p class="panel-title">Everything Clipboard</p>
-                <p class="panel-subtitle">Private clipboard history for Mac</p>
-              </div>
-            </div>
-            <div class="panel-list">
-              <span>Support</span>
-              <span>Privacy</span>
-              <span>Contact</span>
-            </div>
+          <div class="home-hero-links" aria-label="Featured JBDApps software">
+            <a class="home-hero-link" href="/apps/everything-clipboard/">
+              <img src="/assets/images/everything-clipboard-icon.png" alt="" width="52" height="52">
+              <span><strong>Everything Clipboard</strong><small>Available on the Mac App Store</small></span>
+            </a>
+            <a class="home-hero-link" href="/apps/voice-command-atlas/">
+              <img src="/assets/images/voice-command-atlas-icon.png" alt="" width="52" height="52">
+              <span><strong>Voice Command Atlas</strong><small>Preparing for release</small></span>
+            </a>
           </div>
         </div>
       </section>
 
-      <section class="section intro-grid" aria-label="Site sections">
-        <a class="feature-card" href="/apps/">
-          <span class="card-icon" aria-hidden="true">A</span>
-          <h2>Apps</h2>
-          <p>Current and future JBDApps listings with platform, support, and privacy links.</p>
-        </a>
+      <section class="section home-showcase" aria-labelledby="home-apps-title">
+        <div class="section-heading">
+          <p class="eyebrow">Apps</p>
+          <h2 id="home-apps-title">Focused Mac tools with real working surfaces.</h2>
+        </div>
+        <div class="home-app-grid">
+          <article class="home-app-card">
+            <div class="home-app-media">
+              <img src="/assets/images/everything-clipboard/raw-main-window.png" alt="Everything Clipboard main window showing clipboard history and a selected copied item.">
+            </div>
+            <div class="home-app-copy">
+              <img src="/assets/images/everything-clipboard-icon.png" alt="" class="home-app-icon" width="64" height="64">
+              <p class="eyebrow">macOS clipboard history</p>
+              <h3>Everything Clipboard</h3>
+              <p>Search copied text, links, code, colors, files, images, and pasteboard content again with local history, Quick Paste, Paste Stack, and privacy controls.</p>
+              <div class="home-app-actions">
+                <a class="button primary" href="/apps/everything-clipboard/">View Details</a>
+                <a class="button secondary" href="https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12">Mac App Store</a>
+              </div>
+            </div>
+          </article>
+          <article class="home-app-card">
+            <div class="home-app-media">
+              <img src="/assets/images/voice-command-atlas/1.png" alt="Voice Command Atlas window showing searchable Voice Control commands and selected command details.">
+            </div>
+            <div class="home-app-copy">
+              <img src="/assets/images/voice-command-atlas-icon.png" alt="" class="home-app-icon" width="64" height="64">
+              <p class="eyebrow">macOS Voice Control utility</p>
+              <h3>Voice Command Atlas</h3>
+              <p>Search, inspect, back up, test, and safely update the custom Voice Control commands stored on your Mac.</p>
+              <div class="home-app-actions">
+                <a class="button primary" href="/apps/voice-command-atlas/">View Details</a>
+                <a class="button secondary" href="/support/">Support</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section home-routes" aria-label="Support and site resources">
         <a class="feature-card" href="/support/">
           <span class="card-icon" aria-hidden="true">S</span>
           <h2>Support</h2>
-          <p>Helpful troubleshooting steps and what to include when asking for help.</p>
+          <p>Get help with app behavior, setup questions, version details, and issue reports.</p>
         </a>
         <a class="feature-card" href="/privacy/">
           <span class="card-icon" aria-hidden="true">P</span>
           <h2>Privacy</h2>
-          <p>App Store friendly privacy information that can be updated per app.</p>
+          <p>Review the site-wide policy and app notes for local data, permissions, and support contact.</p>
+        </a>
+        <a class="feature-card" href="/other-tools/">
+          <span class="card-icon" aria-hidden="true">T</span>
+          <h2>AppleScript Tools</h2>
+          <p>Small Mac automation helpers and workflow snippets for practical, adaptable tasks.</p>
         </a>
       </section>
 
-      <section class="section callout">
+      <section class="section callout home-callout">
         <div>
           <p class="eyebrow">Need help?</p>
-          <h2>Send the app name, app version, macOS or iOS version, and a short description of the issue.</h2>
+          <h2>Send the app name, app version, macOS version, and a short description of what happened.</h2>
         </div>
         <a class="button primary" href="mailto:support@JBDApps.com">Email Support</a>
       </section>

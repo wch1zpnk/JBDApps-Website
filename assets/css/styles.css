@@ -197,6 +197,121 @@ img {
   padding: 76px 0 48px;
 }
 
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: min(700px, calc(100vh - 84px));
+  overflow: hidden;
+  background: #142328;
+  color: #fff;
+}
+
+.home-hero::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(13, 27, 32, 0.96) 0%, rgba(13, 27, 32, 0.78) 43%, rgba(13, 27, 32, 0.36) 100%),
+    linear-gradient(180deg, rgba(13, 27, 32, 0.18) 0%, rgba(13, 27, 32, 0.88) 100%);
+  content: "";
+}
+
+.home-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.home-hero-shot {
+  position: absolute;
+  width: min(980px, 72vw);
+  max-width: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius);
+  box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
+  object-fit: cover;
+}
+
+.home-hero-shot-primary {
+  right: max(-110px, -7vw);
+  bottom: 44px;
+}
+
+.home-hero-shot-secondary {
+  right: min(250px, 24vw);
+  bottom: -62px;
+  width: min(650px, 48vw);
+  opacity: 0.9;
+}
+
+.home-hero-inner {
+  position: relative;
+  width: min(var(--max), calc(100% - 32px));
+  margin: 0 auto;
+  padding: 82px 0 48px;
+}
+
+.home-hero h1 {
+  margin: 0;
+  max-width: 620px;
+  font-size: 5.75rem;
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.home-hero .lead {
+  max-width: 610px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.home-hero .button.secondary {
+  border-color: rgba(255, 255, 255, 0.34);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.home-hero-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 300px));
+  gap: 12px;
+  margin-top: 48px;
+}
+
+.home-hero-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 82px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(16px);
+}
+
+.home-hero-link:hover {
+  background: rgba(255, 255, 255, 0.18);
+  text-decoration: none;
+}
+
+.home-hero-link img,
+.home-app-icon {
+  border-radius: 15px;
+  object-fit: cover;
+}
+
+.home-hero-link span {
+  display: grid;
+  gap: 2px;
+}
+
+.home-hero-link small {
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 700;
+}
+
 .hero h1,
 .page-heading h1 {
   margin: 0;
@@ -341,6 +456,78 @@ img {
 
 .section {
   padding: 38px 0;
+}
+
+.home-showcase {
+  padding-top: 52px;
+}
+
+.home-app-grid,
+.home-routes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.home-routes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home-app-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.home-app-media {
+  background: var(--surface-strong);
+}
+
+.home-app-media img {
+  width: 100%;
+  aspect-ratio: 16 / 8.4;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.home-app-copy {
+  display: grid;
+  align-content: start;
+  padding: 24px;
+}
+
+.home-app-copy h3 {
+  margin: 4px 0 10px;
+  font-size: 2rem;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.home-app-copy p:not(.eyebrow) {
+  margin: 0;
+  color: var(--muted);
+}
+
+.home-app-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 18px;
+  box-shadow: 0 12px 28px rgba(20, 35, 45, 0.16);
+}
+
+.home-app-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.home-callout {
+  margin-top: 10px;
 }
 
 .intro-grid,
@@ -915,6 +1102,8 @@ img {
   .hero,
   .app-hero,
   .intro-grid,
+  .home-app-grid,
+  .home-routes,
   .two-column,
   .contact-panel,
   .copy-columns,
@@ -935,6 +1124,44 @@ img {
     min-height: auto;
     gap: 34px;
     padding-top: 38px;
+  }
+
+  .home-hero {
+    min-height: auto;
+  }
+
+  .home-hero::after {
+    background:
+      linear-gradient(180deg, rgba(13, 27, 32, 0.9) 0%, rgba(13, 27, 32, 0.72) 48%, rgba(13, 27, 32, 0.94) 100%);
+  }
+
+  .home-hero-inner {
+    padding: 46px 0 34px;
+  }
+
+  .home-hero h1 {
+    font-size: 3.6rem;
+  }
+
+  .home-hero-shot {
+    width: 760px;
+    opacity: 0.52;
+  }
+
+  .home-hero-shot-primary {
+    right: -360px;
+    bottom: 130px;
+  }
+
+  .home-hero-shot-secondary {
+    right: -160px;
+    bottom: -20px;
+    width: 520px;
+  }
+
+  .home-hero-links {
+    grid-template-columns: 1fr;
+    margin-top: 34px;
   }
 
   .app-card,
