@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Voice Command Atlas | JBDApps</title>
-    <meta name="description" content="Voice Command Atlas is a native macOS utility for searching, inspecting, testing, organizing, and safely updating custom Voice Control commands.">
+    <meta name="description" content="Voice Command Atlas is a native macOS utility for searching, inspecting, testing, organizing, and safely updating exported custom Voice Control commands.">
     <link rel="canonical" href="https://jbdapps.com/apps/voice-command-atlas/">
     <meta property="og:site_name" content="JBDApps">
     <meta property="og:type" content="product">
     <meta property="og:title" content="Voice Command Atlas | JBDApps">
-    <meta property="og:description" content="Search, inspect, test, organize, and safely update custom Voice Control commands on your Mac.">
+    <meta property="og:description" content="Search, inspect, test, organize, and safely update an exported custom Voice Control command library on your Mac.">
     <meta property="og:url" content="https://jbdapps.com/apps/voice-command-atlas/">
     <meta property="og:image" content="https://jbdapps.com/assets/images/voice-command-atlas/1.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Voice Command Atlas | JBDApps">
-    <meta name="twitter:description" content="Search, inspect, test, organize, and safely update custom Voice Control commands on your Mac.">
+    <meta name="twitter:description" content="Search, inspect, test, organize, and safely update an exported custom Voice Control command library on your Mac.">
     <meta name="twitter:image" content="https://jbdapps.com/assets/images/voice-command-atlas/1.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
@@ -42,7 +42,7 @@
         <div class="app-hero-copy">
           <p class="eyebrow">macOS Voice Control utility</p>
           <h1>Voice Command Atlas</h1>
-          <p class="lead">Find, understand, test, and safely manage the custom Voice Control commands stored on your Mac.</p>
+          <p class="lead">Find, understand, test, and safely manage a custom Voice Control command library you export from System Settings.</p>
           <div class="hero-actions">
             <a class="button primary" href="/support/">Get Support</a>
             <a class="button secondary" href="/privacy/">Privacy Policy</a>
@@ -53,7 +53,7 @@
           <dl class="app-facts">
             <div><dt>Platform</dt><dd>macOS</dd></div>
             <div><dt>Minimum system</dt><dd>macOS 14.0</dd></div>
-            <div><dt>Privacy model</dt><dd>Local command data</dd></div>
+            <div><dt>Privacy model</dt><dd>Selected export stays local</dd></div>
             <div><dt>Status</dt><dd>Preparing for release</dd></div>
           </dl>
         </div>
@@ -73,10 +73,8 @@
               {"src":"/assets/images/voice-command-atlas/4.png","alt":"Command Health window listing unresolved file references and duplicate spoken phrases.","caption":"Find duplicate phrases, unresolved files, stale references, risky shortcuts, and other command-health issues."},
               {"src":"/assets/images/voice-command-atlas/5.png","alt":"Backups window listing automatic Voice Command Atlas restore points.","caption":"Restore automatic snapshots created before risky command changes."},
               {"src":"/assets/images/voice-command-atlas/6.png","alt":"Suggested Profiles window with command groups organized by action type and app scope.","caption":"Enable or disable suggested command groups by action type or app scope."},
-              {"src":"/assets/images/voice-command-atlas/7.png","alt":"Privacy and Setup window explaining local command access, changes, backups, and Voice Control restart behavior.","caption":"See exactly what the app reads, what it can change, where backups are stored, and how command data stays local."},
-              {"src":"/assets/images/voice-command-atlas/8.png","alt":"Compatibility Check showing macOS, command-file, backup-location, and Voice Control reload status.","caption":"Check macOS compatibility, command-file access, backup readiness, and Voice Control reload behavior."},
-              {"src":"/assets/images/voice-command-atlas/9.png","alt":"Snapshot Import Review showing a comparison result before applying command changes.","caption":"Review a command snapshot comparison before restoring a full set or applying individual changes."},
-              {"src":"/assets/images/voice-command-atlas/10.png","alt":"macOS save dialog exporting a Voice Command Atlas snapshot plist file.","caption":"Export the current Voice Control command file as a snapshot for backup or later comparison."}
+              {"src":"/assets/images/voice-command-atlas/9.png","alt":"Snapshot Import Review showing a comparison result before applying command changes.","caption":"Compare a saved snapshot with the selected export before restoring a full set or applying individual changes."},
+              {"src":"/assets/images/voice-command-atlas/10.png","alt":"macOS save dialog exporting a Voice Command Atlas snapshot plist file.","caption":"Export a portable snapshot for safekeeping or later comparison."}
             ]
           </script>
           <div class="carousel-viewport">
@@ -99,8 +97,6 @@
             <button type="button" data-carousel-dot="5" aria-label="Show screenshot 6"></button>
             <button type="button" data-carousel-dot="6" aria-label="Show screenshot 7"></button>
             <button type="button" data-carousel-dot="7" aria-label="Show screenshot 8"></button>
-            <button type="button" data-carousel-dot="8" aria-label="Show screenshot 9"></button>
-            <button type="button" data-carousel-dot="9" aria-label="Show screenshot 10"></button>
           </div>
         </div>
       </section>
@@ -108,8 +104,8 @@
       <section class="section product-copy" aria-labelledby="description-title">
         <div><p class="eyebrow">Description</p><h2 id="description-title">A clearer way to work with custom Voice Control commands.</h2></div>
         <div class="copy-columns">
-          <p>Voice Command Atlas turns the custom commands already stored by macOS into a searchable list with plain details about each phrase, app scope, action type, status, and linked file.</p>
-          <p>It is built for people with large Voice Control command libraries who need to find commands quickly, spot problems, keep backups, and make deliberate changes without manually digging through a property list.</p>
+          <p>Export Custom Commands from Voice Control's Options menu, then choose the resulting <code>.voicecontrolcommands</code> file in Voice Command Atlas to turn it into a searchable list with plain details about each phrase, app scope, action type, status, and linked file.</p>
+          <p>The app changes only the export you select. Re-import the edited file through Voice Control's Options menu when you want to apply those changes.</p>
         </div>
       </section>
 
@@ -129,22 +125,23 @@
             <li>Review command health for duplicate or similar phrases, stale references, missing files, and risky shortcuts.</li>
             <li>Create automatic backups before command changes and restore a selected snapshot.</li>
             <li>Use suggested profiles to manage groups by action type or app scope.</li>
-            <li>Export the current command file and compare another snapshot before restoring it.</li>
+            <li>Export a portable snapshot and compare another snapshot before restoring it.</li>
             <li>Use a compact floating command-list window when you only need a quick reference.</li>
           </ul>
         </div>
       </section>
 
       <section class="section two-column product-sections" aria-label="Voice Command Atlas details">
-        <article class="feature-card"><h2>Local Data and Backups</h2><p>Voice Command Atlas works with the custom Voice Control command file already stored on your Mac. Command data, backups, exported snapshots, and test results stay local. The app creates a backup before actions that change command data.</p></article>
+        <article class="feature-card"><h2>Local Data and Backups</h2><p>Voice Command Atlas works only with the custom-command export you explicitly select. Command data, backups, snapshots, and test results stay local. The app creates a backup before actions that change the selected export.</p></article>
         <article class="feature-card"><h2>Command Health</h2><p>Use Health and Audit views to find repeated or similar spoken phrases, disabled commands, stale or unresolved file references, missing files, unknown actions, broad menu scopes, and risky keyboard shortcuts.</p></article>
         <article class="feature-card"><h2>Focused Command Editing</h2><p>Add common command types, adjust phrases and app scope, change status, refresh stale file references, or delete a command with clear controls and confirmation where needed.</p></article>
-        <article class="feature-card"><h2>Snapshot Review</h2><p>Export the current command file or compare another snapshot with the live library before deciding whether to restore a full backup or apply selected changes.</p></article>
+        <article class="feature-card"><h2>Snapshot Review</h2><p>Export a portable snapshot or compare another snapshot with the selected export before deciding whether to restore a full backup or apply selected changes.</p></article>
       </section>
 
       <section class="section faq" aria-labelledby="voice-command-atlas-faq-title">
         <h2 id="voice-command-atlas-faq-title">Voice Command Atlas FAQ</h2>
-        <details><summary>Where does Voice Command Atlas get my commands?</summary><p>It reads the custom Voice Control command file stored by macOS in your user Library. The app changes that file only after an explicit add, edit, delete, enable, disable, refresh, restore, or grouped-profile action.</p></details>
+        <details><summary>Where does Voice Command Atlas get my commands?</summary><p>In System Settings &gt; Accessibility &gt; Voice Control, use the Options menu to export your custom commands. Voice Command Atlas reads and edits only the <code>.voicecontrolcommands</code> file you explicitly select. Re-import the edited export from the same Options menu to apply your changes.</p></details>
+        <details><summary>Does the app access Voice Control preferences or restart system processes?</summary><p>No. The Mac App Store version uses the standard macOS Open dialog and an app-scoped security bookmark for the export you choose. It does not read another app's preferences or restart Voice Control or other system processes.</p></details>
         <details><summary>Does my command data leave my Mac?</summary><p>No. Command data, backups, snapshots, and command test results stay local to your Mac.</p></details>
         <details><summary>Is Voice Command Atlas available on the Mac App Store?</summary><p>Not yet. Version 1.0 is being prepared for release, and no Mac App Store download link is currently available.</p></details>
       </section>
