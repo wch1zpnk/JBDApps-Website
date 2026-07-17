@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-07-13
+Updated: 2026-07-16
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `c3a9783 Redesign homepage`
-- Current handoff refresh: updated after the main homepage redesign, GitHub Pages deployment, and live public desktop/mobile verification in the in-app browser.
+- Latest pushed functional site commit before this handoff refresh: `6238e2a Correct Voice Command Atlas App Store wording`
+- Current handoff refresh: updated after correcting, publishing, and live-verifying the Voice Command Atlas selected-export workflow and privacy wording.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -44,7 +44,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - The Apps page also lists `Voice Command Atlas` with truthful `In development` / `Preparing for release` status and a View Details link to `/apps/voice-command-atlas/`. Do not add a Mac App Store button until a verified public listing exists.
-- `/apps/voice-command-atlas/` is the dedicated Voice Command Atlas product page. Its ten screenshots preserve the numeric order from `/Users/briscoe/Documents/Dictation Commands/Application Screenshots/`; the page uses the same compact, contained carousel and lightbox interaction as Everything Clipboard.
+- `/apps/voice-command-atlas/` is the dedicated Voice Command Atlas product page. Its public carousel uses screenshots `1` through `6`, then `9` and `10`, in that order. Screenshots `7` and `8` were removed from the public carousel because they visibly described the rejected direct-preference and Voice Control restart workflow. The page uses the same compact, contained carousel and lightbox interaction as Everything Clipboard.
 - Carousel slide metadata is now page-local JSON inside each product page. Shared behavior remains in `assets/js/main.js`, allowing each product page to supply its own ordered images, alt text, and captions without changing the JavaScript again.
 - `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay. During the local-only polish review, the carousel was explicitly restored to this compact scaled-image presentation after the user rejected any change to its visual behavior.
 - App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link availability, and optional Accessibility permission for Direct Paste.
@@ -56,6 +56,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
+- GitHub Pages deployment completed successfully on 2026-07-16 for commit `6238e2a Correct Voice Command Atlas App Store wording`; run `29543748232` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages deployment completed successfully on 2026-07-13 for commit `c3a9783 Redesign homepage`; run `29246907066` (`pages build and deployment`) finished with `success`. The run had the same non-blocking Node.js 20 deprecation annotation seen on prior Pages runs.
 - Use `gh run list --repo wch1zpnk/JBDApps-Website --limit 3` to confirm the latest Pages deployment after any new commit.
 - GitHub Pages deployment for commit `902cdca` completed successfully on 2026-07-01 as run `28543467350` (`pages build and deployment`; build 8s, deploy 29s). The run had a non-blocking Node.js 20 deprecation annotation from GitHub Actions, but completed with `success`.
@@ -86,6 +87,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-16 Voice Command Atlas App Store wording correction completed:
+  - Commit `6238e2a Correct Voice Command Atlas App Store wording` changed the homepage, Apps listing, Voice Command Atlas product page, and JBDApps privacy policy from direct local-preference wording to the Mac App Store selected-export/re-import workflow.
+  - The product FAQ and privacy policy now state that the Mac App Store version reads only the `.voicecontrolcommands` export selected through the standard Open dialog, uses an app-scoped security bookmark, and does not read another app's preferences or restart system processes.
+  - Removed screenshots `7` and `8` from the public product carousel because their visible old setup/reload details did not match corrected build `1.0.1`; the live carousel now has eight slides and eight matching controls.
+  - `git diff --check`, `node --check assets/js/main.js`, `xmllint --noout sitemap.xml`, the ten-page local HTML reference scan, carousel JSON/control validation, stale-copy scan, and private-string scan passed.
+  - GitHub Pages run `29543748232` completed successfully; the only annotation was GitHub's non-blocking Node.js 20 deprecation note.
+  - Cache-busted public readback returned HTTP `200` for `/`, `/apps/`, `/apps/voice-command-atlas/`, and `/privacy/`, confirmed the new selected-export wording, and found none of the targeted stale direct-file/reload phrases.
+  - Live in-app-browser verification confirmed the product page has H1 `Voice Command Atlas`, eight slides, eight controls, four FAQ items, no horizontal overflow, and no console warnings/errors. The JBDApps privacy page contains the Voice Command Atlas section and selected-export wording with no horizontal overflow or console warnings/errors.
 
 - 2026-07-13 homepage redesign deployment completed:
   - Commit `c3a9783 Redesign homepage` replaced the old `Simple app support from JBDApps.` homepage with a full-bleed visual hero, `JBDApps` H1, real Everything Clipboard and Voice Command Atlas screenshot assets, app-status links, two homepage app showcase cards, and support/privacy/AppleScript route cards.
@@ -298,6 +308,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Keep `/` as a general JBDApps homepage with both apps represented. It can use real app screenshots and product links, but do not turn it into an Everything Clipboard-only showcase.
 - Keep the Everything Clipboard product icon square on `/apps/everything-clipboard/`; avoid HTML image dimensions or CSS that distort it.
 - Keep app-specific FAQs on their app product pages. The general `/support/` page should remain generic and should not accumulate app-specific FAQ sections.
+- Keep Voice Command Atlas Mac App Store copy centered on the explicitly selected `.voicecontrolcommands` export and re-import workflow. Do not restore claims that the Mac App Store build reads another app's preferences or restarts Voice Control/system processes.
 
 ## Next Steps
 
