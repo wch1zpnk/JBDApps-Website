@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `e99c45b Feature Voice Command Atlas App Store listing`
-- Current handoff refresh: updated after publishing and live-verifying the Voice Command Atlas App Store links, homepage button alignment, and purple card treatment.
+- Latest pushed functional site commit before this handoff refresh: `aae7401 Open App Store links in new tabs`
+- Current handoff refresh: updated after publishing and live-verifying matching Apps-page App Store buttons, the purple Voice Command Atlas listing card, and the site-wide new-tab rule for Apple links.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -44,6 +44,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - The Apps page lists `Voice Command Atlas` with a View Details link to `/apps/voice-command-atlas/` and an active Mac App Store button pointing to `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`.
+- The Apps page uses matching top-right Mac App Store buttons for Everything Clipboard and Voice Command Atlas. The Voice Command Atlas listing card uses the same purple-tinted background and border treatment as its homepage showcase card.
+- Every `apps.apple.com` link in public HTML opens in a new tab with `target="_blank"` and `rel="noopener noreferrer"`, keeping the JBDApps page open. This is a site-wide rule for future Mac App Store links.
 - `/apps/voice-command-atlas/` is the dedicated Voice Command Atlas product page. Its public carousel uses screenshots `1` through `6`, then `9` and `10`, in that order. Screenshots `7` and `8` were removed from the public carousel because they visibly described the rejected direct-preference and Voice Control restart workflow. The page uses the same compact, contained carousel and lightbox interaction as Everything Clipboard.
 - Carousel slide metadata is now page-local JSON inside each product page. Shared behavior remains in `assets/js/main.js`, allowing each product page to supply its own ordered images, alt text, and captions without changing the JavaScript again.
 - `/apps/everything-clipboard/` is the dedicated public product page for Everything Clipboard. It uses the raw screenshot captures from `/Users/briscoe/Documents/Jimz Clipboard Manager/MAS_Version/App Store Assets 2026-06-27 Sequoia Night/Raw Captures/`, the prepared App Store description text, feature bullets, privacy/control notes, and support/privacy links. The screenshot area uses the compact `16 / 5` carousel height, auto-cycles, stops advancing while hovered or focused, supports previous/next and dot navigation, scales screenshots inside the preview frame with `object-fit: contain`, and opens the current screenshot larger in an overlay. During the local-only polish review, the carousel was explicitly restored to this compact scaled-image presentation after the user rejected any change to its visual behavior.
@@ -55,6 +57,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 ## Current Deployment State
 
+- GitHub Pages deployment completed successfully on 2026-07-18 for commit `aae7401 Open App Store links in new tabs`; run `29665396642` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages deployment completed successfully on 2026-07-18 for commit `e99c45b Feature Voice Command Atlas App Store listing`; run `29665066460` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages source is configured as `main` branch root.
 - GitHub Pages custom domain is configured as `jbdapps.com` in the GitHub API.
@@ -89,6 +92,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-18 Apps-page color/button matching and site-wide App Store new-tab update completed:
+  - `/apps/` now uses matching top-right `Mac App Store` buttons for both app cards and gives the Voice Command Atlas card the verified purple background `rgb(37, 29, 45)` and border `rgb(89, 67, 106)` in dark mode.
+  - All nine `apps.apple.com` links across `/`, `/apps/`, `/apps/everything-clipboard/`, and `/apps/voice-command-atlas/` include `target="_blank"` and `rel="noopener noreferrer"`.
+  - A real local browser click on the Everything Clipboard top-right button opened a separate App Store tab while the original JBDApps Apps page remained at `/apps/`; the temporary test tab was then closed.
+  - `git diff --check`, `node --check assets/js/main.js`, `xmllint --noout sitemap.xml`, exact Apple-link counts, missing-target scans, missing-rel scans, and `macappstore://` scans passed before publication.
+  - GitHub Pages run `29665396642` completed successfully for functional commit `aae7401`; the only annotation was the existing non-blocking Node.js 20 deprecation note.
+  - Live cache-busted in-app-browser verification confirmed the new stylesheet token, matching buttons, purple Atlas card, three correctly attributed App Store links on `/apps/`, zero horizontal overflow, zero failed images, and zero console warnings/errors.
+  - Live cache-busted HTML readback confirmed all nine App Store links across the four affected pages retained both required new-tab attributes.
 
 - 2026-07-18 Voice Command Atlas App Store and homepage card update completed:
   - In-app browser tab 3 supplied the verified listing URL `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`.
@@ -317,6 +329,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Do not claim the app collects no data unless the actual app behavior has been reviewed for App Store submission.
 - Keep the Everything Clipboard App Store buttons pointed at the verified public listing URL unless Apple changes the app listing: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - Keep Voice Command Atlas App Store buttons pointed at the verified public listing URL unless Apple changes the app listing: `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`.
+- Keep every Mac App Store link opening in a new tab with `target="_blank"` and `rel="noopener noreferrer"`; do not navigate the visitor away from JBDApps for an external Apple listing.
 - Keep the Everything Clipboard screenshot carousel compact at `16 / 5` with `object-fit: contain`; do not make it taller or crop the screenshots.
 - Keep `/` as a general JBDApps homepage with both apps represented. It can use real app screenshots and product links, but do not turn it into an Everything Clipboard-only showcase.
 - Keep the Everything Clipboard product icon square on `/apps/everything-clipboard/`; avoid HTML image dimensions or CSS that distort it.
