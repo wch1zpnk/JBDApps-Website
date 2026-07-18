@@ -619,6 +619,11 @@ img {
   padding: 24px;
 }
 
+.app-card.voice-command-atlas-card {
+  border-color: #ddcde8;
+  background: #f7f1fb;
+}
+
 .app-card.muted {
   box-shadow: none;
 }
@@ -1261,6 +1266,11 @@ img {
   }
 
   .home-app-card.voice-command-atlas-card {
+    border-color: #59436a;
+    background: #251d2d;
+  }
+
+  .app-card.voice-command-atlas-card {
     border-color: #59436a;
     background: #251d2d;
   }
