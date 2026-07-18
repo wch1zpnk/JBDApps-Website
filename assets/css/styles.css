@@ -495,9 +495,18 @@ img {
 }
 
 .home-app-copy {
-  display: grid;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
   padding: 24px;
+}
+
+.home-app-card.voice-command-atlas-card {
+  border-color: #ddcde8;
+  background: #f7f1fb;
+}
+
+.home-app-card.voice-command-atlas-card .home-app-media {
+  background: #eee3f6;
 }
 
 .home-app-copy h3 {
@@ -523,7 +532,8 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: auto;
+  padding-top: 24px;
 }
 
 .home-callout {
@@ -1248,5 +1258,14 @@ img {
 
   .status-pill {
     color: #ffd7ca;
+  }
+
+  .home-app-card.voice-command-atlas-card {
+    border-color: #59436a;
+    background: #251d2d;
+  }
+
+  .home-app-card.voice-command-atlas-card .home-app-media {
+    background: #211929;
   }
 }

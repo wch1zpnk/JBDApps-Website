@@ -16,9 +16,11 @@ Static developer/support website for `JBDApps.com`, intended for GitHub Pages ho
 The app listings include:
 
 - `Everything Clipboard`, using verified local app metadata and the public Mac App Store listing.
-- `Voice Command Atlas`, currently marked as preparing for release, with a dedicated detail page and ten-screen carousel at `/apps/voice-command-atlas/`.
+- `Voice Command Atlas`, available on the Mac App Store, with a dedicated detail page and screenshot carousel at `/apps/voice-command-atlas/`.
 
 https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12
+
+https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12
 
 ## Run Locally
 
@@ -124,6 +126,8 @@ Verified live custom-domain URLs:
 - Privacy Policy URL: `https://JBDApps.com/privacy/`
 - Everything Clipboard Marketing URL: `https://JBDApps.com/apps/everything-clipboard/`
 - Everything Clipboard Mac App Store URL: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`
+- Voice Command Atlas Marketing URL: `https://JBDApps.com/apps/voice-command-atlas/`
+- Voice Command Atlas Mac App Store URL: `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`
 
 Verify both:
 
