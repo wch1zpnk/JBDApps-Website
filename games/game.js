@@ -14,8 +14,20 @@ const pauseButton = document.querySelector("#pauseButton");
 const settingsButton = document.querySelector("#settingsButton");
 const settingsPanel = document.querySelector("#settingsPanel");
 const volumeControl = document.querySelector("#volumeControl");
+const musicVolumeControl = document.querySelector("#musicVolumeControl");
 const difficultyControl = document.querySelector("#difficultyControl");
 const fireKeyControl = document.querySelector("#fireKeyControl");
+const reducedMotionControl = document.querySelector("#reducedMotionControl");
+const highContrastControl = document.querySelector("#highContrastControl");
+const upgradePanel = document.querySelector("#upgradePanel");
+const upgradeButtons = [...document.querySelectorAll("[data-upgrade-index]")];
+const statsSummary = document.querySelector("#statsSummary");
+const achievementsList = document.querySelector("#achievementsList");
+const gamepadStatus = document.querySelector("#gamepadStatus");
+const touchLeft = document.querySelector("#touchLeft");
+const touchRight = document.querySelector("#touchRight");
+const touchFire = document.querySelector("#touchFire");
+const touchBomb = document.querySelector("#touchBomb");
 
 const WORLD = { width: 960, height: 720 };
 const keys = new Set();
@@ -40,6 +52,9 @@ let state = "ready";
 let waveStartedAt = 0;
 let audioContext = null;
 let masterGain = null;
+let musicGain = null;
+let musicTimer = 0;
+let musicStep = 0;
 let combo = 1;
 let comboTimer = 0;
 let waveBanner = "";
@@ -48,11 +63,73 @@ let laserTimer = 0;
 let powerUpTimer = 0;
 let activePower = "";
 let slowTimeTimer = 0;
+let homingTimer = 0;
+let droneTimer = 0;
+let doubleScoreTimer = 0;
+let piercingTimer = 0;
+let magnetTimer = 0;
+let bombCharges = 1;
+let respawnTimer = 0;
+let demoMode = false;
+let idleTimer = 0;
+let demoTimer = 0;
+let touchLeftHeld = false;
+let touchRightHeld = false;
+let touchFireHeld = false;
+let gamepadWasStart = false;
+let gamepadWasBomb = false;
+let chosenUpgrades = [];
 let settings = {
   volume: 0.7,
+  musicVolume: 0.42,
   difficulty: "normal",
   fireKey: "Space",
+  reducedMotion: false,
+  highContrast: false,
 };
+
+try {
+  settings = { ...settings, ...JSON.parse(localStorage.getItem("galactic-swarm-settings") || "{}") };
+} catch (_error) {
+  // Keep safe defaults if a browser has stale or malformed settings.
+}
+
+const defaultStats = { runs: 0, kills: 0, bosses: 0, interceptions: 0, bestWave: 1, bestCombo: 1 };
+let stats = { ...defaultStats };
+try {
+  stats = { ...defaultStats, ...JSON.parse(localStorage.getItem("galactic-swarm-stats") || "{}") };
+} catch (_error) {
+  // Keep safe defaults if a browser has stale or malformed statistics.
+}
+
+const ACHIEVEMENTS = [
+  { id: "first_kill", name: "First Contact", test: () => stats.kills >= 1 },
+  { id: "ace", name: "Swarm Ace", test: () => stats.kills >= 100 },
+  { id: "interceptor", name: "Interceptor", test: () => stats.interceptions >= 25 },
+  { id: "boss_breaker", name: "Boss Breaker", test: () => stats.bosses >= 1 },
+  { id: "wave_ten", name: "Deep Space", test: () => stats.bestWave >= 10 },
+  { id: "combo_five", name: "Perfect Chain", test: () => stats.bestCombo >= 5 },
+];
+
+const runUpgrades = {
+  fireRate: 0,
+  damage: 0,
+  speed: 0,
+  spread: 0,
+  shield: 0,
+  duration: 0,
+  pierce: 0,
+};
+
+const UPGRADE_DEFS = [
+  { id: "fireRate", name: "Turbo Cannons", description: "Fire 12% faster." },
+  { id: "damage", name: "Heavy Rounds", description: "Shots deal more damage." },
+  { id: "speed", name: "Ion Thrusters", description: "Move 10% faster." },
+  { id: "spread", name: "Wing Cannons", description: "Add wider supporting fire." },
+  { id: "shield", name: "Shield Matrix", description: "Force fields last longer." },
+  { id: "duration", name: "Power Core", description: "Power-ups last 20% longer." },
+  { id: "pierce", name: "Phase Ammo", description: "Shots pierce another target." },
+];
 
 let score = 0;
 let highScore = Number(localStorage.getItem("galactic-swarm-high") || 0);
@@ -69,6 +146,7 @@ const player = {
   height: 42,
   speed: 455,
   invulnerable: 0,
+  visible: true,
 };
 
 const POWER_UPS = {
@@ -76,7 +154,36 @@ const POWER_UPS = {
   laser: { label: "Laser", color: "#ff5f8f" },
   rapid: { label: "Rapid", color: "#39d9ff" },
   slow: { label: "Slow", color: "#a979ff" },
+  homing: { label: "Homing", color: "#ff9f43" },
+  drone: { label: "Drones", color: "#68f5ad" },
+  double: { label: "Double", color: "#f8fbff" },
+  pierce: { label: "Pierce", color: "#5f8cff" },
+  bomb: { label: "Bomb", color: "#ff476f" },
+  magnet: { label: "Magnet", color: "#e58cff" },
 };
+
+function saveSettings() {
+  localStorage.setItem("galactic-swarm-settings", JSON.stringify(settings));
+}
+
+function saveStats() {
+  localStorage.setItem("galactic-swarm-stats", JSON.stringify(stats));
+  renderStats();
+}
+
+function renderStats() {
+  statsSummary.innerHTML = [
+    ["Runs", stats.runs],
+    ["Kills", stats.kills],
+    ["Best Wave", stats.bestWave],
+    ["Bosses", stats.bosses],
+    ["Intercepts", stats.interceptions],
+    ["Best Combo", `${stats.bestCombo.toFixed(1)}x`],
+  ].map(([label, value]) => `<div class="stat-chip"><strong>${value}</strong>${label}</div>`).join("");
+  achievementsList.innerHTML = ACHIEVEMENTS.map((achievement) => (
+    `<div class="achievement ${achievement.test() ? "unlocked" : ""}">${achievement.test() ? "★" : "○"} ${achievement.name}</div>`
+  )).join("");
+}
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
@@ -92,8 +199,11 @@ function ensureAudio() {
     if (!AudioContextClass) return;
     audioContext = new AudioContextClass();
     masterGain = audioContext.createGain();
+    musicGain = audioContext.createGain();
     masterGain.gain.value = 0.18 * settings.volume;
+    musicGain.gain.value = 0.085 * settings.musicVolume;
     masterGain.connect(audioContext.destination);
+    musicGain.connect(audioContext.destination);
   }
 
   if (audioContext.state === "suspended") {
@@ -105,6 +215,35 @@ function syncVolume() {
   if (masterGain) {
     masterGain.gain.value = 0.18 * settings.volume;
   }
+  if (musicGain) musicGain.gain.value = 0.085 * settings.musicVolume;
+}
+
+function playMusicTone(frequency, duration = 0.16) {
+  if (!audioContext || !musicGain || settings.musicVolume <= 0) return;
+  const now = audioContext.currentTime;
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  oscillator.type = wave % 5 === 0 ? "sawtooth" : "triangle";
+  oscillator.frequency.setValueAtTime(frequency, now);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.2, now + 0.025);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  oscillator.connect(gain);
+  gain.connect(musicGain);
+  oscillator.start(now);
+  oscillator.stop(now + duration + 0.03);
+}
+
+function updateMusic(dt) {
+  if (state !== "playing" && state !== "respawning") return;
+  musicTimer -= dt;
+  if (musicTimer > 0) return;
+  const normal = [110, 165, 220, 165, 123.47, 185, 246.94, 185];
+  const boss = [82.41, 82.41, 98, 110, 82.41, 123.47, 110, 98];
+  const sequence = wave % 5 === 0 ? boss : normal;
+  playMusicTone(sequence[musicStep % sequence.length], wave % 5 === 0 ? 0.23 : 0.15);
+  musicStep += 1;
+  musicTimer = wave % 5 === 0 ? 0.29 : 0.23;
 }
 
 function playTone({ frequency, endFrequency, duration, type = "square", volume = 0.35 }) {
@@ -185,10 +324,11 @@ function playSound(name) {
 }
 
 function addScore(points) {
-  const earned = Math.round(points * combo);
+  const earned = Math.round(points * combo * (doubleScoreTimer > 0 ? 2 : 1));
   score += earned;
   combo = clamp(combo + 0.05, 1, 5);
   comboTimer = 2.4;
+  if (!demoMode) stats.bestCombo = Math.max(stats.bestCombo, combo);
   if (score >= nextForceFieldScore) {
     activateForceField();
     nextForceFieldScore += 7500;
@@ -208,7 +348,7 @@ function awardExtraLife() {
 }
 
 function activateForceField() {
-  forceFieldRemaining = Math.max(forceFieldRemaining, 12);
+  forceFieldRemaining = Math.max(forceFieldRemaining, 12 + runUpgrades.shield * 3);
   spawnParticle(player.x, player.y, "#39d9ff", 34);
   playSound("shield");
 }
@@ -316,6 +456,11 @@ function makeWave() {
       shotTimer: 1.5,
       hp: 16 + wave * 2,
       maxHp: 16 + wave * 2,
+      bossPhase: 1,
+      telegraph: 0,
+      parts: { left: 5 + Math.floor(wave / 5), right: 5 + Math.floor(wave / 5) },
+      maxPartHp: 5 + Math.floor(wave / 5),
+      entryTimer: 1.2,
     });
   }
 
@@ -331,7 +476,11 @@ function makeWave() {
 
   for (let row = 0; row < activeRows; row += 1) {
     for (let col = 0; col < activeCols; col += 1) {
-      const kind = row < 1 ? "boss" : row < 3 ? "guard" : "scout";
+      let kind = row < 1 ? "boss" : row < 3 ? "guard" : "scout";
+      if (wave >= 2 && row === 1 && col % 3 === 0) kind = "armored";
+      if (wave >= 3 && row === 2 && col % 4 === 0) kind = "shielder";
+      if (wave >= 2 && row >= 3 && (row + col) % 3 === 0) kind = "kamikaze";
+      const hp = kind === "boss" ? 2 : kind === "armored" ? 4 : kind === "shielder" ? 2 : 1;
       enemies.push({
         x: startX + xOffset + col * gapX,
         y: startY + row * gapY,
@@ -340,20 +489,23 @@ function makeWave() {
         row,
         col,
         kind,
-        width: kind === "boss" ? 48 : 42,
-        height: kind === "boss" ? 38 : 34,
+        width: kind === "boss" || kind === "armored" ? 48 : 42,
+        height: kind === "boss" || kind === "armored" ? 38 : 34,
         phase: random(0, Math.PI * 2),
         state: "formation",
         diveT: 0,
         diveDuration: random(3.6, 4.8),
         shotTimer: random(tuning.shotDelayMin, tuning.shotDelayMax),
-        hp: kind === "boss" ? 2 : 1,
+        hp,
+        maxHp: hp,
+        shielded: false,
+        entryTimer: 0.35 + row * 0.14 + col * 0.035,
       });
     }
   }
 }
 
-function resetGame() {
+function resetGame(asDemo = false) {
   ensureAudio();
   score = 0;
   wave = 1;
@@ -364,14 +516,29 @@ function resetGame() {
   powerUpTimer = 0;
   laserTimer = 0;
   slowTimeTimer = 0;
+  homingTimer = 0;
+  droneTimer = 0;
+  doubleScoreTimer = 0;
+  piercingTimer = 0;
+  magnetTimer = 0;
+  bombCharges = 1;
+  demoMode = asDemo;
+  demoTimer = 0;
+  respawnTimer = 0;
+  chosenUpgrades = [];
+  Object.keys(runUpgrades).forEach((key) => { runUpgrades[key] = 0; });
   forceFieldRemaining = 0;
   nextForceFieldScore = 5000;
   nextExtraLifeScore = 200000;
   player.x = WORLD.width / 2;
   player.y = WORLD.height - 74;
   player.invulnerable = 1.8;
+  player.visible = true;
   state = "playing";
+  stats.runs += asDemo ? 0 : 1;
+  if (!asDemo) saveStats();
   overlay.classList.add("hidden");
+  upgradePanel.hidden = true;
   makeWave();
   updateHud();
 }
@@ -385,7 +552,9 @@ function updateHud() {
   if (hasForceField()) {
     powerEl.textContent = `Shield ${Math.ceil(forceFieldRemaining)}`;
   } else if (activePower) {
-    powerEl.textContent = `${POWER_UPS[activePower].label} ${Math.ceil(powerUpTimer || laserTimer || slowTimeTimer)}`;
+    powerEl.textContent = `${POWER_UPS[activePower].label} ${Math.ceil(powerUpTimer || laserTimer || slowTimeTimer || homingTimer || droneTimer || doubleScoreTimer || piercingTimer || magnetTimer)}`;
+  } else if (bombCharges > 0) {
+    powerEl.textContent = `Bomb ${bombCharges}`;
   } else {
     powerEl.textContent = "Ready";
   }
@@ -397,16 +566,19 @@ function setOverlay(title) {
 }
 
 function pauseGame() {
-  if (state === "playing") {
+  if (state === "playing" || state === "respawning") {
+    const previousState = state;
     state = "paused";
+    pauseButton.dataset.resumeState = previousState;
     setOverlay("Paused. Press Enter or tap Start to resume.");
   } else if (state === "paused") {
-    state = "playing";
+    state = pauseButton.dataset.resumeState || "playing";
     overlay.classList.add("hidden");
   }
 }
 
 function spawnParticle(x, y, color, count = 14) {
+  count = settings.reducedMotion ? Math.ceil(count * 0.32) : count;
   for (let i = 0; i < count; i += 1) {
     particles.push({
       x,
@@ -423,7 +595,8 @@ function spawnParticle(x, y, color, count = 14) {
 
 function spawnPlayerExplosion(x, y) {
   const colors = ["#f8fbff", "#64ff9b", "#39d9ff", "#f4c95d", "#ff476f"];
-  for (let i = 0; i < 110; i += 1) {
+  const explosionCount = settings.reducedMotion ? 38 : 110;
+  for (let i = 0; i < explosionCount; i += 1) {
     const angle = random(0, Math.PI * 2);
     const speed = random(110, 480);
     const life = random(0.5, 1.2);
@@ -476,11 +649,31 @@ function maybeDropPowerUp(enemy) {
 
 function activatePowerUp(type) {
   activePower = type;
-  powerUpTimer = type === "spread" || type === "rapid" ? 10 : 0;
+  const durationBoost = 1 + runUpgrades.duration * 0.2;
+  powerUpTimer = (type === "spread" || type === "rapid" ? 10 : 0) * durationBoost;
   if (type === "laser") {
-    laserTimer = 5;
+    laserTimer = 5 * durationBoost;
   } else if (type === "slow") {
-    slowTimeTimer = 8;
+    slowTimeTimer = 8 * durationBoost;
+  } else if (type === "homing") {
+    homingTimer = 10 * durationBoost;
+    powerUpTimer = homingTimer;
+  } else if (type === "drone") {
+    droneTimer = 12 * durationBoost;
+    powerUpTimer = droneTimer;
+  } else if (type === "double") {
+    doubleScoreTimer = 12 * durationBoost;
+    powerUpTimer = doubleScoreTimer;
+  } else if (type === "pierce") {
+    piercingTimer = 12 * durationBoost;
+    powerUpTimer = piercingTimer;
+  } else if (type === "magnet") {
+    magnetTimer = 14 * durationBoost;
+    powerUpTimer = magnetTimer;
+  } else if (type === "bomb") {
+    bombCharges = Math.min(3, bombCharges + 1);
+    activePower = "";
+    powerUpTimer = 0;
   }
   spawnFloatingText(player.x, player.y - 58, POWER_UPS[type].label, POWER_UPS[type].color);
   spawnParticle(player.x, player.y, POWER_UPS[type].color, 24);
@@ -507,7 +700,7 @@ function firePlayer() {
   if (fireCooldown > 0 || state !== "playing") return;
   ensureAudio();
   const shotSpeed = activePower === "rapid" ? -820 : -720;
-  const shots = activePower === "spread"
+  let shots = activePower === "spread"
     ? [
         { x: -18, vx: -115 },
         { x: 0, vx: 0 },
@@ -518,6 +711,11 @@ function firePlayer() {
         { x: 12, vx: 0 },
       ];
 
+  for (let i = 0; i < runUpgrades.spread; i += 1) {
+    const offset = 26 + i * 9;
+    shots = [...shots, { x: -offset, vx: -80 - i * 35 }, { x: offset, vx: 80 + i * 35 }];
+  }
+
   for (const shot of shots) {
     playerBullets.push({
       x: player.x + shot.x,
@@ -526,10 +724,34 @@ function firePlayer() {
       height: 18,
       vx: shot.vx,
       vy: shotSpeed,
+      damage: 1 + runUpgrades.damage,
+      pierce: runUpgrades.pierce + (piercingTimer > 0 ? 2 : 0),
+      homing: homingTimer > 0,
     });
   }
-  fireCooldown = activePower === "rapid" ? 0.12 : 0.24;
+  if (droneTimer > 0) {
+    playerBullets.push(
+      { x: player.x - 42, y: player.y - 6, width: 4, height: 14, vx: -40, vy: -680, damage: 1, pierce: 0, homing: false },
+      { x: player.x + 42, y: player.y - 6, width: 4, height: 14, vx: 40, vy: -680, damage: 1, pierce: 0, homing: false },
+    );
+  }
+  fireCooldown = (activePower === "rapid" ? 0.12 : 0.24) * Math.max(0.46, 1 - runUpgrades.fireRate * 0.12);
   playSound("fire");
+}
+
+function useBomb() {
+  if (state !== "playing" || bombCharges <= 0) return;
+  bombCharges -= 1;
+  const cleared = enemyBullets.length;
+  enemyBullets.length = 0;
+  for (let i = enemies.length - 1; i >= 0; i -= 1) {
+    const enemy = enemies[i];
+    enemy.hp -= enemy.kind === "mothership" ? 5 : 3;
+    if (enemy.hp <= 0) destroyEnemy(i, enemy, false);
+  }
+  shockwaves.push({ x: player.x, y: player.y, radius: 10, maxRadius: 760, life: 0.85, maxLife: 0.85, color: "#ff476f", lineWidth: 14 });
+  spawnFloatingText(player.x, player.y - 70, `NOVA BOMB · ${cleared} SHOTS CLEARED`, "#ff8aa1");
+  playSound("playerHit");
 }
 
 function fireEnemy(enemy) {
@@ -554,7 +776,7 @@ function fireEnemy(enemy) {
 
 function fireBoss(enemy) {
   const tuning = difficulty();
-  const slots = [-0.32, 0, 0.32];
+  const slots = enemy.bossPhase >= 3 ? [-0.58, -0.29, 0, 0.29, 0.58] : enemy.bossPhase === 2 ? [-0.42, -0.18, 0.18, 0.42] : [-0.32, 0, 0.32];
   for (const angle of slots) {
     if (enemyBullets.length >= tuning.enemyBulletLimit + 3) return;
     enemyBullets.push({
@@ -566,6 +788,8 @@ function fireBoss(enemy) {
       vy: Math.cos(angle) * tuning.enemyBulletSpeed * 0.9,
     });
   }
+  if (enemy.parts?.left > 0) fireEnemy({ ...enemy, x: enemy.x - 48, y: enemy.y });
+  if (enemy.parts?.right > 0) fireEnemy({ ...enemy, x: enemy.x + 48, y: enemy.y });
 }
 
 function chooseDiver() {
@@ -586,6 +810,12 @@ function chooseDiver() {
   enemy.endX = clamp(looseEnd * (1 - aim) + playerEnd * aim, 70, WORLD.width - 70);
   enemy.endY = WORLD.height + 70;
   enemy.diveDuration = random(4.4, 5.8) / difficulty().diveSpeed;
+  if (enemy.kind === "kamikaze") {
+    enemy.controlX = player.x;
+    enemy.endX = player.x;
+    enemy.diveDuration *= 0.58;
+    enemy.telegraph = 0.55;
+  }
 }
 
 function bezier(a, b, c, t) {
@@ -593,29 +823,76 @@ function bezier(a, b, c, t) {
   return inv * inv * a + 2 * inv * t * b + t * t * c;
 }
 
+function activeGamepad() {
+  if (!navigator.getGamepads) return null;
+  return [...navigator.getGamepads()].find(Boolean) || null;
+}
+
 function updatePlayer(dt) {
   let dir = 0;
   if (keys.has("ArrowLeft") || keys.has("KeyA")) dir -= 1;
   if (keys.has("ArrowRight") || keys.has("KeyD")) dir += 1;
+  if (touchLeftHeld) dir -= 1;
+  if (touchRightHeld) dir += 1;
+
+  const gamepad = activeGamepad();
+  if (gamepad) {
+    const axis = Math.abs(gamepad.axes[0] || 0) > 0.18 ? gamepad.axes[0] : 0;
+    dir += axis;
+    gamepadStatus.textContent = `Gamepad: ${gamepad.id.split("(")[0].trim()}`;
+    if (gamepad.buttons[0]?.pressed) firePlayer();
+    const bombPressed = Boolean(gamepad.buttons[1]?.pressed);
+    if (bombPressed && !gamepadWasBomb) useBomb();
+    gamepadWasBomb = bombPressed;
+    const startPressed = Boolean(gamepad.buttons[9]?.pressed);
+    if (startPressed && !gamepadWasStart) pauseGame();
+    gamepadWasStart = startPressed;
+  } else {
+    gamepadStatus.textContent = "Gamepad: not connected";
+  }
+
+  if (demoMode) {
+    const target = powerUps[0] || enemies.reduce((closest, enemy) => (
+      !closest || enemy.y > closest.y ? enemy : closest
+    ), null);
+    if (target) dir = clamp((target.x - player.x) / 85, -1, 1);
+    firePlayer();
+  }
 
   if (pointerActive) {
     player.x += (pointerX - player.x) * Math.min(1, dt * 11);
   } else {
-    player.x += dir * player.speed * dt;
+    player.x += dir * player.speed * (1 + runUpgrades.speed * 0.1) * dt;
   }
 
   player.x = clamp(player.x, 38, WORLD.width - 38);
   player.invulnerable = Math.max(0, player.invulnerable - dt);
   forceFieldRemaining = Math.max(0, forceFieldRemaining - dt);
 
-  if (keys.has(settings.fireKey)) {
+  if (keys.has(settings.fireKey) || touchFireHeld) {
     firePlayer();
+  }
+
+  if (!settings.reducedMotion && Math.random() < dt * 30) {
+    particles.push({
+      x: player.x + random(-14, 14), y: player.y + 34, vx: random(-16, 16), vy: random(70, 150),
+      life: 0.28, maxLife: 0.28, radius: random(2, 4), color: "#39d9ff",
+    });
   }
 }
 
 function updatePowerUps(dt) {
   for (let i = powerUps.length - 1; i >= 0; i -= 1) {
     const powerUp = powerUps[i];
+    if (magnetTimer > 0) {
+      const dx = player.x - powerUp.x;
+      const dy = player.y - powerUp.y;
+      const distance = Math.hypot(dx, dy) || 1;
+      if (distance < 280) {
+        powerUp.x += (dx / distance) * 260 * dt;
+        powerUp.y += (dy / distance) * 260 * dt;
+      }
+    }
     powerUp.y += powerUp.vy * dt;
     powerUp.phase += dt * 5;
 
@@ -658,6 +935,15 @@ function updatePowerTimers(dt) {
     if (slowTimeTimer <= 0 && activePower === "slow") activePower = "";
   }
 
+  homingTimer = Math.max(0, homingTimer - dt);
+  droneTimer = Math.max(0, droneTimer - dt);
+  doubleScoreTimer = Math.max(0, doubleScoreTimer - dt);
+  piercingTimer = Math.max(0, piercingTimer - dt);
+  magnetTimer = Math.max(0, magnetTimer - dt);
+  if (activePower && powerUpTimer <= 0 && laserTimer <= 0 && slowTimeTimer <= 0 && homingTimer <= 0 && droneTimer <= 0 && doubleScoreTimer <= 0 && piercingTimer <= 0 && magnetTimer <= 0) {
+    activePower = "";
+  }
+
   if (waveBannerTimer > 0) waveBannerTimer -= dt;
 }
 
@@ -676,6 +962,8 @@ function updateEnemies(dt) {
   }
 
   for (const enemy of enemies) {
+    enemy.entryTimer = Math.max(0, (enemy.entryTimer || 0) - dt);
+    enemy.telegraph = Math.max(0, (enemy.telegraph || 0) - dt);
     enemy.phase += motionDt * 1.55;
     enemy.shotTimer -= dt * slowScale;
 
@@ -696,11 +984,35 @@ function updateEnemies(dt) {
       }
     }
 
+    if (enemy.kind === "shielder") {
+      enemy.shielded = Math.sin(performance.now() / 620 + enemy.phase) > 0.42;
+    }
+
+    if (enemy.kind === "mothership") {
+      const hpPct = enemy.hp / enemy.maxHp;
+      const nextPhase = hpPct <= 0.34 ? 3 : hpPct <= 0.68 ? 2 : 1;
+      if (nextPhase > enemy.bossPhase) {
+        enemy.bossPhase = nextPhase;
+        enemy.telegraph = 1.25;
+        waveBanner = `Core Phase ${nextPhase}`;
+        waveBannerTimer = 1.5;
+        spawnParticle(enemy.x, enemy.y, "#ff476f", 38);
+        playSound("boss");
+      }
+    }
+
     const canShoot = enemy.state === "diving" || enemy.row >= 3 || wave >= 4;
     if (canShoot && enemy.shotTimer <= 0 && enemy.y > 80 && enemy.y < WORLD.height - 120) {
       if (enemy.kind === "mothership") {
-        fireBoss(enemy);
-        enemy.shotTimer = random(1.2, 2.1);
+        if (enemy.pendingSalvo && enemy.telegraph <= 0) {
+          fireBoss(enemy);
+          enemy.pendingSalvo = false;
+          enemy.shotTimer = random(1.2, 2.1) / enemy.bossPhase;
+        } else if (!enemy.pendingSalvo) {
+          enemy.pendingSalvo = true;
+          enemy.telegraph = 0.7;
+          enemy.shotTimer = 0.7;
+        }
       } else {
         fireEnemy(enemy);
         enemy.shotTimer = random(tuning.shotDelayMin, tuning.shotDelayMax);
@@ -711,6 +1023,18 @@ function updateEnemies(dt) {
 
 function updateBullets(dt) {
   for (const bullet of playerBullets) {
+    if (bullet.homing && enemies.length) {
+      let target = enemies[0];
+      let best = Infinity;
+      for (const enemy of enemies) {
+        const distance = Math.hypot(enemy.x - bullet.x, enemy.y - bullet.y);
+        if (distance < best) {
+          best = distance;
+          target = enemy;
+        }
+      }
+      bullet.vx += clamp((target.x - bullet.x) * 3.2 - bullet.vx, -520 * dt, 520 * dt);
+    }
     bullet.x += (bullet.vx || 0) * dt;
     bullet.y += bullet.vy * dt;
   }
@@ -723,6 +1047,31 @@ function updateBullets(dt) {
 
   removeOffscreen(playerBullets);
   removeOffscreen(enemyBullets);
+}
+
+function damageEnemy(enemy, damage, impactX) {
+  if (enemy.kind === "shielder" && enemy.shielded) {
+    enemy.shielded = false;
+    spawnParticle(impactX, enemy.y, "#68f5ad", 12);
+    playSound("shieldBlock");
+    return false;
+  }
+
+  if (enemy.kind === "mothership" && enemy.parts) {
+    const side = impactX < enemy.x ? "left" : "right";
+    if (enemy.parts[side] > 0 && Math.abs(impactX - enemy.x) > 22) {
+      enemy.parts[side] = Math.max(0, enemy.parts[side] - damage);
+      spawnParticle(impactX, enemy.y, enemy.parts[side] > 0 ? "#f4c95d" : "#ff476f", enemy.parts[side] > 0 ? 8 : 28);
+      if (enemy.parts[side] <= 0) {
+        spawnFloatingText(impactX, enemy.y - 36, `${side.toUpperCase()} TURRET DESTROYED`, "#f4c95d");
+        addScore(500);
+      }
+      return false;
+    }
+  }
+
+  enemy.hp -= damage;
+  return enemy.hp <= 0;
 }
 
 function removeOffscreen(list) {
@@ -793,6 +1142,7 @@ function handleCollisions() {
       playerBullets.splice(i, 1);
       enemyBullets.splice(j, 1);
       const earned = addScore(10);
+      if (!demoMode) stats.interceptions += 1;
       spawnParticle(sparkX, sparkY, "#f4c95d", 10);
       spawnFloatingText(sparkX, sparkY, `+${earned}`, "#f4c95d");
       playSound("intercept");
@@ -806,11 +1156,11 @@ function handleCollisions() {
       const enemy = enemies[j];
       if (!rectsOverlap(bullet, enemy)) continue;
 
-      playerBullets.splice(i, 1);
-      enemy.hp -= 1;
+      if ((bullet.pierce || 0) > 0) bullet.pierce -= 1;
+      else playerBullets.splice(i, 1);
       spawnParticle(bullet.x, bullet.y, "#ffd85a", 6);
 
-      if (enemy.hp <= 0) {
+      if (damageEnemy(enemy, bullet.damage || 1, bullet.x)) {
         destroyEnemy(j, enemy, enemy.state === "diving");
       }
       break;
@@ -859,13 +1209,19 @@ function handleCollisions() {
 }
 
 function destroyEnemy(index, enemy, bonus) {
-  const baseValue = enemy.kind === "mothership" ? 2200 : enemy.kind === "boss" ? 300 : enemy.kind === "guard" ? 160 : 90;
+  const values = { mothership: 2200, boss: 300, armored: 260, shielder: 220, kamikaze: 190, guard: 160, scout: 90 };
+  const baseValue = values[enemy.kind] || 90;
   const earned = addScore(bonus ? baseValue * 2 : baseValue);
   const color = enemy.kind === "mothership" || enemy.kind === "boss" ? "#ff4f67" : "#38e8ff";
   spawnParticle(enemy.x, enemy.y, color, enemy.kind === "mothership" ? 52 : 18);
   spawnFloatingText(enemy.x, enemy.y - 12, `+${earned}`, color);
   maybeDropPowerUp(enemy);
   playSound("destroy");
+  if (!demoMode) {
+    stats.kills += 1;
+    if (enemy.kind === "mothership") stats.bosses += 1;
+    saveStats();
+  }
   enemies.splice(index, 1);
 }
 
@@ -874,8 +1230,8 @@ function hitPlayer() {
   spawnPlayerExplosion(player.x, player.y);
   spawnFloatingText(player.x, player.y - 58, "SHIP LOST", "#ff8aa1");
   playSound("playerHit");
-  player.x = WORLD.width / 2;
-  player.invulnerable = 3.2;
+  player.visible = false;
+  player.invulnerable = 0;
   enemyBullets.length = 0;
   playerBullets.length = 0;
   const tuning = difficulty();
@@ -891,11 +1247,74 @@ function hitPlayer() {
 
   if (lives <= 0) {
     state = "gameover";
-    highScore = Math.max(highScore, score);
-    localStorage.setItem("galactic-swarm-high", String(highScore));
+    if (!demoMode) {
+      highScore = Math.max(highScore, score);
+      localStorage.setItem("galactic-swarm-high", String(highScore));
+    }
     updateHud();
     setOverlay(`Game over. Final score: ${score.toLocaleString()}. Press Enter to try again.`);
+    if (demoMode) {
+      demoMode = false;
+      setOverlay("Press Enter or tap Start to launch.");
+      state = "ready";
+    }
+  } else {
+    state = "respawning";
+    respawnTimer = 2.15;
   }
+}
+
+function updateRespawn(dt) {
+  respawnTimer -= dt;
+  if (respawnTimer > 0) return;
+  player.x = WORLD.width / 2;
+  player.visible = true;
+  player.invulnerable = 2.6;
+  state = "playing";
+  shockwaves.push({ x: player.x, y: player.y, radius: 4, maxRadius: 92, life: 0.5, maxLife: 0.5, color: "#68f5ad", lineWidth: 7 });
+  spawnFloatingText(player.x, player.y - 62, "WARP COMPLETE", "#68f5ad");
+  playSound("shield");
+}
+
+function offerUpgrades() {
+  const pool = [...UPGRADE_DEFS];
+  chosenUpgrades = [];
+  while (chosenUpgrades.length < 3 && pool.length) {
+    chosenUpgrades.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+  }
+  upgradeButtons.forEach((button, index) => {
+    const upgrade = chosenUpgrades[index];
+    button.innerHTML = `<strong>${index + 1}. ${upgrade.name}</strong><span>${upgrade.description}<br>Current level: ${runUpgrades[upgrade.id]}</span>`;
+  });
+  state = "upgrade";
+  upgradePanel.hidden = false;
+  if (demoMode) setTimeout(() => chooseUpgrade(Math.floor(Math.random() * chosenUpgrades.length)), 700);
+}
+
+function chooseUpgrade(index) {
+  if (state !== "upgrade" || !chosenUpgrades[index]) return;
+  const upgrade = chosenUpgrades[index];
+  runUpgrades[upgrade.id] += 1;
+  upgradePanel.hidden = true;
+  wave += 1;
+  stats.bestWave = Math.max(stats.bestWave, wave);
+  if (!demoMode) saveStats();
+  addScore(1000 + wave * 250);
+  player.invulnerable = 1.4;
+  state = "playing";
+  makeWave();
+}
+
+function completeWave() {
+  if (state !== "playing") return;
+  offerUpgrades();
+}
+
+function startDemo() {
+  if (state !== "ready") return;
+  resetGame(true);
+  waveBanner = "Demo Pilot · Press Enter to Play";
+  waveBannerTimer = 4;
 }
 
 function update(dt) {
@@ -903,8 +1322,35 @@ function update(dt) {
   updateParticles(dt);
   updateShockwaves(dt);
   updateFloatingTexts(dt);
+  updateMusic(dt);
+
+  if (state === "ready") {
+    idleTimer += dt;
+    if (idleTimer >= 12) startDemo();
+    return;
+  }
+
+  if (state === "respawning") {
+    updatePowerTimers(dt);
+    updateEnemies(dt * 0.45);
+    updateBullets(dt * 0.45);
+    updateRespawn(dt);
+    updateHud();
+    return;
+  }
 
   if (state !== "playing") return;
+
+  if (demoMode) {
+    demoTimer += dt;
+    if (demoTimer > 55) {
+      demoMode = false;
+      state = "ready";
+      setOverlay("Press Enter or tap Start to launch.");
+      idleTimer = 0;
+      return;
+    }
+  }
 
   fireCooldown = Math.max(0, fireCooldown - dt);
   updatePowerTimers(dt);
@@ -915,14 +1361,13 @@ function update(dt) {
   handleCollisions();
 
   if (!enemies.length) {
-    wave += 1;
-    addScore(1000 + wave * 250);
-    player.invulnerable = 1.4;
-    makeWave();
+    completeWave();
   }
 
-  highScore = Math.max(highScore, score);
-  localStorage.setItem("galactic-swarm-high", String(highScore));
+  if (!demoMode) {
+    highScore = Math.max(highScore, score);
+    localStorage.setItem("galactic-swarm-high", String(highScore));
+  }
   updateHud();
 }
 
@@ -991,6 +1436,7 @@ function drawPerspectiveGrid() {
 }
 
 function drawPlayer() {
+  if (!player.visible) return;
   ctx.save();
   ctx.translate(player.x, player.y);
   if (player.invulnerable > 0 && Math.floor(player.invulnerable * 10) % 2 === 0) {
@@ -1089,8 +1535,29 @@ function drawPlayer() {
   ctx.restore();
 }
 
+function drawDrones() {
+  if (droneTimer <= 0 || !player.visible) return;
+  for (const side of [-1, 1]) {
+    const x = player.x + side * 42;
+    const y = player.y + Math.sin(performance.now() / 180 + side) * 7;
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = "#68f5ad";
+    ctx.fillStyle = "#68f5ad";
+    ctx.beginPath();
+    ctx.moveTo(0, -10);
+    ctx.lineTo(12, 7);
+    ctx.lineTo(0, 4);
+    ctx.lineTo(-12, 7);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+  }
+}
+
 function drawForceField() {
-  if (!hasForceField()) return;
+  if (!hasForceField() || !player.visible) return;
 
   const warning = forceFieldRemaining <= 8;
   const urgency = warning ? 1 - clamp(forceFieldRemaining / 8, 0, 1) : 0;
@@ -1138,6 +1605,12 @@ function drawForceField() {
 function drawEnemy(enemy) {
   ctx.save();
   ctx.translate(enemy.x, enemy.y);
+  if (enemy.entryTimer > 0) {
+    const entry = 1 - clamp(enemy.entryTimer / 1.2, 0, 1);
+    ctx.globalAlpha = entry;
+    ctx.translate(0, -160 * (1 - entry));
+    ctx.scale(0.55 + entry * 0.45, 0.55 + entry * 0.45);
+  }
   const diveScale = enemy.state === "diving" ? 1 + Math.sin(clamp(enemy.diveT, 0, 1) * Math.PI) * 0.42 : 1;
   ctx.scale(diveScale, diveScale);
   ctx.rotate(enemy.state === "diving" ? Math.sin(enemy.diveT * Math.PI * 2) * 0.18 : 0);
@@ -1171,6 +1644,11 @@ function drawEnemy(enemy) {
     ctx.fillStyle = "rgba(4, 2, 10, 0.58)";
     ctx.fillRect(-48, -10, 28, 20);
     ctx.fillRect(20, -10, 28, 20);
+    ctx.strokeStyle = enemy.parts.left > 0 ? "#f4c95d" : "rgba(255,255,255,0.12)";
+    ctx.lineWidth = 3;
+    ctx.strokeRect(-55, -16, 32, 29);
+    ctx.strokeStyle = enemy.parts.right > 0 ? "#f4c95d" : "rgba(255,255,255,0.12)";
+    ctx.strokeRect(23, -16, 32, 29);
     ctx.fillStyle = `rgba(244, 201, 93, ${0.5 + pulse * 0.35})`;
     ctx.beginPath();
     ctx.moveTo(0, -28);
@@ -1236,6 +1714,33 @@ function drawEnemy(enemy) {
     ctx.strokeStyle = "rgba(255, 220, 230, 0.28)";
     ctx.lineWidth = 1;
     ctx.stroke();
+  } else if (enemy.kind === "armored" || enemy.kind === "shielder" || enemy.kind === "kamikaze") {
+    const color = enemy.kind === "armored" ? "#f4c95d" : enemy.kind === "shielder" ? "#68f5ad" : "#ff476f";
+    ctx.shadowBlur = 24;
+    ctx.shadowColor = color;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    if (enemy.kind === "kamikaze") {
+      ctx.moveTo(0, -25); ctx.lineTo(22, 17); ctx.lineTo(0, 10); ctx.lineTo(-22, 17);
+    } else {
+      ctx.moveTo(0, -22); ctx.lineTo(29, -3); ctx.lineTo(20, 20); ctx.lineTo(0, 13); ctx.lineTo(-20, 20); ctx.lineTo(-29, -3);
+    }
+    ctx.closePath();
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "rgba(3, 7, 15, 0.72)";
+    ctx.fillRect(-8, -7, 16, 13);
+    if (enemy.kind === "armored") {
+      ctx.strokeStyle = "#fff4bd";
+      ctx.lineWidth = 3;
+      ctx.strokeRect(-25, -14, 50, 29);
+    } else if (enemy.kind === "shielder" && enemy.shielded) {
+      ctx.strokeStyle = "rgba(104, 245, 173, 0.9)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(0, 0, 34, 0, Math.PI * 2);
+      ctx.stroke();
+    }
   } else if (enemy.kind === "guard") {
     ctx.shadowBlur = 22;
     ctx.shadowColor = "rgba(57, 217, 255, 0.45)";
@@ -1308,6 +1813,15 @@ function drawEnemy(enemy) {
     ctx.fill();
     ctx.fillStyle = `rgba(249, 246, 255, ${0.78 + pulse * 0.22})`;
     ctx.fillRect(-3, -7, 6, 6);
+  }
+
+  if (enemy.telegraph > 0) {
+    ctx.globalAlpha = 0.55 + Math.sin(performance.now() / 55) * 0.35;
+    ctx.strokeStyle = "#ff476f";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(0, 0, Math.max(enemy.width, enemy.height) * 0.76, 0, Math.PI * 2);
+    ctx.stroke();
   }
 
   ctx.restore();
@@ -1414,6 +1928,33 @@ function drawWaveBanner() {
   ctx.globalAlpha = 1;
 }
 
+function drawStateBanner() {
+  if (state !== "respawning" && !demoMode) return;
+  ctx.save();
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  if (state === "respawning") {
+    ctx.fillStyle = "#68f5ad";
+    ctx.font = "900 38px Inter, system-ui, sans-serif";
+    ctx.shadowBlur = 24;
+    ctx.shadowColor = "#68f5ad";
+    ctx.fillText(`REASSEMBLING SHIP · ${Math.max(1, Math.ceil(respawnTimer))}`, WORLD.width / 2, WORLD.height * 0.64);
+    const progress = clamp(1 - respawnTimer / 2.15, 0, 1);
+    ctx.strokeStyle = "rgba(104, 245, 173, 0.65)";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(WORLD.width / 2 - 180, player.y);
+    ctx.lineTo(WORLD.width / 2 - 180 + 360 * progress, player.y);
+    ctx.stroke();
+  }
+  if (demoMode) {
+    ctx.fillStyle = "rgba(248, 251, 255, 0.8)";
+    ctx.font = "800 18px ui-monospace, monospace";
+    ctx.fillText("DEMO PILOT · PRESS ENTER TO PLAY", WORLD.width / 2, WORLD.height - 24);
+  }
+  ctx.restore();
+}
+
 function drawParticles() {
   for (const p of particles) {
     ctx.globalAlpha = clamp(p.life / p.maxLife, 0, 1);
@@ -1447,11 +1988,13 @@ function draw() {
   drawPowerUps();
   for (const enemy of enemies) drawEnemy(enemy);
   drawPlayer();
+  drawDrones();
   drawForceField();
   drawShockwaves();
   drawParticles();
   drawFloatingTexts();
   drawWaveBanner();
+  drawStateBanner();
   ctx.restore();
 }
 
@@ -1472,6 +2015,12 @@ function canvasPointerX(event) {
 window.addEventListener("resize", resize);
 
 window.addEventListener("keydown", (event) => {
+  idleTimer = 0;
+  if (demoMode) {
+    demoMode = false;
+    if (event.code === "Enter") resetGame();
+    return;
+  }
   keys.add(event.code);
   if (event.code === "Space" || event.code === settings.fireKey) event.preventDefault();
   if (event.code === "Enter") {
@@ -1479,6 +2028,10 @@ window.addEventListener("keydown", (event) => {
     else if (state === "paused") pauseGame();
   }
   if (event.code === "KeyP" || event.code === "Escape") pauseGame();
+  if (event.code === "KeyB") useBomb();
+  if (state === "upgrade" && ["Digit1", "Digit2", "Digit3"].includes(event.code)) {
+    chooseUpgrade(Number(event.code.slice(-1)) - 1);
+  }
 });
 
 window.addEventListener("keyup", (event) => {
@@ -1486,6 +2039,12 @@ window.addEventListener("keyup", (event) => {
 });
 
 canvas.addEventListener("pointerdown", (event) => {
+  idleTimer = 0;
+  if (demoMode) {
+    demoMode = false;
+    resetGame();
+    return;
+  }
   pointerActive = true;
   pointerX = canvasPointerX(event);
   canvas.setPointerCapture(event.pointerId);
@@ -1521,17 +2080,71 @@ settingsButton.addEventListener("click", () => {
 volumeControl.addEventListener("input", () => {
   settings.volume = Number(volumeControl.value) / 100;
   syncVolume();
+  saveSettings();
+});
+
+musicVolumeControl.addEventListener("input", () => {
+  settings.musicVolume = Number(musicVolumeControl.value) / 100;
+  ensureAudio();
+  syncVolume();
+  saveSettings();
 });
 
 difficultyControl.addEventListener("change", () => {
   settings.difficulty = difficultyControl.value;
   spawnFloatingText(WORLD.width / 2, WORLD.height * 0.58, `Difficulty: ${settings.difficulty}`, "#f4c95d");
+  saveSettings();
 });
 
 fireKeyControl.addEventListener("change", () => {
   settings.fireKey = fireKeyControl.value;
   keys.clear();
+  saveSettings();
 });
+
+reducedMotionControl.addEventListener("change", () => {
+  settings.reducedMotion = reducedMotionControl.checked;
+  saveSettings();
+});
+
+highContrastControl.addEventListener("change", () => {
+  settings.highContrast = highContrastControl.checked;
+  document.body.classList.toggle("high-contrast", settings.highContrast);
+  saveSettings();
+});
+
+upgradeButtons.forEach((button, index) => button.addEventListener("click", () => chooseUpgrade(index)));
+
+function bindHold(button, setter) {
+  button.addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    idleTimer = 0;
+    setter(true);
+  });
+  for (const eventName of ["pointerup", "pointercancel", "pointerleave"]) {
+    button.addEventListener(eventName, () => setter(false));
+  }
+}
+
+bindHold(touchLeft, (held) => { touchLeftHeld = held; });
+bindHold(touchRight, (held) => { touchRightHeld = held; });
+bindHold(touchFire, (held) => { touchFireHeld = held; });
+touchBomb.addEventListener("pointerdown", (event) => {
+  event.preventDefault();
+  useBomb();
+});
+
+window.addEventListener("gamepadconnected", () => { gamepadStatus.textContent = "Gamepad: connected"; });
+window.addEventListener("gamepaddisconnected", () => { gamepadStatus.textContent = "Gamepad: not connected"; });
+
+volumeControl.value = String(Math.round(settings.volume * 100));
+musicVolumeControl.value = String(Math.round(settings.musicVolume * 100));
+difficultyControl.value = settings.difficulty;
+fireKeyControl.value = settings.fireKey;
+reducedMotionControl.checked = settings.reducedMotion;
+highContrastControl.checked = settings.highContrast;
+document.body.classList.toggle("high-contrast", settings.highContrast);
+renderStats();
 
 makeStars();
 makeWave();

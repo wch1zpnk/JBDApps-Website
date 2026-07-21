@@ -50,10 +50,27 @@
           </div>
         </div>
 
+        <div id="upgradePanel" class="upgrade-panel" hidden>
+          <div class="upgrade-kicker">Wave Cleared</div>
+          <h2>Choose an Upgrade</h2>
+          <p>Strengthen your ship before the next swarm arrives.</p>
+          <div id="upgradeChoices" class="upgrade-choices">
+            <button type="button" data-upgrade-index="0"></button>
+            <button type="button" data-upgrade-index="1"></button>
+            <button type="button" data-upgrade-index="2"></button>
+          </div>
+          <small>Press 1, 2, or 3 to choose</small>
+        </div>
+
         <div id="settingsPanel" class="settings-panel" hidden>
+          <div class="settings-heading">Game Settings</div>
           <div class="settings-row">
-            <label for="volumeControl">Sound</label>
+            <label for="volumeControl">Effects</label>
             <input id="volumeControl" type="range" min="0" max="100" value="70">
+          </div>
+          <div class="settings-row">
+            <label for="musicVolumeControl">Music</label>
+            <input id="musicVolumeControl" type="range" min="0" max="100" value="42">
           </div>
           <div class="settings-row">
             <label for="difficultyControl">Difficulty</label>
@@ -71,6 +88,31 @@
               <option value="KeyX">X</option>
             </select>
           </div>
+          <div class="settings-row settings-check">
+            <label for="reducedMotionControl">Less Motion</label>
+            <input id="reducedMotionControl" type="checkbox">
+          </div>
+          <div class="settings-row settings-check">
+            <label for="highContrastControl">High Contrast</label>
+            <input id="highContrastControl" type="checkbox">
+          </div>
+          <div class="gamepad-line"><span id="gamepadStatus">Gamepad: not connected</span></div>
+          <div class="stats-block">
+            <div class="settings-heading">Pilot Record</div>
+            <div id="statsSummary" class="stats-summary"></div>
+            <div id="achievementsList" class="achievements-list"></div>
+          </div>
+        </div>
+
+        <div class="touch-controls" aria-label="Touch controls">
+          <div>
+            <button id="touchLeft" type="button" aria-label="Move left">◀</button>
+            <button id="touchRight" type="button" aria-label="Move right">▶</button>
+          </div>
+          <div>
+            <button id="touchBomb" class="touch-bomb" type="button" aria-label="Use bomb">BOMB</button>
+            <button id="touchFire" class="touch-fire" type="button" aria-label="Fire">FIRE</button>
+          </div>
         </div>
       </section>
 
@@ -79,10 +121,10 @@
           <kbd>←</kbd><kbd>→</kbd><kbd>Space</kbd>
         </div>
         <button id="settingsButton" class="settings-toggle" type="button">Settings</button>
-        <p>Move, fire, collect power-ups, survive boss waves.</p>
+        <p>Move, fire, collect power-ups, press B for a bomb, survive boss waves.</p>
       </section>
     </main>
 
-    <script src="./game.js?v=20260721-player-hit"></script>
+    <script src="./game.js?v=20260721-ten-feature-upgrade"></script>
   </body>
 </html>
