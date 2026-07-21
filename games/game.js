@@ -27,6 +27,7 @@ const stars = [];
 const gridLines = [];
 const powerUps = [];
 const floatingTexts = [];
+const shockwaves = [];
 
 let lastTime = 0;
 let fireCooldown = 0;
@@ -164,6 +165,10 @@ function playSound(name) {
   } else if (name === "destroy") {
     playTone({ frequency: 210, endFrequency: 72, duration: 0.26, type: "sawtooth", volume: 0.22 });
     playNoise({ duration: 0.22, volume: 0.2, filterFrequency: 520 });
+  } else if (name === "playerHit") {
+    playTone({ frequency: 180, endFrequency: 42, duration: 0.48, type: "sawtooth", volume: 0.28 });
+    playTone({ frequency: 720, endFrequency: 110, duration: 0.32, type: "square", volume: 0.16 });
+    playNoise({ duration: 0.42, volume: 0.28, filterFrequency: 420 });
   } else if (name === "shield") {
     playTone({ frequency: 260, endFrequency: 740, duration: 0.34, type: "triangle", volume: 0.18 });
     playTone({ frequency: 520, endFrequency: 1280, duration: 0.42, type: "sine", volume: 0.12 });
@@ -230,7 +235,6 @@ function difficulty() {
     formationSpeed: Math.min(1.45, (0.62 + level * 0.055) * scale),
     shotDelayMin: Math.max(1.1, (5.2 - level * 0.22) / scale),
     shotDelayMax: Math.max(2.25, (8.8 - level * 0.25) / scale),
-    collisionWave: 3,
     firstWaveGrace: 14,
   };
 }
@@ -279,6 +283,7 @@ function makeWave() {
   playerBullets.length = 0;
   enemyBullets.length = 0;
   particles.length = 0;
+  shockwaves.length = 0;
   powerUps.length = 0;
   const tuning = difficulty();
   diveTimer = random(tuning.diveDelayMin, tuning.diveDelayMax);
@@ -414,6 +419,30 @@ function spawnParticle(x, y, color, count = 14) {
       color,
     });
   }
+}
+
+function spawnPlayerExplosion(x, y) {
+  const colors = ["#f8fbff", "#64ff9b", "#39d9ff", "#f4c95d", "#ff476f"];
+  for (let i = 0; i < 110; i += 1) {
+    const angle = random(0, Math.PI * 2);
+    const speed = random(110, 480);
+    const life = random(0.5, 1.2);
+    particles.push({
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 35,
+      life,
+      maxLife: life,
+      radius: random(3, 9),
+      color: colors[Math.floor(Math.random() * colors.length)],
+    });
+  }
+
+  shockwaves.push(
+    { x, y, radius: 8, maxRadius: 165, life: 0.72, maxLife: 0.72, color: "#64ff9b", lineWidth: 10 },
+    { x, y, radius: 4, maxRadius: 105, life: 0.48, maxLife: 0.48, color: "#f8fbff", lineWidth: 6 },
+  );
 }
 
 function spawnFloatingText(x, y, text, color = "#f8fbff") {
@@ -716,6 +745,16 @@ function updateParticles(dt) {
   }
 }
 
+function updateShockwaves(dt) {
+  for (let i = shockwaves.length - 1; i >= 0; i -= 1) {
+    const shockwave = shockwaves[i];
+    shockwave.life -= dt;
+    const progress = 1 - clamp(shockwave.life / shockwave.maxLife, 0, 1);
+    shockwave.radius = shockwave.maxRadius * (1 - (1 - progress) ** 2);
+    if (shockwave.life <= 0) shockwaves.splice(i, 1);
+  }
+}
+
 function updateStars(dt) {
   for (const star of stars) {
     star.y += star.speed * star.z * dt;
@@ -798,21 +837,24 @@ function handleCollisions() {
   }
 
   for (const enemy of enemies) {
-    if (wave >= difficulty().collisionWave && enemy.state === "diving" && rectsOverlap(enemy, player)) {
-      if (hasForceField()) {
-        spawnParticle(enemy.x, enemy.y, "#39d9ff", 18);
-        playSound("shieldBlock");
-        enemy.state = "formation";
-        enemy.diveT = 0;
-        enemy.x = enemy.homeX;
-        enemy.y = enemy.homeY;
-        return;
-      }
-      hitPlayer();
+    if (!rectsOverlap(enemy, player)) continue;
+
+    if (hasForceField()) {
+      spawnParticle(enemy.x, enemy.y, "#39d9ff", 18);
+      playSound("shieldBlock");
       enemy.state = "formation";
       enemy.diveT = 0;
+      enemy.x = enemy.homeX;
+      enemy.y = enemy.homeY;
       return;
     }
+
+    hitPlayer();
+    enemy.state = "formation";
+    enemy.diveT = 0;
+    enemy.x = enemy.homeX;
+    enemy.y = enemy.homeY;
+    return;
   }
 }
 
@@ -829,7 +871,9 @@ function destroyEnemy(index, enemy, bonus) {
 
 function hitPlayer() {
   lives -= 1;
-  spawnParticle(player.x, player.y, "#64ff9b", 26);
+  spawnPlayerExplosion(player.x, player.y);
+  spawnFloatingText(player.x, player.y - 58, "SHIP LOST", "#ff8aa1");
+  playSound("playerHit");
   player.x = WORLD.width / 2;
   player.invulnerable = 3.2;
   enemyBullets.length = 0;
@@ -857,6 +901,7 @@ function hitPlayer() {
 function update(dt) {
   updateStars(dt);
   updateParticles(dt);
+  updateShockwaves(dt);
   updateFloatingTexts(dt);
 
   if (state !== "playing") return;
@@ -1378,6 +1423,22 @@ function drawParticles() {
   ctx.globalAlpha = 1;
 }
 
+function drawShockwaves() {
+  for (const shockwave of shockwaves) {
+    const alpha = clamp(shockwave.life / shockwave.maxLife, 0, 1);
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = shockwave.color;
+    ctx.lineWidth = Math.max(1, shockwave.lineWidth * alpha);
+    ctx.shadowBlur = 24;
+    ctx.shadowColor = shockwave.color;
+    ctx.beginPath();
+    ctx.arc(shockwave.x, shockwave.y, shockwave.radius, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+}
+
 function draw() {
   ctx.save();
   drawBackground();
@@ -1387,6 +1448,7 @@ function draw() {
   for (const enemy of enemies) drawEnemy(enemy);
   drawPlayer();
   drawForceField();
+  drawShockwaves();
   drawParticles();
   drawFloatingTexts();
   drawWaveBanner();
