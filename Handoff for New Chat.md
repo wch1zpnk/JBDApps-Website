@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `37c3005 Enhance Galactic Swarm player hits`
-- Current handoff refresh: updated after synchronizing the local Galactic Swarm collision fix and enhanced player explosion to the public `/games/` copy, publishing the cache-busted script, and live-verifying the deployed game.
+- Latest pushed functional site commit before this handoff refresh: `6030156 Refresh Galactic Swarm styles`
+- Current handoff refresh: updated after publishing and live-verifying Galactic Swarm's integrated ten-feature upgrade with cache-busted JavaScript and CSS.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, app listings, and selected public tools and games.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -41,7 +41,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/images/voice-command-atlas/1.png` through `10.png`
   - `assets/images/favicon.png`
   - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
-- Galactic Swarm is a self-contained public game under `games/`: `index.html`, `style.css`, and `game.js`. The public route is `https://jbdapps.com/games/`; it uses the JBDApps favicon but otherwise preserves the standalone game presentation. Its current gameplay code damages the player whenever any enemy overlaps the ship on every wave, preserves force-field blocking, and uses a dramatic localized player explosion with 110 debris particles, two shockwave rings, a `SHIP LOST` callout, and a layered hit sound without moving the whole canvas.
+- Galactic Swarm is a self-contained public game under `games/`: `index.html`, `style.css`, and `game.js`. The public route is `https://jbdapps.com/games/`; it uses the JBDApps favicon but otherwise preserves the standalone game presentation. The 2026-07-21 ten-feature upgrade adds between-wave upgrades; armored, shielded, and kamikaze enemies; multi-phase bosses with telegraphs and destructible turrets; a reassembly respawn sequence; persistent statistics and achievements; gamepad and touch support; six additional power-ups; idle demo play; accessibility/visual polish; and procedural music with independent Effects/Music controls. Existing all-wave collision damage, force-field blocking, dramatic localized ship destruction, and stationary whole-canvas behavior remain intact.
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
@@ -58,6 +58,9 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
 ## Current Deployment State
+
+- GitHub Pages deployment completed successfully on 2026-07-21 for commit `6030156 Refresh Galactic Swarm styles`; run `29816933116` finished with `success`. This commit cache-busted `style.css` after live verification caught Cloudflare serving the old unversioned game stylesheet.
+- GitHub Pages deployment completed successfully on 2026-07-21 for commit `52a5743 Expand Galactic Swarm gameplay`; run `29816841653` finished with `success`.
 
 - GitHub Pages deployment completed successfully on 2026-07-21 for commit `37c3005 Enhance Galactic Swarm player hits`; run `29815263053` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages deployment completed successfully on 2026-07-21 for commit `1db3199 Publish Galactic Swarm game`; run `29813591080` (`pages build and deployment`) finished with `success`.
@@ -97,6 +100,16 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-21 Galactic Swarm ten-feature upgrade completed:
+  - A verified pre-change backup is stored at `/Users/briscoe/Documents/Galaga Backups/2026-07-21-before-10-feature-upgrade/`; it contains a complete Galaga ZIP, a complete website Git bundle at `36e84df`, checksums, and a manifest.
+  - Commits `52a5743 Expand Galactic Swarm gameplay` and `6030156 Refresh Galactic Swarm styles` published the integrated upgrade and cache-busted both `game.js` and `style.css` with token `20260721-ten-feature-upgrade`.
+  - Implemented all ten requested categories: between-wave upgrades; distinctive armored/shielded/kamikaze enemies; multi-phase bosses with warnings and destructible turrets; a proper reassembly respawn; local statistics/achievements; gamepad/touch controls; Homing/Drones/Double/Pierce/Bomb/Magnet power-ups; idle demo mode; localized visual/accessibility polish; and procedural music with separate Effects/Music controls.
+  - The demo pilot was explicitly verified not to update the stored high score while its own score increased.
+  - `git diff --check`, JavaScript syntax checks for game/shared site code, sitemap XML validation, exact local/public JS and CSS comparison, no-shake scan, and public-private-string scan passed.
+  - Local browser verification confirmed Start, demo play, wave progression, differentiated enemies, the pilot record, collision life loss, completed respawn, and zero console errors.
+  - GitHub Pages runs `29816841653` and `29816933116` completed successfully. Public HTTPS readback returned `HTTP/2 200` and found all new feature systems in the deployed assets.
+  - Live in-app-browser verification at `https://jbdapps.com/games/?deploy=6030156` confirmed both versioned assets, started live gameplay, opened the styled six-achievement Pilot Record panel, and logged zero console errors.
 
 - 2026-07-21 Galactic Swarm collision and player-explosion update completed:
   - Commit `37c3005 Enhance Galactic Swarm player hits` synchronized `games/game.js` with `/Users/briscoe/Documents/Galaga/web/game.js` and changed the public script URL to `game.js?v=20260721-player-hit` to bypass stale Cloudflare/browser caches.
