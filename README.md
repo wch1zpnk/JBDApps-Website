@@ -7,6 +7,7 @@ Static developer/support website for `JBDApps.com`, intended for GitHub Pages ho
 - Home page: `/`
 - Apps page: `/apps/`
 - Other tools page: `/other-tools/`
+- Games page: `/games/` (Galactic Swarm)
 - Support page: `/support/`
 - Contact page: `/contact/`
 - Privacy policy: `/privacy/`
@@ -128,6 +129,7 @@ Verified live custom-domain URLs:
 - Everything Clipboard Mac App Store URL: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`
 - Voice Command Atlas Marketing URL: `https://JBDApps.com/apps/voice-command-atlas/`
 - Voice Command Atlas Mac App Store URL: `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`
+- Galactic Swarm game URL: `https://JBDApps.com/games/`
 
 Verify both:
 
@@ -138,6 +140,7 @@ Verify both:
 
 - Home page loads.
 - Apps page loads.
+- Galactic Swarm loads and starts from the Games menu item.
 - Support page loads.
 - Contact page loads.
 - Privacy page loads.
