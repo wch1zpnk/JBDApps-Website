@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `1db3199 Publish Galactic Swarm game`
-- Current handoff refresh: updated after publishing Galactic Swarm at `/games/`, adding `Games` to every shared `Other Tools` dropdown, and live-verifying the public game click-through and startup behavior.
+- Latest pushed functional site commit before this handoff refresh: `37c3005 Enhance Galactic Swarm player hits`
+- Current handoff refresh: updated after synchronizing the local Galactic Swarm collision fix and enhanced player explosion to the public `/games/` copy, publishing the cache-busted script, and live-verifying the deployed game.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, app listings, and selected public tools and games.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -41,7 +41,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/images/voice-command-atlas/1.png` through `10.png`
   - `assets/images/favicon.png`
   - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
-- Galactic Swarm is a self-contained public game under `games/`: `index.html`, `style.css`, and `game.js`. The public route is `https://jbdapps.com/games/`; it uses the JBDApps favicon but otherwise preserves the standalone game presentation.
+- Galactic Swarm is a self-contained public game under `games/`: `index.html`, `style.css`, and `game.js`. The public route is `https://jbdapps.com/games/`; it uses the JBDApps favicon but otherwise preserves the standalone game presentation. Its current gameplay code damages the player whenever any enemy overlaps the ship on every wave, preserves force-field blocking, and uses a dramatic localized player explosion with 110 debris particles, two shockwave rings, a `SHIP LOST` callout, and a layered hit sound without moving the whole canvas.
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
@@ -59,6 +59,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 ## Current Deployment State
 
+- GitHub Pages deployment completed successfully on 2026-07-21 for commit `37c3005 Enhance Galactic Swarm player hits`; run `29815263053` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages deployment completed successfully on 2026-07-21 for commit `1db3199 Publish Galactic Swarm game`; run `29813591080` (`pages build and deployment`) finished with `success`.
 - GitHub Pages deployment completed successfully on 2026-07-18 for commit `aae7401 Open App Store links in new tabs`; run `29665396642` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages deployment completed successfully on 2026-07-18 for commit `e99c45b Feature Voice Command Atlas App Store listing`; run `29665066460` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
@@ -96,6 +97,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-21 Galactic Swarm collision and player-explosion update completed:
+  - Commit `37c3005 Enhance Galactic Swarm player hits` synchronized `games/game.js` with `/Users/briscoe/Documents/Galaga/web/game.js` and changed the public script URL to `game.js?v=20260721-player-hit` to bypass stale Cloudflare/browser caches.
+  - Ship-to-ship collisions now use the same `hitPlayer()` life-loss and 3.2-second invulnerability path as enemy bullets on every wave; the old wave-3 and diving-only restriction is absent. Force fields still block the damage and return the enemy to formation.
+  - Player destruction now creates 110 fast multicolor debris particles, two expanding localized shockwave rings, a `SHIP LOST` callout, and a dedicated layered explosion sound. No global shake code or random whole-canvas translation was introduced.
+  - `git diff --check`, `node --check games/game.js`, `node --check assets/js/main.js`, `xmllint --noout sitemap.xml`, the 11-page local reference scan, and the public private-string scan passed before publication.
+  - The deterministic Node VM harness executed the collision and complete draw path, confirming lives changed from 3 to 2, invulnerability became 3.2 seconds, 110 particles and two shockwaves were created, the callout was `SHIP LOST`, and the colliding enemy returned home.
+  - GitHub Pages run `29815263053` completed successfully. Public HTTPS readback returned `HTTP/2 200` for `/games/` and the versioned `game.js`, and the deployed JavaScript contained `spawnPlayerExplosion`, `SHIP LOST`, `playerHit`, and `drawShockwaves` with no `collisionWave` setting.
+  - Live in-app-browser verification loaded `https://jbdapps.com/games/?deploy=37c3005`, confirmed the running game used `https://jbdapps.com/games/game.js?v=20260721-player-hit`, retained the `960 x 720` canvas, had no horizontal overflow, and logged zero console warnings/errors.
 
 - 2026-07-21 Galactic Swarm publication completed:
   - Commit `1db3199 Publish Galactic Swarm game` copied the standalone game from `/Users/briscoe/Documents/Galaga/web/` into `games/`, added public metadata and the JBDApps favicon, added `Games` to all ten shared `Other Tools` dropdowns, documented the route in `README.md`, and added `https://jbdapps.com/games/` to `sitemap.xml`.
@@ -351,6 +361,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Keep app-specific FAQs on their app product pages. The general `/support/` page should remain generic and should not accumulate app-specific FAQ sections.
 - Keep Voice Command Atlas Mac App Store copy centered on the explicitly selected `.voicecontrolcommands` export and re-import workflow. Do not restore claims that the Mac App Store build reads another app's preferences or restarts Voice Control/system processes.
 - Keep `Games` available in every shared `Other Tools` dropdown and keep `/games/` deployable with its relative `style.css` and `game.js` references. Treat the game as a standalone full-screen experience rather than wrapping it in the standard site header.
+- Keep the public Galactic Swarm gameplay code synchronized with the original local source when publishing approved changes. Preserve all-wave ship-collision damage, the stronger localized player explosion, and the stationary whole-canvas behavior.
 
 ## Next Steps
 
