@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-07-18
+Updated: 2026-07-21
 
 ## New Chat Rule
 
@@ -11,9 +11,9 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `aae7401 Open App Store links in new tabs`
-- Current handoff refresh: updated after publishing and live-verifying matching Apps-page App Store buttons, the purple Voice Command Atlas listing card, and the site-wide new-tab rule for Apple links.
-- Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, and app listings.
+- Latest pushed functional site commit before this handoff refresh: `1db3199 Publish Galactic Swarm game`
+- Current handoff refresh: updated after publishing Galactic Swarm at `/games/`, adding `Games` to every shared `Other Tools` dropdown, and live-verifying the public game click-through and startup behavior.
+- Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, app listings, and selected public tools and games.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
 - DNS/registrar target: Cloudflare Registrar and Cloudflare DNS.
@@ -27,6 +27,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `/apps/everything-clipboard/`
   - `/apps/voice-command-atlas/`
   - `/other-tools/`
+  - `/games/`
   - `/support/`
   - `/contact/`
   - `/privacy/`
@@ -40,6 +41,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/images/voice-command-atlas/1.png` through `10.png`
   - `assets/images/favicon.png`
   - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
+- Galactic Swarm is a self-contained public game under `games/`: `index.html`, `style.css`, and `game.js`. The public route is `https://jbdapps.com/games/`; it uses the JBDApps favicon but otherwise preserves the standalone game presentation.
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
@@ -52,11 +54,12 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - App-specific FAQs belong on each app's product page, not on the general `/support/` page. The Everything Clipboard FAQ now lives on `/apps/everything-clipboard/` with three FAQ items: privacy information, Mac App Store link availability, and optional Accessibility permission for Direct Paste.
 - The homepage is now a general JBDApps front door rather than a plain support entry. It uses a full-bleed screenshot hero with the `JBDApps` H1, immediate links for `Everything Clipboard` and `Voice Command Atlas`, a two-app visual showcase, and concise support/privacy/AppleScript route cards. Keep the bulk of app-specific marketing/detail content on the dedicated app pages.
 - The homepage app showcase anchors both action rows to the bottom of equal-height cards so the two View Details and Mac App Store button pairs align. The Voice Command Atlas card uses a purple-tinted background and border while the Everything Clipboard card keeps the existing green-gray surface.
-- The primary navigation now includes `Other Tools` between `Apps` and `Support`; its first dropdown item is `AppleScript`, which links to `/other-tools/`.
+- The primary navigation includes `Other Tools` between `Apps` and `Support`; its dropdown items are `AppleScript` (`/other-tools/`) and `Games` (`/games/`). The same two-item menu is mirrored across all ten shared site headers, including `404.html`.
 - `.nojekyll` is present so GitHub Pages serves the static files directly.
 
 ## Current Deployment State
 
+- GitHub Pages deployment completed successfully on 2026-07-21 for commit `1db3199 Publish Galactic Swarm game`; run `29813591080` (`pages build and deployment`) finished with `success`.
 - GitHub Pages deployment completed successfully on 2026-07-18 for commit `aae7401 Open App Store links in new tabs`; run `29665396642` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages deployment completed successfully on 2026-07-18 for commit `e99c45b Feature Voice Command Atlas App Store listing`; run `29665066460` (`pages build and deployment`) finished with `success`. The run had the existing non-blocking Node.js 20 deprecation annotation.
 - GitHub Pages source is configured as `main` branch root.
@@ -77,6 +80,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `https://jbdapps.com/support/` returns `HTTP/2 200`.
   - `https://jbdapps.com/privacy/` returns `HTTP/2 200`.
   - `https://jbdapps.com/apps/` returns `HTTP/2 200`.
+  - `https://jbdapps.com/games/` returns `HTTP/2 200`.
   - `https://www.jbdapps.com/` returns `HTTP/2 301` to `https://jbdapps.com/`.
 - HTTP now redirects to HTTPS:
   - `http://jbdapps.com/` returns `301 Moved Permanently` to `https://jbdapps.com/`.
@@ -92,6 +96,16 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-21 Galactic Swarm publication completed:
+  - Commit `1db3199 Publish Galactic Swarm game` copied the standalone game from `/Users/briscoe/Documents/Galaga/web/` into `games/`, added public metadata and the JBDApps favicon, added `Games` to all ten shared `Other Tools` dropdowns, documented the route in `README.md`, and added `https://jbdapps.com/games/` to `sitemap.xml`.
+  - `git diff --check`, `node --check games/game.js`, `node --check assets/js/main.js`, and `xmllint --noout sitemap.xml` passed before publication.
+  - The local reference checker resolved all local `href` and `src` targets across 11 HTML files. The public-source scan found no local filesystem paths, private forwarding email, or common GitHub token prefixes in HTML/CSS/JS/XML.
+  - Local in-app-browser verification at desktop width opened `Other Tools`, found the unique `Games` link, clicked through to `/games/`, and started Galactic Swarm. The live canvas was `960 x 720`, the overlay hid after Start, there was no horizontal overflow, and there were no console warnings or errors.
+  - Local mobile verification at `390 x 844` showed a `374 x 281` game canvas, no horizontal overflow, a visible Start button, and a working two-level mobile menu with both navigation buttons expanded and the Games link visible.
+  - GitHub Pages run `29813591080` completed successfully for functional commit `1db3199`.
+  - Public HTTPS readback returned `HTTP/2 200` for `/games/`, `/games/style.css`, and `/games/game.js`; public homepage HTML contained the new Games link.
+  - Live public in-app-browser verification clicked `Other Tools` -> `Games`, reached `https://jbdapps.com/games/`, started the game, confirmed the overlay hid, confirmed no horizontal overflow, and found zero console warnings/errors.
 
 - 2026-07-18 Apps-page color/button matching and site-wide App Store new-tab update completed:
   - `/apps/` now uses matching top-right `Mac App Store` buttons for both app cards and gives the Voice Command Atlas card the verified purple background `rgb(37, 29, 45)` and border `rgb(89, 67, 106)` in dark mode.
@@ -311,6 +325,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 ## Verified Inputs
 
+- The Galactic Swarm source copied for publication was `/Users/briscoe/Documents/Galaga/web/index.html` with companion files `style.css` and `game.js`.
 - `/Users/briscoe/Documents/MacApps` was not a Git repo before the website repo was created.
 - `JBDApps.com` returned no WHOIS match and no DNS answers during the 2026-06-28 planning pass. Cloudflare checkout later confirmed availability and the user completed purchase.
 - Attached app bundle metadata used for Everything Clipboard:
@@ -335,6 +350,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Keep the Everything Clipboard product icon square on `/apps/everything-clipboard/`; avoid HTML image dimensions or CSS that distort it.
 - Keep app-specific FAQs on their app product pages. The general `/support/` page should remain generic and should not accumulate app-specific FAQ sections.
 - Keep Voice Command Atlas Mac App Store copy centered on the explicitly selected `.voicecontrolcommands` export and re-import workflow. Do not restore claims that the Mac App Store build reads another app's preferences or restarts Voice Control/system processes.
+- Keep `Games` available in every shared `Other Tools` dropdown and keep `/games/` deployable with its relative `style.css` and `game.js` references. Treat the game as a standalone full-screen experience rather than wrapping it in the standard site header.
 
 ## Next Steps
 
