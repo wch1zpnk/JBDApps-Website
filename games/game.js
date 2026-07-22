@@ -19,8 +19,6 @@ const difficultyControl = document.querySelector("#difficultyControl");
 const fireKeyControl = document.querySelector("#fireKeyControl");
 const reducedMotionControl = document.querySelector("#reducedMotionControl");
 const highContrastControl = document.querySelector("#highContrastControl");
-const upgradePanel = document.querySelector("#upgradePanel");
-const upgradeButtons = [...document.querySelectorAll("[data-upgrade-index]")];
 const statsSummary = document.querySelector("#statsSummary");
 const achievementsList = document.querySelector("#achievementsList");
 const gamepadStatus = document.querySelector("#gamepadStatus");
@@ -78,7 +76,6 @@ let touchRightHeld = false;
 let touchFireHeld = false;
 let gamepadWasStart = false;
 let gamepadWasBomb = false;
-let chosenUpgrades = [];
 let settings = {
   volume: 0.7,
   musicVolume: 0.42,
@@ -525,7 +522,6 @@ function resetGame(asDemo = false) {
   demoMode = asDemo;
   demoTimer = 0;
   respawnTimer = 0;
-  chosenUpgrades = [];
   Object.keys(runUpgrades).forEach((key) => { runUpgrades[key] = 0; });
   forceFieldRemaining = 0;
   nextForceFieldScore = 5000;
@@ -538,7 +534,6 @@ function resetGame(asDemo = false) {
   stats.runs += asDemo ? 0 : 1;
   if (!asDemo) saveStats();
   overlay.classList.add("hidden");
-  upgradePanel.hidden = true;
   makeWave();
   updateHud();
 }
@@ -1276,26 +1271,10 @@ function updateRespawn(dt) {
   playSound("shield");
 }
 
-function offerUpgrades() {
-  const pool = [...UPGRADE_DEFS];
-  chosenUpgrades = [];
-  while (chosenUpgrades.length < 3 && pool.length) {
-    chosenUpgrades.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-  }
-  upgradeButtons.forEach((button, index) => {
-    const upgrade = chosenUpgrades[index];
-    button.innerHTML = `<strong>${index + 1}. ${upgrade.name}</strong><span>${upgrade.description}<br>Current level: ${runUpgrades[upgrade.id]}</span>`;
-  });
-  state = "upgrade";
-  upgradePanel.hidden = false;
-  if (demoMode) setTimeout(() => chooseUpgrade(Math.floor(Math.random() * chosenUpgrades.length)), 700);
-}
-
-function chooseUpgrade(index) {
-  if (state !== "upgrade" || !chosenUpgrades[index]) return;
-  const upgrade = chosenUpgrades[index];
+function applyRandomUpgrade() {
+  if (state !== "playing") return;
+  const upgrade = UPGRADE_DEFS[Math.floor(Math.random() * UPGRADE_DEFS.length)];
   runUpgrades[upgrade.id] += 1;
-  upgradePanel.hidden = true;
   wave += 1;
   stats.bestWave = Math.max(stats.bestWave, wave);
   if (!demoMode) saveStats();
@@ -1303,11 +1282,13 @@ function chooseUpgrade(index) {
   player.invulnerable = 1.4;
   state = "playing";
   makeWave();
+  waveBanner = `Wave ${wave} · ${upgrade.name}`;
+  waveBannerTimer = 2.2;
 }
 
 function completeWave() {
   if (state !== "playing") return;
-  offerUpgrades();
+  applyRandomUpgrade();
 }
 
 function startDemo() {
@@ -2029,9 +2010,6 @@ window.addEventListener("keydown", (event) => {
   }
   if (event.code === "KeyP" || event.code === "Escape") pauseGame();
   if (event.code === "KeyB") useBomb();
-  if (state === "upgrade" && ["Digit1", "Digit2", "Digit3"].includes(event.code)) {
-    chooseUpgrade(Number(event.code.slice(-1)) - 1);
-  }
 });
 
 window.addEventListener("keyup", (event) => {
@@ -2112,8 +2090,6 @@ highContrastControl.addEventListener("change", () => {
   document.body.classList.toggle("high-contrast", settings.highContrast);
   saveSettings();
 });
-
-upgradeButtons.forEach((button, index) => button.addEventListener("click", () => chooseUpgrade(index)));
 
 function bindHold(button, setter) {
   button.addEventListener("pointerdown", (event) => {
