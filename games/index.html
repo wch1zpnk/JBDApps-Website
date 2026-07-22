@@ -2,14 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="description" content="Play Galactic Swarm, a fast arcade shooter from JBDApps.">
     <title>Galactic Swarm</title>
     <link rel="canonical" href="https://jbdapps.com/games/">
     <link rel="icon" href="/assets/images/favicon.png" type="image/png">
-    <link rel="stylesheet" href="./style.css?v=20260722-compact-auto-upgrade">
+    <link rel="stylesheet" href="./style.css?v=20260722-iphone-landscape">
   </head>
   <body>
+    <div id="orientationGate" class="orientation-gate" role="dialog" aria-labelledby="orientationTitle" aria-describedby="orientationMessage" aria-hidden="true">
+      <div class="orientation-card">
+        <div class="phone-turn" aria-hidden="true">
+          <div class="phone-outline"><span></span></div>
+          <div class="turn-arrow">↻</div>
+        </div>
+        <div class="orientation-kicker">iPhone Game</div>
+        <h1 id="orientationTitle">Rotate Your iPhone</h1>
+        <p id="orientationMessage">Turn your phone sideways to play Galactic Swarm in landscape.</p>
+      </div>
+    </div>
+
     <main class="shell">
       <section class="game-frame" aria-label="Galactic Swarm arcade game">
         <div class="hud" aria-live="polite">
@@ -113,6 +125,6 @@
       </section>
     </main>
 
-    <script src="./game.js?v=20260722-compact-auto-upgrade"></script>
+    <script src="./game.js?v=20260722-iphone-landscape"></script>
   </body>
 </html>

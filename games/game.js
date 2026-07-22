@@ -19,6 +19,8 @@ const difficultyControl = document.querySelector("#difficultyControl");
 const fireKeyControl = document.querySelector("#fireKeyControl");
 const reducedMotionControl = document.querySelector("#reducedMotionControl");
 const highContrastControl = document.querySelector("#highContrastControl");
+const orientationGate = document.querySelector("#orientationGate");
+const shell = document.querySelector(".shell");
 const statsSummary = document.querySelector("#statsSummary");
 const achievementsList = document.querySelector("#achievementsList");
 const gamepadStatus = document.querySelector("#gamepadStatus");
@@ -76,6 +78,10 @@ let touchRightHeld = false;
 let touchFireHeld = false;
 let gamepadWasStart = false;
 let gamepadWasBomb = false;
+const iphonePreview = new URLSearchParams(window.location.search).has("iphone-preview");
+const isIPhone = /iPhone|iPod/i.test(navigator.userAgent) || iphonePreview;
+const portraitQuery = window.matchMedia("(orientation: portrait)");
+let iphonePortrait = false;
 let settings = {
   volume: 0.7,
   musicVolume: 0.42,
@@ -394,6 +400,27 @@ function resize() {
   canvas.style.width = `${width}px`;
   canvas.style.height = `${height}px`;
   canvas.style.margin = "0 auto";
+}
+
+function updateIPhoneLayout() {
+  iphonePortrait = isIPhone && portraitQuery.matches;
+  document.body.classList.toggle("iphone-device", isIPhone);
+  document.body.classList.toggle("iphone-portrait", iphonePortrait);
+  orientationGate.setAttribute("aria-hidden", String(!iphonePortrait));
+  if (iphonePortrait) shell.setAttribute("inert", "");
+  else shell.removeAttribute("inert");
+  if (iphonePortrait) {
+    keys.clear();
+    pointerActive = false;
+    touchLeftHeld = false;
+    touchRightHeld = false;
+    touchFireHeld = false;
+  }
+}
+
+function updateViewportLayout() {
+  updateIPhoneLayout();
+  resize();
 }
 
 function makeStars() {
@@ -1299,6 +1326,7 @@ function startDemo() {
 }
 
 function update(dt) {
+  if (iphonePortrait) return;
   updateStars(dt);
   updateParticles(dt);
   updateShockwaves(dt);
@@ -1993,7 +2021,12 @@ function canvasPointerX(event) {
   return clamp(x * WORLD.width, 35, WORLD.width - 35);
 }
 
-window.addEventListener("resize", resize);
+window.addEventListener("resize", updateViewportLayout);
+if (typeof portraitQuery.addEventListener === "function") {
+  portraitQuery.addEventListener("change", updateViewportLayout);
+} else {
+  portraitQuery.addListener(updateViewportLayout);
+}
 
 window.addEventListener("keydown", (event) => {
   idleTimer = 0;
@@ -2125,6 +2158,7 @@ renderStats();
 makeStars();
 makeWave();
 updateHud();
+updateIPhoneLayout();
 resize();
 draw();
 rafId = requestAnimationFrame(loop);
