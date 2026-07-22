@@ -52,11 +52,11 @@ body {
   text-align: center;
 }
 
-body.iphone-device.iphone-portrait .orientation-gate {
+body.smartphone-device.smartphone-portrait .orientation-gate {
   display: grid;
 }
 
-body.iphone-device.iphone-portrait .shell {
+body.smartphone-device.smartphone-portrait .shell {
   visibility: hidden;
 }
 
@@ -617,7 +617,7 @@ body.high-contrast #game {
   }
 }
 
-body.iphone-device:not(.iphone-portrait) .shell {
+body.smartphone-device:not(.smartphone-portrait) .shell {
   width: 100vw;
   height: 100dvh;
   min-height: 0;
@@ -631,7 +631,7 @@ body.iphone-device:not(.iphone-portrait) .shell {
     max(0.35rem, env(safe-area-inset-left));
 }
 
-body.iphone-device:not(.iphone-portrait) .game-frame {
+body.smartphone-device:not(.smartphone-portrait) .game-frame {
   width: 100%;
   max-width: none;
   height: calc(100dvh - 0.7rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
@@ -641,15 +641,15 @@ body.iphone-device:not(.iphone-portrait) .game-frame {
   transform: none;
 }
 
-body.iphone-device:not(.iphone-portrait) .control-strip {
+body.smartphone-device:not(.smartphone-portrait) .control-strip {
   display: none;
 }
 
-body.iphone-device:not(.iphone-portrait) .touch-controls {
+body.smartphone-device:not(.smartphone-portrait) .touch-controls {
   display: flex;
 }
 
-body.iphone-device:not(.iphone-portrait) .touch-controls button {
+body.smartphone-device:not(.smartphone-portrait) .touch-controls button {
   min-width: clamp(3.2rem, 9vmin, 4.1rem);
   height: clamp(3.2rem, 9vmin, 4.1rem);
 }

@@ -78,10 +78,13 @@ let touchRightHeld = false;
 let touchFireHeld = false;
 let gamepadWasStart = false;
 let gamepadWasBomb = false;
-const iphonePreview = new URLSearchParams(window.location.search).has("iphone-preview");
-const isIPhone = /iPhone|iPod/i.test(navigator.userAgent) || iphonePreview;
+const previewParams = new URLSearchParams(window.location.search);
+const smartphonePreview = previewParams.has("smartphone-preview") || previewParams.has("iphone-preview");
+const isSmartphone = /iPhone|iPod/i.test(navigator.userAgent)
+  || (/Android/i.test(navigator.userAgent) && /Mobile/i.test(navigator.userAgent))
+  || smartphonePreview;
 const portraitQuery = window.matchMedia("(orientation: portrait)");
-let iphonePortrait = false;
+let smartphonePortrait = false;
 let settings = {
   volume: 0.7,
   musicVolume: 0.42,
@@ -402,14 +405,14 @@ function resize() {
   canvas.style.margin = "0 auto";
 }
 
-function updateIPhoneLayout() {
-  iphonePortrait = isIPhone && portraitQuery.matches;
-  document.body.classList.toggle("iphone-device", isIPhone);
-  document.body.classList.toggle("iphone-portrait", iphonePortrait);
-  orientationGate.setAttribute("aria-hidden", String(!iphonePortrait));
-  if (iphonePortrait) shell.setAttribute("inert", "");
+function updateSmartphoneLayout() {
+  smartphonePortrait = isSmartphone && portraitQuery.matches;
+  document.body.classList.toggle("smartphone-device", isSmartphone);
+  document.body.classList.toggle("smartphone-portrait", smartphonePortrait);
+  orientationGate.setAttribute("aria-hidden", String(!smartphonePortrait));
+  if (smartphonePortrait) shell.setAttribute("inert", "");
   else shell.removeAttribute("inert");
-  if (iphonePortrait) {
+  if (smartphonePortrait) {
     keys.clear();
     pointerActive = false;
     touchLeftHeld = false;
@@ -419,7 +422,7 @@ function updateIPhoneLayout() {
 }
 
 function updateViewportLayout() {
-  updateIPhoneLayout();
+  updateSmartphoneLayout();
   resize();
 }
 
@@ -1326,7 +1329,7 @@ function startDemo() {
 }
 
 function update(dt) {
-  if (iphonePortrait) return;
+  if (smartphonePortrait) return;
   updateStars(dt);
   updateParticles(dt);
   updateShockwaves(dt);
@@ -2158,7 +2161,7 @@ renderStats();
 makeStars();
 makeWave();
 updateHud();
-updateIPhoneLayout();
+updateSmartphoneLayout();
 resize();
 draw();
 rafId = requestAnimationFrame(loop);
