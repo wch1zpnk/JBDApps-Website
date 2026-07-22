@@ -28,6 +28,7 @@ const touchLeft = document.querySelector("#touchLeft");
 const touchRight = document.querySelector("#touchRight");
 const touchFire = document.querySelector("#touchFire");
 const touchBomb = document.querySelector("#touchBomb");
+const touchControls = document.querySelector(".touch-controls");
 
 const WORLD = { width: 960, height: 720 };
 const keys = new Set();
@@ -2134,7 +2135,10 @@ function bindHold(button, setter) {
     setter(true);
   });
   for (const eventName of ["pointerup", "pointercancel", "pointerleave"]) {
-    button.addEventListener(eventName, () => setter(false));
+    button.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      setter(false);
+    });
   }
 }
 
@@ -2145,6 +2149,9 @@ touchBomb.addEventListener("pointerdown", (event) => {
   event.preventDefault();
   useBomb();
 });
+for (const eventName of ["dblclick", "contextmenu", "dragstart", "selectstart"]) {
+  touchControls.addEventListener(eventName, (event) => event.preventDefault());
+}
 
 window.addEventListener("gamepadconnected", () => { gamepadStatus.textContent = "Gamepad: connected"; });
 window.addEventListener("gamepaddisconnected", () => { gamepadStatus.textContent = "Gamepad: not connected"; });

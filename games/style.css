@@ -654,6 +654,23 @@ body.smartphone-device:not(.smartphone-portrait) .touch-controls button {
   height: clamp(3.2rem, 9vmin, 4.1rem);
 }
 
+body.smartphone-device .shell,
+body.smartphone-device .shell * {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.smartphone-device .touch-controls,
+body.smartphone-device .touch-controls button {
+  touch-action: none;
+}
+
+body.smartphone-device .shell ::selection {
+  background: transparent;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .phone-outline {
     animation: none;
