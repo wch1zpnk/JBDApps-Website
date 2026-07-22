@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `1fa7b18 Add iPhone landscape game mode`
-- Current handoff refresh: updated after publishing and live-verifying Galactic Swarm's iPhone portrait instruction and landscape touch layout.
+- Latest pushed functional site commit before this handoff refresh: `03fbdb7 Extend landscape mode to smartphones`
+- Current handoff refresh: updated after extending and live-verifying Galactic Swarm's portrait instruction and landscape touch layout for iPhone, iPod, and Android phones.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, app listings, and selected public tools and games.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -42,7 +42,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - `assets/images/favicon.png`
   - website polish additions: `assets/images/apple-touch-icon.png`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, and `404.html`
 - Galactic Swarm is a self-contained public game under `games/`: `index.html`, `style.css`, and `game.js`. The public route is `https://jbdapps.com/games/`; it uses the JBDApps favicon but otherwise preserves the standalone game presentation. The 2026-07-21 ten-feature upgrade added persistent run upgrades; armored, shielded, and kamikaze enemies; multi-phase bosses with telegraphs and destructible turrets; a reassembly respawn sequence; persistent statistics and achievements; gamepad and touch support; six additional power-ups; idle demo play; accessibility/visual polish; and procedural music with independent Effects/Music controls. On 2026-07-22, the six large HUD cards were replaced by a compact single status strip and the between-wave choice screen was removed: each cleared wave now immediately applies one random upgrade and starts the next wave. Existing all-wave collision damage, force-field blocking, dramatic localized ship destruction, and stationary whole-canvas behavior remain intact.
-- iPhone and iPod visitors are detected in `games/game.js`. Portrait orientation shows a dedicated animated `Rotate Your iPhone` screen, makes the hidden game inert, clears held controls, and freezes the update loop so gameplay cannot advance unseen. Rotating to landscape automatically removes the gate and resumes the same game state. The landscape layout fills the safe viewport, centers the 4:3 playfield, hides the keyboard instruction strip, and places the four touch controls in the side space. `?iphone-preview=1` is an intentional testing override for desktop mobile-layout verification; ordinary visitors do not need it.
+- Smartphone visitors are detected in `games/game.js`: iPhone/iPod user agents and Android user agents containing `Mobile` receive the phone layout, while Android tablets and desktop browsers remain on the standard layout. Portrait orientation shows a dedicated animated `Rotate Your Smartphone` screen, makes the hidden game inert, clears held controls, and freezes the update loop so gameplay cannot advance unseen. Rotating to landscape automatically removes the gate and resumes the same game state. The landscape layout fills the safe viewport, centers the 4:3 playfield, hides the keyboard instruction strip, and places the four touch controls in the side space. `?smartphone-preview=1` is the current desktop testing override; the older `?iphone-preview=1` remains supported for compatibility.
 - `CNAME` contains `JBDApps.com`.
 - `README.md` documents local run, deployment, DNS setup, support email routing, privacy updates, and App Store URL checklist.
 - The Apps page names `Everything Clipboard` as the first real app with a View Details link to `/apps/everything-clipboard/` and a Mac App Store button pointing to `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
@@ -60,6 +60,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 ## Current Deployment State
 
+- GitHub Pages deployment completed successfully on 2026-07-22 for commit `03fbdb7 Extend landscape mode to smartphones`; run `29941281588` finished with `success`. The only annotation was GitHub's existing non-blocking Node.js 20 deprecation warning.
 - GitHub Pages deployment completed successfully on 2026-07-22 for commit `1fa7b18 Add iPhone landscape game mode`; run `29940670976` finished with `success`. The only annotation was GitHub's existing non-blocking Node.js 20 deprecation warning.
 - GitHub Pages deployment completed successfully on 2026-07-22 for commit `57dd472 Compact Galactic Swarm HUD and automate upgrades`; run `29936756563` finished with `success`. The only annotation was GitHub's existing non-blocking Node.js 20 deprecation warning.
 - GitHub Pages deployment completed successfully on 2026-07-21 for commit `6030156 Refresh Galactic Swarm styles`; run `29816933116` finished with `success`. This commit cache-busted `style.css` after live verification caught Cloudflare serving the old unversioned game stylesheet.
@@ -103,6 +104,13 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
   - Email DNS records are present in Cloudflare DNS and public DNS: MX, SPF TXT, DKIM TXT, and DMARC TXT.
 
 ## Verification Completed
+
+- 2026-07-22 Galactic Swarm smartphone expansion completed:
+  - Commit `03fbdb7 Extend landscape mode to smartphones` generalized the mobile gate from iPhone/iPod to iPhone, iPod, and Android phones and changed all visible copy to `Smartphone Game`, `Rotate Your Smartphone`, and `Turn your smartphone sideways to play Galactic Swarm in landscape.`
+  - A deterministic user-agent check passed for iPhone Safari and Android Chrome phone examples, excluded an Android tablet and Mac Safari, and preserved the `?iphone-preview=1` testing override alongside the new `?smartphone-preview=1` override.
+  - Local portrait and landscape browser verification confirmed the generic smartphone classes, instruction, inert gate, automatic transition, touch controls, hidden desktop strip, no overflow, and zero console errors.
+  - `git diff --check`, both game JavaScript syntax checks, exact local/public source comparisons, and HTTPS SHA-256 readback passed. GitHub Pages run `29941281588` succeeded.
+  - Live portrait verification confirmed the generic wording, versioned `20260722-smartphone-landscape` assets, inert game shell, and zero console errors.
 
 - 2026-07-22 Galactic Swarm iPhone landscape mode completed:
   - Commit `1fa7b18 Add iPhone landscape game mode` added an iPhone-only portrait orientation gate with an animated phone-turn illustration and the instruction `Turn your phone sideways to play Galactic Swarm in landscape.`
@@ -393,7 +401,7 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Keep app-specific FAQs on their app product pages. The general `/support/` page should remain generic and should not accumulate app-specific FAQ sections.
 - Keep Voice Command Atlas Mac App Store copy centered on the explicitly selected `.voicecontrolcommands` export and re-import workflow. Do not restore claims that the Mac App Store build reads another app's preferences or restarts Voice Control/system processes.
 - Keep `Games` available in every shared `Other Tools` dropdown and keep `/games/` deployable with its relative `style.css` and `game.js` references. Treat the game as a standalone full-screen experience rather than wrapping it in the standard site header.
-- Keep the public Galactic Swarm gameplay code synchronized with the original local source when publishing approved changes. Preserve the iPhone portrait rotation gate, landscape safe-area/touch layout, compact single-strip HUD, automatic random wave upgrades without a choice screen, all-wave ship-collision damage, the stronger localized player explosion, and the stationary whole-canvas behavior.
+- Keep the public Galactic Swarm gameplay code synchronized with the original local source when publishing approved changes. Preserve the smartphone portrait rotation gate and Android-phone detection, landscape safe-area/touch layout, compact single-strip HUD, automatic random wave upgrades without a choice screen, all-wave ship-collision damage, the stronger localized player explosion, and the stationary whole-canvas behavior.
 
 ## Next Steps
 
