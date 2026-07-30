@@ -1,6 +1,6 @@
 # JBDApps Website Handoff
 
-Updated: 2026-07-22
+Updated: 2026-07-30
 
 ## New Chat Rule
 
@@ -11,8 +11,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Project path: `/Users/briscoe/Documents/MacApps/JBDApps-Website`
 - GitHub repo: `https://github.com/wch1zpnk/JBDApps-Website`
 - Branch: `main`
-- Latest pushed functional site commit before this handoff refresh: `c1294eb Prevent smartphone touch selection artifacts`
-- Current handoff refresh: updated after suppressing and live-verifying iOS/Android selection, callout, and double-tap artifacts on the smartphone touch controls.
+- Latest pushed functional site commits before this handoff refresh: `6b2a171 Add Aquarium Calculators app page` and `78132ca Add Aquarium Calculators artwork`
+- Current handoff refresh: updated after publishing and live-verifying the Aquarium Calculators homepage showcase, Apps listing, product page, app icon, and six-screenshot carousel.
 - Website goal: static independent developer/support site for App Store support URLs, privacy policy, contact, app listings, and selected public tools and games.
 - Public domain: `JBDApps.com`
 - Hosting target: GitHub Pages from `main` branch root.
@@ -61,6 +61,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 ## Current Deployment State
 
+- Aquarium Calculators was published on 2026-07-30:
+  - Public product route: `https://jbdapps.com/apps/aquarium-calculators/`
+  - Public artwork: `assets/images/aquarium-calculators-icon.png` and `assets/images/aquarium-calculators/01-reef-overview.png` through `06-alkalinity-dosing.png`
+  - Release wording is `Coming soon to Mac App Store`; there is no Apple URL because the Mac app has not been submitted.
+  - Functional HTML/CSS commit: `6b2a171 Add Aquarium Calculators app page`
+  - Artwork correction commit: `78132ca Add Aquarium Calculators artwork`
+  - Handoff commit: the commit containing this handoff section.
+  - Pages run `30532237833` for `6b2a171` succeeded, but live readback caught that the binary artwork had not been included in that commit and returned `404`.
+  - Pages run `30532313322` for the corrective `78132ca` commit succeeded. Subsequent HTTPS readback returned `200` for the homepage, Apps page, product page, icon, and all six screenshots.
 - GitHub Pages deployment completed successfully on 2026-07-22 for commit `c1294eb Prevent smartphone touch selection artifacts`; run `29941879151` finished with `success`. The only annotation was GitHub's existing non-blocking Node.js 20 deprecation warning.
 - GitHub Pages deployment completed successfully on 2026-07-22 for commit `03fbdb7 Extend landscape mode to smartphones`; run `29941281588` finished with `success`. The only annotation was GitHub's existing non-blocking Node.js 20 deprecation warning.
 - GitHub Pages deployment completed successfully on 2026-07-22 for commit `1fa7b18 Add iPhone landscape game mode`; run `29940670976` finished with `success`. The only annotation was GitHub's existing non-blocking Node.js 20 deprecation warning.
@@ -107,6 +116,15 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 
 ## Verification Completed
 
+- 2026-07-30 Aquarium Calculators website publication completed:
+  - Added an Apps-page card, a three-app homepage showcase and hero-link row, `/apps/aquarium-calculators/`, sitemap and README entries, the verified 1024px app icon, and all six approved `2690 x 2304` screenshots.
+  - Screenshot order is Reef Overview, Salinity, Water Test Logs, Reef Health, Backup & Restore, and Alkalinity Dosing. No supplied screenshots were excluded.
+  - The page uses verified `macOS 14.0` minimum-system wording and `Coming soon to Mac App Store` button text with no Apple destination.
+  - Local validation passed `git diff --check`, `node --check assets/js/main.js`, `xmllint --noout sitemap.xml`, local reference and image checks, carousel JSON/dot/count checks, shared stylesheet cache-token checks, and private-string scanning across 12 HTML files.
+  - Local in-app-browser verification confirmed the Apps-card navigation, title and H1, icon, six ordered slides and dots, automatic advance, focus pause, previous/next, a nonadjacent dot, lightbox open/close, all images at nonzero dimensions, zero horizontal overflow at `1280 x 900`, `800 x 900`, and `390 x 844`, working mobile navigation, and zero console warnings/errors. Voice Command Atlas carousel regression checks passed with eight slides and dots.
+  - Corrected live deployment verification confirmed the homepage has three app links and three showcase cards; the Apps page has one Aquarium Calculators card; the product page has six slides and dots, no linked coming-soon button, working auto-advance/dot/lightbox controls, zero failed images or horizontal overflow on desktop and mobile, and zero console warnings/errors.
+  - Direct HTTPS checks returned `200 text/html` for `/`, `/apps/`, and `/apps/aquarium-calculators/`, plus `200 image/png` for the icon and all six screenshot URLs.
+  - The Aquarium app checkout already had uncommitted user work in `AquariumCalculatorsMacApp.swift`, `MacContentView.swift`, and `Handoff-2026-07-24.md`; it was inspected but not modified during website publication.
 - 2026-07-22 Galactic Swarm smartphone touch-selection fix completed:
   - Commit `c1294eb Prevent smartphone touch selection artifacts` added smartphone-scoped `user-select: none`, `-webkit-touch-callout: none`, transparent tap highlighting and selection styling, plus `touch-action: none` on the touch layer.
   - Touch hold controls now prevent defaults on pointer-up, pointer-cancel, and pointer-leave as well as pointer-down. The touch container prevents synthesized `dblclick`, `contextmenu`, `dragstart`, and `selectstart` defaults.
@@ -403,6 +421,8 @@ Read this file before making website, domain, GitHub Pages, Cloudflare DNS, supp
 - Do not claim the app collects no data unless the actual app behavior has been reviewed for App Store submission.
 - Keep the Everything Clipboard App Store buttons pointed at the verified public listing URL unless Apple changes the app listing: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`.
 - Keep Voice Command Atlas App Store buttons pointed at the verified public listing URL unless Apple changes the app listing: `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`.
+- Keep Aquarium Calculators identified as `Coming soon to Mac App Store` and do not add an Apple URL until a live listing is verified.
+- Keep `/apps/aquarium-calculators/` at six ordered slides with matching slide data, dots, and count: Reef Overview, Salinity, Water Test Logs, Reef Health, Backup & Restore, and Alkalinity Dosing.
 - Keep every Mac App Store link opening in a new tab with `target="_blank"` and `rel="noopener noreferrer"`; do not navigate the visitor away from JBDApps for an external Apple listing.
 - Keep the Everything Clipboard screenshot carousel compact at `16 / 5` with `object-fit: contain`; do not make it taller or crop the screenshots.
 - Keep `/` as a general JBDApps homepage with both apps represented. It can use real app screenshots and product links, but do not turn it into an Everything Clipboard-only showcase.
