@@ -273,7 +273,7 @@ img {
 
 .home-hero-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 300px));
+  grid-template-columns: repeat(3, minmax(0, 260px));
   gap: 12px;
   margin-top: 48px;
 }
@@ -465,7 +465,7 @@ img {
 .home-app-grid,
 .home-routes {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -507,6 +507,15 @@ img {
 
 .home-app-card.voice-command-atlas-card .home-app-media {
   background: #eee3f6;
+}
+
+.home-app-card.aquarium-calculators-card {
+  border-color: #b7dce7;
+  background: #f0fafc;
+}
+
+.home-app-card.aquarium-calculators-card .home-app-media {
+  background: #deeff4;
 }
 
 .home-app-copy h3 {
@@ -622,6 +631,11 @@ img {
 .app-card.voice-command-atlas-card {
   border-color: #ddcde8;
   background: #f7f1fb;
+}
+
+.app-card.aquarium-calculators-card {
+  border-color: #b7dce7;
+  background: #f0fafc;
 }
 
 .app-card.muted {
@@ -1270,12 +1284,26 @@ img {
     background: #251d2d;
   }
 
+  .home-app-card.aquarium-calculators-card {
+    border-color: #315766;
+    background: #172a31;
+  }
+
   .app-card.voice-command-atlas-card {
     border-color: #59436a;
     background: #251d2d;
   }
 
+  .app-card.aquarium-calculators-card {
+    border-color: #315766;
+    background: #172a31;
+  }
+
   .home-app-card.voice-command-atlas-card .home-app-media {
     background: #211929;
+  }
+
+  .home-app-card.aquarium-calculators-card .home-app-media {
+    background: #13262d;
   }
 }

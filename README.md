@@ -18,6 +18,7 @@ The app listings include:
 
 - `Everything Clipboard`, using verified local app metadata and the public Mac App Store listing.
 - `Voice Command Atlas`, available on the Mac App Store, with a dedicated detail page and screenshot carousel at `/apps/voice-command-atlas/`.
+- `Aquarium Calculators`, coming soon to the Mac App Store, with a dedicated detail page and six-screenshot carousel at `/apps/aquarium-calculators/`.
 
 https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12
 
@@ -129,6 +130,7 @@ Verified live custom-domain URLs:
 - Everything Clipboard Mac App Store URL: `https://apps.apple.com/us/app/everything-clipboard/id6784394264?mt=12`
 - Voice Command Atlas Marketing URL: `https://JBDApps.com/apps/voice-command-atlas/`
 - Voice Command Atlas Mac App Store URL: `https://apps.apple.com/us/app/voice-command-atlas/id6789797051?mt=12`
+- Aquarium Calculators Marketing URL: `https://JBDApps.com/apps/aquarium-calculators/`
 - Galactic Swarm game URL: `https://JBDApps.com/games/`
 
 Verify both:
