@@ -1,3 +1,10 @@
 .DS_Store
 Thumbs.db
 *.log
+.env
+.env.*
+!.env.example
+.dev.vars*
+node_modules/
+*.secrets.json
+.members-deploy/

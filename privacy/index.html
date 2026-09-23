@@ -33,6 +33,7 @@
           </button>
           <div class="nav-dropdown-panel" aria-label="Other tools submenu">
             <a href="/other-tools/">AppleScript</a>
+            <a href="/other-tools/aquarium-calculators/">Aquarium Calculators</a>
             <a href="/games/">Games</a>
           </div>
         </div>
@@ -46,7 +47,7 @@
       <article class="legal-page">
         <p class="eyebrow">Privacy Policy</p>
         <h1>JBDApps Privacy Policy</h1>
-        <p class="effective-date">Effective Date: July 16, 2026</p>
+        <p class="effective-date">Effective Date: September 22, 2026</p>
         <p>This policy describes privacy practices for JBDApps software and this website. It will be updated when app behavior, support practices, or platform requirements change.</p>
 
         <h2>Data Collection</h2>
@@ -69,6 +70,13 @@
 
         <h2>Voice Command Atlas</h2>
         <p>The Mac App Store version of Voice Command Atlas reads only the <code>.voicecontrolcommands</code> export the user explicitly chooses in a standard macOS Open dialog. It may securely remember that selection with an app-scoped security bookmark. Edits affect only the selected export until the user re-imports it through Voice Control's Options menu. Command contents, backups, snapshots, and test results stay on the Mac and are not uploaded to JBDApps. The app does not read another app's preferences or restart Voice Control or other system processes.</p>
+
+        <h2>Aquarium Calculators Web</h2>
+        <p>The browser edition requires a member account with a username and verified email. Clerk handles registration, email confirmation, sign-in, and account security. The website checks your active session and verified membership before providing the calculator.</p>
+        <p>Aquarium profiles, water-test readings, notes, and saved calculations are stored for the verified member account in JBDApps' Cloudflare-hosted database so the web edition can load them in another supported browser or device. Clerk provides the account and session identity but does not receive the aquarium dataset from JBDApps. Calculations and file parsing run in the browser. The separate native Mac and iPhone apps do not currently synchronize through this service.</p>
+        <p>The browser keeps a local cached copy for resilience when synchronization is temporarily unavailable. Account records are protected by the same server-side active-session, username, and verified-email checks required to load the calculator. Account separation is not end-to-end encryption: JBDApps' hosting systems process the stored records, and someone controlling an unlocked browser profile may inspect its local cache. Sign out on shared devices and keep regular exported backups.</p>
+        <p>Each save uses a version check. If this browser and another device both changed the account, the app stops rather than silently overwriting either copy and offers backup, merge-as-copies, or explicit replacement choices. A JSON restore adds separate aquarium copies. Deleting readings or profiles in the web app updates the synchronized account copy. To request deletion of the complete member dataset or account, contact <a href="mailto:support@JBDApps.com">support@JBDApps.com</a>.</p>
+        <p>Exported CSV and JSON files are saved through the browser's download feature. Opening a manufacturer link contacts that manufacturer's website under its own privacy policy. Normal website delivery and account storage use Cloudflare; authentication uses Clerk. The web calculator adds no analytics, advertising, or tracking scripts.</p>
 
         <h2>Children's Privacy</h2>
         <p>JBDApps apps are not intended to knowingly collect personal information from children. If you believe a child has provided personal information through a support request, contact JBDApps so it can be handled appropriately.</p>
